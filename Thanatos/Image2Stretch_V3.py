@@ -11,8 +11,8 @@ class ImageProcesser:
         CannyLow = sliderCannyLow
         CannyHigh = sliderCannyHigh
         LaplacianKernel = sliderLaplacianKernel
-        ErosionKernel = np.ones((sliderErosionKernel,sliderErosionKernel),np.uint8)
-        DilationKernel = np.ones((sliderDilationKernel,sliderDilationKernel),np.uint8)
+        ErosionKernel = cv2.getStructuringElement(cv2.MORPH_CROSS, (sliderErosionKernel, sliderErosionKernel))
+        DilationKernel = cv2.getStructuringElement(cv2.MORPH_CROSS, (sliderDilationKernel, sliderDilationKernel))
         CHSImages_paths = []
         temp_dir = tempfile.mkdtemp()
         # announce CHSImage is array and turn it into numpy array
@@ -84,9 +84,6 @@ class ImageProcesser:
         laplacian = cv2.Laplacian(guassianImage, cv2.CV_64F, ksize=LaplacianKernel)
         # do change to 0 ~ 255
         laplacianImage = np.uint8(np.absolute(laplacian))
-        # Set return structure and shape
-        ErosionKernel = cv2.getStructuringElement(cv2.MORPH_CROSS, ErosionKernel)
-        DilationKernel = cv2.getStructuringElement(cv2.MORPH_CROSS, DilationKernel)
         # do Erosion
         erosionImage = cv2.erode(laplacianImage, ErosionKernel, iterations=1)
         # do Dilation
