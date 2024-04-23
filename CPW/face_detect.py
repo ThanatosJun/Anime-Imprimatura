@@ -11,6 +11,9 @@ eye_cascade = cv2.CascadeClassifier("C:\CNN\haarcascade_eye.xml")
 eyes = eye_cascade.detectMultiScale(gray)
 
 # 偵測眼睛並標記綠色方框
+for (x, y, w, h) in eyes:
+    cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+    
 # 使用嘴巴模型
 mouth_cascade = cv2.CascadeClassifier("C:\CNN\haarcascade_mcs_mouth.xml")
 mouths = mouth_cascade.detectMultiScale(gray)
