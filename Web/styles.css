@@ -1,0 +1,49 @@
+/*--------------------------------------------------------------
+# General
+--------------------------------------------------------------*/
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('background.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+header {
+    background: #252222CC;
+    width: 1,512px;
+    height: 120px;
+    padding: 30px 100px;
+    gap: 299px;
+    opacity: 0px;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    opacity: 1;
+}
+
+nav ul {
+    width: 376px; 
+    height: 20px;
+    list-style: none; 
+    padding: 0;
+    display: flex; 
+    gap: 1rem;
+    opacity: 1; 
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.login {
+    background: #D9D9D9;
+    text-decoration: none;
+    width: 138px;
+    height: 50px;
+    padding: 15px 40px;
+    gap: 10px;
+    border-radius: 42px;
+    opacity: 0px;
+}
