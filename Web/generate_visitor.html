@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Visitor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="navigation-bar">
+        <div class="logo-placeholder"></div>
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="index.html#how-to-use">How to Use</a>
+            <a href="index.html#about-us">About Us</a>
+            <a href="gallery.html">Gallery</a>
+            <button class="login-btn">Log In</button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="upload-section">
+            <div class="upload-container">
+                <div class="upload-box">
+                    <form action="/upload" enctype="multipart/form-data">
+                        <input name="CHD" type="file" accept="image/jpeg, image/png">
+                        <button type="submit">Upload</button>
+                    </form>
+                    <p>Upload CHD*3</p>
+                </div>
+                <div class="upload-box">
+                    <form action="/upload" enctype="multipart/form-data">
+                        <input name="CHS" type="file" accept="image/jpeg, image/png">
+                        <button type="submit">Upload</button>
+                    </form>
+                    <p>Upload CHS</p>
+                </div>
+            </div>
+            <button class="generate-btn">Generate</button>
+        </section>
+    </main>
+</body>
+</html>
