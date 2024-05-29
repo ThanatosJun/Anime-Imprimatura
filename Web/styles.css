@@ -7,6 +7,7 @@
 body {
     font-family: Arial, sans-serif;
     background: linear-gradient(to bottom right, #000000, #3f3f3f);
+    /* background: url('https://via.placeholder.com/800x600') no-repeat center center fixed; */
     color: #fff;
     display: flex;
     flex-direction: column;
@@ -19,9 +20,8 @@ body {
     width: 100%;
     padding: 10px 20px; /* Adjust padding for better spacing */
     background-color: #252222CC;
-    ;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     position: fixed; /* Make the nav bar fixed */
     top: 0; /* Position it at the top */
@@ -33,9 +33,17 @@ body {
     background-color: #D9D9D9;
     border-radius: 50%;
 }
+.user-icon {
+    width: 40px;
+    height: 40px;
+    background-color: gray;
+    border-radius: 50%;
+}
 .nav {
     display: flex;
+    justify-content: center;
     gap: 20px;
+
 }
 .nav a {
     color: #fff;
@@ -78,48 +86,105 @@ body {
     color: #fff;
 }
 
-/* Gallery Page Styles */
-.gallery {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 60px; /* Adjust for fixed nav bar */
+/* Home Page Styles */
+.hero {
+    display: grid;
+    place-items: center;
+    height: 100vh;
 }
-.gallery-header {
+
+.more-btn {
+    width: Fixed (214px)px;
+    height: Fixed (83px)px;
+    top: 713px;
+    left: 649px;
+    padding: 15px 40px 15px 40px;
+    gap: 10px;
+    border-radius: 42px;
+    opacity: 0px;
+    background: #E6FFFD;
+    cursor: pointer;
+    margin-top: 20px; 
+}
+
+.how-to-use, .about-us {
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.cards {
     display: flex;
-    justify-content: space-between;
-    width: 100%;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card, .about-card {
+    width: 200px;
+    height: 150px;
+    background-color: #666;
+}
+
+.generate-btn {
+    display: block;
+    margin: 50px auto;
+    background-color: #58d1d1;
+    color: #000;
+    border: none;
     padding: 10px 20px;
+    cursor: pointer;
+}
+
+footer {
     background-color: #333;
+    padding: 10px 20px;
+    text-align: center;
 }
-.gallery-header a {
-    color: #fff;
+
+.footer-links a {
+    color: white;
     text-decoration: none;
+    margin: 0 10px;
 }
-.gallery-header .logo-placeholder {
-    background-color: #888;
-    border-radius: 50%;
+
+/* Gallery Page Styles */
+.gallery .gallery {
+    padding: 50px 20px;
+    text-align: center;
 }
-.gallery-content {
+
+.gallery .gallery-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.gallery .gallery-btn {
+    background-color: #58d1d1;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.gallery .gallery-grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
-    padding: 20px;
 }
-.gallery-item {
+
+.gallery .gallery-item {
     width: 200px;
-    background-color: #444;
-    border-radius: 10px;
-    overflow: hidden;
-}
-.gallery-item img {
-    width: 100%;
-    height: auto;
-}
-.gallery-item p {
-    padding: 10px;
     text-align: center;
+}
+
+.gallery .image {
+    width: 100%;
+    height: 150px;
+    background-color: #666;
+    margin-bottom: 10px;
 }
 
 /* Account Management Page Styles */
@@ -163,6 +228,35 @@ body {
     cursor: pointer;
 }
 
+/* Generate Visitor Page Styles */
+.generate-visitor .generate {
+    display: flex;
+    justify-content: space-around;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.generate-visitor .upload {
+    width: 200px;
+}
+
+.generate-visitor .upload-box {
+    width: 100%;
+    height: 150px;
+    background-color: #666;
+    margin-top: 10px;
+}
+
+.generate-visitor .generate-btn {
+    display: block;
+    margin: 50px auto;
+    background-color: #58d1d1;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
 /* Generated Visitor Page Styles */
 .generated-visitor {
     display: flex;
@@ -194,4 +288,216 @@ body {
 }
 .generated-visitor .save-btn {
     background-color: #6a4b82;
+}
+
+/* Log In Page Styles */
+.login .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.login .login-box {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.login h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.login .input-group {
+    margin-bottom: 15px;
+}
+
+.login input[type="email"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.login input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.login button {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.login button:hover {
+    background-color: #555;
+}
+
+.login p {
+    margin-top: 10px;
+}
+
+.login a {
+    color: #333;
+    text-decoration: none;
+}
+
+.login a:hover {
+    text-decoration: underline;
+}
+
+/* Create Account Page Styles */
+.create-account .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding-top: 100px; /* Adjust to ensure content is not hidden behind the nav */
+    color: white;
+}
+
+.create-account .form-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.create-account .form-container input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+.create-account .form-container button {
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.create-account .form-container p {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.create-account .form-container p a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Team Gallery T Page Styles */
+.team-gallery-t .gallery-buttons {
+    margin-bottom: 20px;
+}
+
+.team-gallery-t .gallery-buttons button {
+    background-color: #666;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.team-gallery-t .gallery-buttons button:hover {
+    background-color: #888;
+}
+
+.team-gallery-t .gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.team-gallery-t .image-card {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    overflow: hidden;
+    width: 150px;
+    text-align: center;
+}
+
+.team-gallery-t .image-card img {
+    width: 100%;
+    height: auto;
+}
+
+.team-gallery-t .image-card p {
+    margin: 10px 0;
+    color: #333;
+}
+
+/* Team Gallery F Page Styles */
+.team-gallery-f main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100% - 60px); /* Adjust for header height */
+    padding: 20px;
+}
+
+.team-gallery-f .tab-buttons {
+    margin-bottom: 20px;
+}
+
+.team-gallery-f .tab-button {
+    background-color: #444;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.team-gallery-f .tab-button.active {
+    background-color: #666;
+}
+
+.team-gallery-f .tab-button:hover {
+    background-color: #555;
+}
+
+.team-gallery-f .content {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    width: 50%;
+    max-width: 600px;
+    min-width: 300px;
+}
+
+.team-gallery-f .action-button {
+    background-color: #666;
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    margin: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 80%;
+    max-width: 200px;
+}
+
+.team-gallery-f .action-button:hover {
+    background-color: #888;
 }

@@ -6,7 +6,7 @@
     <title>Generate Visitor</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="generate-visitor">
     <header class="navigation-bar">
         <div class="logo-placeholder"></div>
         <nav class="nav">
@@ -19,25 +19,17 @@
     </header>
 
     <main>
-        <section class="upload-section">
-            <div class="upload-container">
-                <div class="upload-box">
-                    <form action="/upload" enctype="multipart/form-data">
-                        <input name="CHD" type="file" accept="image/jpeg, image/png">
-                        <button type="submit">Upload</button>
-                    </form>
-                    <p>Upload CHD*3</p>
-                </div>
-                <div class="upload-box">
-                    <form action="/upload" enctype="multipart/form-data">
-                        <input name="CHS" type="file" accept="image/jpeg, image/png">
-                        <button type="submit">Upload</button>
-                    </form>
-                    <p>Upload CHS</p>
-                </div>
+        <section class="generate">
+            <div class="upload">
+                <h3>Upload CHD*3</h3>
+                <div class="upload-box"></div>
             </div>
-            <button class="generate-btn">Generate</button>
+            <div class="upload">
+                <h3>Upload CHS</h3>
+                <div class="upload-box"></div>
+            </div>
         </section>
+        <button class="generate-btn">Generate</button>
     </main>
 </body>
 </html>
