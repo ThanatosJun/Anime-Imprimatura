@@ -9,27 +9,76 @@
 <body class="generate-visitor">
     <header class="navigation-bar">
         <div class="logo-placeholder"></div>
-        <nav class="nav">
+        <div class="nav">
             <a href="index.html">Home</a>
             <a href="index.html#how-to-use">How to Use</a>
             <a href="index.html#about-us">About Us</a>
             <a href="gallery.html">Gallery</a>
-            <button class="login-btn">Log In</button>
-        </nav>
+        </div>
+        <a href="login.html" class="login-btn">Log In</a>
     </header>
+    <div class="content">
+        <div class="upload-section">
+            <div class="upload">
+                <span>Upload CHD*3</span> 
+                <div class="upload-box" id="uploadBox1">
+                    <input type="file" accept="image/*" multiple onchange="handleFiles(this.files, 'uploadBox1')">
+                </div>
+            </div>
+            <div class="upload">
+                <span>Upload CHS</span>
+                <div class="upload-box" id="uploadBox2">
+                    <input type="file" accept="image/*" onchange="handleFiles(this.files, 'uploadBox2')">
+                </div>
+            </div>
+        </div>
+        <button class="generate-btn">⚡ Generate</button>
+    </div>
 
-    <main>
-        <section class="generate">
-            <div class="upload">
-                <h3>Upload CHD*3</h3>
-                <div class="upload-box"></div>
-            </div>
-            <div class="upload">
-                <h3>Upload CHS</h3>
-                <div class="upload-box"></div>
-            </div>
-        </section>
-        <button class="generate-btn">Generate</button>
-    </main>
+    <script>
+        let imagePaths = { uploadBox1: [], uploadBox2: [] };
+
+        function handleFiles(files, containerId) {
+            console.log('Handling files for:', containerId);
+            console.log('Files:', files);
+
+            const container = document.getElementById(containerId);
+            if (!container) {
+                console.error('Container not found:', containerId);
+                return;
+            }
+
+            const maxFiles = containerId === 'uploadBox1' ? 3 : 1;
+
+            // 清除以前的預覽
+            const existingPreviews = container.querySelectorAll('img');
+            existingPreviews.forEach(img => container.removeChild(img));
+
+            // 清除以前的文件路徑
+            imagePaths[containerId] = [];
+
+            // 只處理最多允許數量的文件
+            Array.from(files).slice(0, maxFiles).forEach(file => {
+                const img = document.createElement('img');
+                img.classList.add('preview');
+                img.file = file;
+
+                const reader = new FileReader();
+                reader.onload = (function(aImg) {
+                    return function(e) {
+                        aImg.src = e.target.result;
+                        console.log('Preview added for:', aImg.src);
+                    };
+                })(img);
+                reader.readAsDataURL(file);
+
+                container.appendChild(img);
+                imagePaths[containerId].push(URL.createObjectURL(file));
+            });
+
+            console.log('Image paths:', imagePaths);
+        }
+    </script>
+
 </body>
 </html>

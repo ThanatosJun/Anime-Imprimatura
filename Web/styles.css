@@ -21,7 +21,7 @@ body {
     padding: 10px 20px; /* Adjust padding for better spacing */
     background-color: #252222CC;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     position: fixed; /* Make the nav bar fixed */
     top: 0; /* Position it at the top */
@@ -32,6 +32,8 @@ body {
     height: 50px;
     background-color: #D9D9D9;
     border-radius: 50%;
+    display: flex;
+    justify-content: flex-start;
 }
 .user-icon {
     width: 40px;
@@ -41,21 +43,28 @@ body {
 }
 .nav {
     display: flex;
-    justify-content: center;
-    gap: 20px;
-
+    gap: 60px;
 }
 .nav a {
     color: #fff;
     text-decoration: none;
 }
+.nav a:hover {
+    text-decoration: underline;
+}
 .login-btn {
-    background-color: #fff;
+    background: #D9D9D9;
     color: #333;
     border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
+    padding: 10px 20px;
+    border-radius: 42px;
     cursor: pointer;
+    gap: 10px;
+    opacity: 0px;
+    font-size: 15px;
+}
+.login-button:hover {
+    background-color: #bbb;
 }
 .content {
     text-align: center;
@@ -67,23 +76,6 @@ body {
     background-color: #999;
     border-radius: 10px;
     margin: 20px auto;
-}
-.buttons {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-}
-.edit-btn, .save-btn {
-    background-color: #999;
-    color: #333;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.save-btn {
-    background-color: #6a4b82;
-    color: #fff;
 }
 
 /* Home Page Styles */
@@ -102,7 +94,6 @@ body {
     gap: 10px;
     border-radius: 42px;
     opacity: 0px;
-    background: #E6FFFD;
     cursor: pointer;
     margin-top: 20px; 
 }
@@ -128,11 +119,15 @@ body {
 .generate-btn {
     display: block;
     margin: 50px auto;
-    background-color: #58d1d1;
+    background: #E6FFFDB5;
     color: #000;
-    border: none;
-    padding: 10px 20px;
+    border: 1px solid #E6FFFDBF;
+    padding: 15px 40px;
     cursor: pointer;
+    gap: 10px;
+    border-radius: 42px;
+    font-size: 15px;
+    text-align: center;
 }
 
 footer {
@@ -151,19 +146,25 @@ footer {
 .gallery .gallery {
     padding: 50px 20px;
     text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .gallery .gallery-buttons {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 20px;
     margin-bottom: 20px;
 }
 
 .gallery .gallery-btn {
-    background-color: #58d1d1;
+    gap: 14px;
+    border-radius: 40px;
+    border: 1px;
+    opacity: 0px;
+    background: #FFF0FC7A;
     color: #000;
-    border: none;
     padding: 10px 20px;
     cursor: pointer;
 }
@@ -194,6 +195,11 @@ footer {
     align-items: center;
     margin-top: 60px; /* Adjust for fixed nav bar */
 }
+.account-section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .account-card {
     background-color: #555;
     padding: 20px;
@@ -208,19 +214,26 @@ footer {
     border-radius: 50%;
     margin: 0 auto;
 }
+.account-card .avatar {
+    width: 100px;
+    height: 100px;
+    background-color: #bbb;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+}
+
 .account-card p {
     margin: 10px 0;
 }
 .account-card input {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: none;
+    flex: 2;
+    padding: 5px;
+    border: 1px solid #ccc;
     border-radius: 5px;
 }
 .account-card input[type="text"], .account-card input[type="password"] {
-    background-color: #666;
-    color: #fff;
+    background-color: #555;
+    color: white;
 }
 .account-card input[type="submit"] {
     background-color: #6a4b82;
@@ -229,32 +242,77 @@ footer {
 }
 
 /* Generate Visitor Page Styles */
-.generate-visitor .generate {
+.generate-visitor .content {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.generate-visitor .upload-section {
+    display: flex;
+    gap: 200px;
     justify-content: space-around;
-    padding: 50px 20px;
-    text-align: center;
+    width: 100%;
+    margin-bottom: 20px;
+    flex-direction: row;
 }
 
 .generate-visitor .upload {
-    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
 .generate-visitor .upload-box {
+    width: 424px;
+    height: 301px;
+    background-color: #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 40px;
+    opacity: 0.7;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.generate-visitor .upload-box input[type="file"] {
     width: 100%;
-    height: 150px;
-    background-color: #666;
-    margin-top: 10px;
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+.generate-visitor .upload span {
+    z-index: 1;
+}
+
+.generate-visitor .preview {
+    width: 108px;
+    height: 100px;
+    object-fit: cover;
+    margin: 5px;
 }
 
 .generate-visitor .generate-btn {
     display: block;
     margin: 50px auto;
-    background-color: #58d1d1;
+    background: #E6FFFDB5;
     color: #000;
-    border: none;
-    padding: 10px 20px;
+    border: 1px solid #E6FFFDBF;
+    padding: 15px 40px;
     cursor: pointer;
+    gap: 10px;
+    border-radius: 42px;
+    font-size: 15px;
+    text-align: center;
 }
 
 /* Generated Visitor Page Styles */
@@ -262,19 +320,19 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 60px; /* Adjust for fixed nav bar */
 }
-.generated-visitor h1 {
-    margin: 20px 0;
+.generated-visitor .content {
+    gap: 10px;
 }
 .generated-visitor .content-box {
-    width: 400px;
-    height: 300px;
-    background-color: #999;
-    border-radius: 10px;
+    width: 646px;
+    height: 425px;
+    background: #D9D9D9;
+    border-radius: 40px;
 }
 .generated-visitor .buttons {
     display: flex;
+    justify-content: center;
     gap: 20px;
     margin-top: 20px;
 }
@@ -301,34 +359,35 @@ footer {
 }
 
 .login .login-box {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    border-radius: 8px;
+    background: #FFFFFFB8;
+    opacity: 0.72;
+    padding: 30px;
+    border-radius: 40px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-}
-
-.login h2 {
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.login .input-group {
-    margin-bottom: 15px;
+    width: 440px;
+    height: 500px;
+    border: 1px;
 }
 
 .login input[type="email"], input[type="password"] {
     width: 100%;
     padding: 10px;
-    margin: 5px 0;
+    margin: 10px 0;
     display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid #000000;
     box-sizing: border-box;
 }
 
 .login input[type="checkbox"] {
     margin-right: 10px;
+}
+
+.login .remember-me{
+    color: #000000;
+    font-size: 12px;
+    text-align: left;
+    margin-bottom: 10px;
 }
 
 .login button {
@@ -349,8 +408,9 @@ footer {
     margin-top: 10px;
 }
 
-.login a {
-    color: #333;
+.login p a {
+    font-size: 14px;
+    color: #fff;
     text-decoration: none;
 }
 
@@ -361,33 +421,37 @@ footer {
 /* Create Account Page Styles */
 .create-account .content {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    height: 100vh;
-    padding-top: 100px; /* Adjust to ensure content is not hidden behind the nav */
-    color: white;
+    align-items: center;
+    height: 80vh;
 }
 
 .create-account .form-container form {
     display: flex;
     flex-direction: column;
+    background-color: #FFFFFFB8;
+    padding: 30px;
+    border-radius: 40px;
+    text-align: center;
+    width: 484px;
+    height: 650px;
+    opacity: 0.72;  
 }
 
 .create-account .form-container input {
-    margin-bottom: 15px;
+    width: 100%;
     padding: 10px;
-    border: none;
-    border-radius: 5px;
+    margin: 10px 0;
+    border: 1px solid #000000;
 }
 
 .create-account .form-container button {
-    padding: 10px;
     background-color: #333;
     color: white;
     border: none;
-    border-radius: 5px;
+    padding: 10px 20px;
     cursor: pointer;
+    margin-top: 10px;
 }
 
 .create-account .form-container p {
@@ -400,80 +464,94 @@ footer {
     text-decoration: none;
 }
 
+.create-account .form-container a:hover{
+    text-decoration: underline;
+}
+
 /* Team Gallery T Page Styles */
+.team-gallery-t .gallery {
+    padding: 50px 20px;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
 .team-gallery-t .gallery-buttons {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
     margin-bottom: 20px;
 }
 
-.team-gallery-t .gallery-buttons button {
-    background-color: #666;
-    border: none;
-    color: white;
+.team-gallery-t .gallery-btn {
     padding: 10px 20px;
-    margin: 0 10px;
-    border-radius: 20px;
+    gap: 14px;
+    border-radius: 40px;
+    border: 1px;
+    opacity: 0px;
+    background: #FFF0FC7A;
+    color: #000;
     cursor: pointer;
 }
 
-.team-gallery-t .gallery-buttons button:hover {
-    background-color: #888;
-}
-
-.team-gallery-t .gallery {
+.team-gallery-t .gallery-grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
 }
 
-.team-gallery-t .image-card {
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 10px;
-    overflow: hidden;
-    width: 150px;
+.team-gallery-t .gallery-item {
+    width: 200px;
     text-align: center;
 }
 
-.team-gallery-t .image-card img {
+.team-gallery-t .image {
+    position: relative;
     width: 100%;
-    height: auto;
+    height: 150px;
+    background-color: #666;
+    margin-bottom: 10px;
 }
 
-.team-gallery-t .image-card p {
-    margin: 10px 0;
-    color: #333;
+.team-gallery-t .avatar {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background-color: #bbb;
+    border-radius: 50%;
 }
+
 
 /* Team Gallery F Page Styles */
-.team-gallery-f main {
+
+.team-gallery-f .gallery {
+    padding: 50px 20px;
+    text-align: center;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: calc(100% - 60px); /* Adjust for header height */
-    padding: 20px;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-.team-gallery-f .tab-buttons {
+.team-gallery-f .gallery-buttons {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
     margin-bottom: 20px;
 }
 
-.team-gallery-f .tab-button {
-    background-color: #444;
-    color: #fff;
-    border: none;
+.team-gallery-f .gallery-btn {
     padding: 10px 20px;
-    margin: 0 10px;
-    border-radius: 20px;
+    gap: 14px;
+    border-radius: 40px;
+    border: 1px;
+    opacity: 0px;
+    background: #FFF0FC7A;
+    color: #000;
     cursor: pointer;
-}
-
-.team-gallery-f .tab-button.active {
-    background-color: #666;
-}
-
-.team-gallery-f .tab-button:hover {
-    background-color: #555;
 }
 
 .team-gallery-f .content {
@@ -481,9 +559,9 @@ footer {
     padding: 40px;
     border-radius: 10px;
     text-align: center;
-    width: 50%;
-    max-width: 600px;
-    min-width: 300px;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
 }
 
 .team-gallery-f .action-button {

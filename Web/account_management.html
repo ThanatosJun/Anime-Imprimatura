@@ -9,24 +9,39 @@
 <body class="account-management">
     <header class="navigation-bar">
         <div class="logo-placeholder"></div>
-        <nav class="nav">
+        <div class="nav">
             <a href="index.html">Home</a>
             <a href="index.html#how-to-use">How to Use</a>
             <a href="index.html#about-us">About Us</a>
             <a href="gallery.html">Gallery</a>
-            <div class="profile-icon">profile-icon</div>
-        </nav>
+        </div>
+        <div class="profile-icon">profile-icon</div>
     </header>
     <div class="account-section">
         <div class="account-card">
             <div class="avatar"></div>
             <p>user id</p>
-            <h2>Account_Name <span class="edit-icon">✎</span></h2>
+            <h2>Account_Name <span class="edit-icon" onclick="enableEdit('password')">✎</span> </h2>
             <p>gmail</p>
-            <input type="text" value="user gmail"><span class="edit-icon">✎</span>
+            <input type="text" id="email" value="user gmail" readonly>
+            <span class="edit-icon" onclick="enableEdit('password')" >✎</span>
             <p>password</p>
-            <input type="password" value="user password"><span class="edit-icon">✎</span>
+            <input type="password" id="password" value="user password" readonly>
+            <span class="edit-icon" onclick="enableEdit('password')">✎</span>
         </div>
     </div>
+    <script>
+        function enableEdit(id) {
+            const input = document.getElementById(id);
+            if (input) {
+                input.readOnly = !input.readOnly;
+                if (!input.readOnly) {
+                    input.focus();
+                }
+            } else {
+                console.log("Element with id " + id + " not found.");
+            }
+        }
+    </script>
 </body>
 </html>
