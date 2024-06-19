@@ -1,36 +1,73 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="account_setting.css">
-        <title>Account Setting</title>
-    </head>
-    <body>
-        <div id="profile_bg">
-            <!--user photo-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="public/account_setting.css">
+    <title>Account Setting</title>
+</head>
+<body>
+    <div id="profile_bg">
+        <!--user photo-->
+        <div>
+            <img id="profile_user_photo">
+        </div>
+        <!--user info-->
+        <div>
+            <p><a href="" id="userid">user id</a></p>
+            <p><a href="" id="accountName">account name</a></p>
+        </div>
+        <div>
             <div>
-                <img id="profile_user_photo">
-            </div>
-            <!--user info-->
-            <div>
-                <p><a href="" id="userid">user id</a></p>
-                <p><a href="" id="accountName">account name</a></p>
-            </div>
-            <div>
-                <div>
-                    <p class="profile">gmail</p>
-                    <div class="profile_box">
-                        <p>user gmail</p>
-                    </div>
+                <p class="profile">Gmail</p>
+                <div class="profile_box">
+                    <p id="gmail">user gmail</p>
                 </div>
-                <div>
-                    <p class="profile">user password</p>
-                    <div class="profile_box">
-                        <p>user password</p>
-                    </div>
+            </div>
+            <div>
+                <p class="profile">Password</p>
+                <div class="profile_box">
+                    <p id="password">user password</p>
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+
+    <!-- User Settings Form -->
+    <div id="user_settings_form">
+        <h2>Edit Account Settings</h2>
+        <form action="/edituser" method="POST">
+            <label for="newGmail">New Gmail:</label>
+            <input type="email" id="newGmail" name="newGmail" required><br><br>
+            <label for="newPassword">New Password:</label>
+            <input type="password" id="newPassword" name="newPassword" required><br><br>
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+    <script>
+        // 監聽表單提交事件
+        document.getElementById('editForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // 防止表單提交預設行為
+    
+            // 獲取表單數據
+            const formData = new FormData(this);
+    
+            // 發送 POST 請求到後端
+            fetch('/edituser', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 在收到回應後更新網頁內容
+                document.getElementById('gmail').innerText = formData.get('newGmail');
+                document.getElementById('password').innerText = formData.get('newPassword');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error updating user settings');
+            });
+        });
+    </script>
+</body>
 </html>
