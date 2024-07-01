@@ -10,6 +10,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "node-module": "^2.0.0"
+    "node-modules": "^1.0.1"
   }
 }
