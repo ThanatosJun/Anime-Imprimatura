@@ -108,6 +108,18 @@ router.post('/chd/save', function (req, res) {
         }
     });
 });
+// (9)-image
+router.post('/image/save', function (req, res) {
+    const newImage = new imageModel(req.body);
+    newImage.save(function (err, data) {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Error inserting data');
+        } else {
+            res.send("image data inserted.");
+        }
+    });
+});
 
 // retrieve
 // (1)-user
@@ -198,6 +210,18 @@ router.get('/chd/findall', function (req, res) {
         }
     });
 });
+// (9)-image
+router.get('/image/findall', function (req, res) {
+    imageModel.find(function (err, data) {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Error retrieving data');
+        } else {
+            res.send(data);
+        }
+    });
+});
+
 
 // delete
 // (1)-user
@@ -296,29 +320,40 @@ router.post('/chd/delete', function (req, res) {
         }
     });
 });
-
-// update
-// (1)-user
-router.post('/user/update', function (req, res) {
-    const updateData = {
-        gmail: req.body.gmail,
-        password: req.body.password,
-        personal_gallery: req.body.personal_gallery
-    };
-    
-    userModel.findByIdAndUpdate(req.body.user_id, updateData, function (err, data) {
+// (9)-image
+router.post('/image/delete', function (req, res) {
+    imageModel.findByIdAndDelete(req.body.image_id, function (err, data) {
         if (err) {
             console.error(err);
-            res.status(500).send('Error updating data');
+            res.status(500).send('Error deleting data');
         } else {
             res.send(data);
-            console.log("User data updated!");
+            console.log("image data deleted!");
         }
     });
 });
+
+// update
+// (1)-user
+router.post('/user/update', async (req, res) => {
+    try {
+        const { user_id, gmail, password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10); // 假設你想要哈希密碼
+        const updateData = {
+            gmail: gmail,
+            password: hashedPassword
+        };
+        const updatedUser = await userModel.findByIdAndUpdate(user_id, updateData, { new: true });
+        res.send(updatedUser);
+        console.log("User data updated!");
+    } catch (err) {
+        console.error('Error updating data', err);
+        res.status(500).send('Error updating data');
+    }
+});
 // (2)-coloring_video
 router.post('/coloring_video/update', function (req, res) {
-    coloring_videoModel.findByIdAndUpdate(req.body.coloring_video_id, { gmail: req.body.gmail }, function (err, data) {
+    coloring_videoModel.findByIdAndUpdate(req.body.coloring_video_id, { file_route: req.body.file_route }, function (err, data) {
         if (err) {
             console.error(err);
             res.status(500).send('Error updating data');
@@ -330,7 +365,7 @@ router.post('/coloring_video/update', function (req, res) {
 });
 // (3)-colored_chd
 router.post('/colored_chd/update', function (req, res) {
-    colored_chdModel.findByIdAndUpdate(req.body.colored_chd_id, { gmail: req.body.gmail }, function (err, data) {
+    colored_chdModel.findByIdAndUpdate(req.body.colored_chd_id, { file_route: req.body.file_route }, function (err, data) {
         if (err) {
             console.error(err);
             res.status(500).send('Error updating data');
@@ -342,7 +377,12 @@ router.post('/colored_chd/update', function (req, res) {
 });
 // (4)-downloadable_content
 router.post('/downloadable_content/update', function (req, res) {
-    downloadable_contentModel.findByIdAndUpdate(req.body.downloadable_content_id, { gmail: req.body.gmail }, function (err, data) {
+    const updateData = {
+        user_id: req.body.user_id,
+        team_id: req.body.team_id
+    };
+
+    downloadable_contentModel.findByIdAndUpdate(req.body.downloadable_content_id, updateData, function (err, data) {
         if (err) {
             console.error(err);
             res.status(500).send('Error updating data');
@@ -354,7 +394,12 @@ router.post('/downloadable_content/update', function (req, res) {
 });
 // (5)-team_user
 router.post('/team_user/update', function (req, res) {
-    team_userModel.findByIdAndUpdate(req.body.team_user_id, { name: req.body.name }, function (err, data) {
+    const updateData = {
+        user_id: req.body.user_id,
+        team_id: req.body.team_id
+    };
+
+    team_userModel.findByIdAndUpdate(req.body.team_user_id, updateData, function (err, data) {
         if (err) {
             console.error(err);
             res.status(500).send('Error updating data');
@@ -378,7 +423,7 @@ router.post('/team/update', function (req, res) {
 });
 // (7)-chs
 router.post('/chs/update', function (req, res) {
-    chsModel.findByIdAndUpdate(req.body.chs_id, { name: req.body.name }, function (err, data) {
+    chsModel.findByIdAndUpdate(req.body.chs_id, { file_route: req.body.file_route }, function (err, data) {
         if (err) {
             console.error(err);
             res.status(500).send('Error updating data');
@@ -390,7 +435,7 @@ router.post('/chs/update', function (req, res) {
 });
 // (8)-chd
 router.post('/chd/update', function (req, res) {
-    chdModel.findByIdAndUpdate(req.body.chd_id, { name: req.body.name }, function (err, data) {
+    chdModel.findByIdAndUpdate(req.body.chd_id, { file_route: req.body.file_route }, function (err, data) {
         if (err) {
             console.error(err);
             res.status(500).send('Error updating data');
@@ -400,6 +445,19 @@ router.post('/chd/update', function (req, res) {
         }
     });
 });
+// (9)-image
+router.post('/image/update', function (req, res) {
+    imageModel.findByIdAndUpdate(req.body.image_id, { file_route: req.body.file_route }, function (err, data) {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Error updating data');
+        } else {
+            res.send(data);
+            console.log("image data updated!");
+        }
+    });
+});
+
 
 // collection
 // (1)-user
@@ -411,4 +469,5 @@ router.post('/chd/update', function (req, res) {
 // (7)-chs
 // (8)-chd
 
+// export model
 module.exports = router;
