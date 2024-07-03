@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const MongoClient = require('mongodb').MongoClient;
 const path = require('path');
 const bcrypt = require('bcrypt');
 const dotenv = require('dotenv');
@@ -29,74 +28,40 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// import userModel from /models
-const userModel = require("./models/user")
-//create a route/endpoint for collecting and sending inputs to db
-app.post("/api/user", (req, res) =>{
-  const SaveUser = new userModel(req.body)
-  SaveUser.save((error, savedUser) =>{
-    if(error) throw error
-    res.json(savedUser)
-  })
-})
-
-// 超時函數
-function withTimeout(promise, ms) {
-    return new Promise((resolve, reject) => {
-        const timeoutId = setTimeout(() => {
-            reject(new Error("Operation timed out"));
-        }, ms);
-
-        promise
-            .then((res) => {
-                clearTimeout(timeoutId);
-                resolve(res);
-            })
-            .catch((err) => {
-                clearTimeout(timeoutId);
-                reject(err);
-            });
-    });
-}
+// connect to mongoose
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('Error connecting to MongoDB', err));
 
 // 根路由
 app.get('/', async (req, res) => {
-  const client = new MongoClient(uri);
   try {
-    await client.connect();
-    const db = client.db(dbName);
-    const user = await db.collection('user').findOne({});
+    const user = await userModel.findOne({});
     res.render('account_setting', { user });
   } catch (err) {
     console.error('Error:', err);
     res.send('Error loading user settings');
-  } finally {
-    await client.close();
   }
 });
 
 // 更新用戶信息的路由
 app.post('/edituser', async (req, res) => {
-  const client = new MongoClient(uri);
   try {
-    await client.connect();
-    const db = client.db(dbName);
     const { newGmail, newPassword } = req.body;
-
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await db.collection('user').updateOne({}, { $set: { gmail: newGmail, password: hashedPassword } }, { upsert: true });
-
+    await userModel.updateOne({}, { $set: { gmail: newGmail, password: hashedPassword } }, { upsert: true });
     res.redirect('/');
   } catch (err) {
     console.error('Error:', err);
     res.send('Error updating user settings');
-  } finally {
-    await client.close();
   }
 });
 
+// import and use api route
+const apiRouter = require('./api');
+app.use('/api', apiRouter);
+
 // 啟動服務器並插入用戶數據
-app.listen(port, async () => {
+app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
-  await insertUsers(); // 插入用戶數據
 });

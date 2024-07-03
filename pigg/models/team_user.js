@@ -3,6 +3,10 @@ const Schema = mongoose.Schema
 
 //create schema
 const team_userSchema = new mongoose.Schema({
+    team_user_id: {
+        type: Number,
+        required: true,
+    },
     team_id: {
         team:[{
             type: mongoose.Schema.Types.ObjectId, ref: 'team'
