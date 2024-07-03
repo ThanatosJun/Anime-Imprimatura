@@ -55,7 +55,7 @@ async function connectMongoDB() {
 }
 connectMongoDB();
 
-/* 根路由
+// 根路由
 app.get('/', async (req, res) => {
   try {
     const user = await userModel.findOne({});
@@ -78,7 +78,7 @@ app.post('/edituser', async (req, res) => {
     res.send('Error updating user settings');
   }
 });
-*/
+
 
 // import and use api route
 app.use('/api', apiRouter);
