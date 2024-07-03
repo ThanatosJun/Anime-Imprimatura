@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET login page. */
+/* GET generate_visitor page. */
 router.get('/', function(req, res, next) {
-  res.render('login', { title: 'Log In' });
+  res.render('generate_visitor', { title: 'Generate Visitor' });
 });
 
 module.exports = router;
