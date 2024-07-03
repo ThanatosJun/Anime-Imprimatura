@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const Schema = mongoose.Schema
 
 //create schema
 const userSchema = new mongoose.Schema({
@@ -14,8 +13,8 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-    },
-    personalGallery: Blob
+    }
+    //personalGallery: Blob
 });
 
 //define model

@@ -1,15 +1,17 @@
-const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
-const userModel = require('./userSchema');
-const coloring_videoModel = require('./coloring_videoSchema');
-const colored_chdModel = require('./colored_chdSchema');
-const downloadable_contentModel = require('./downloadable_contentSchema');
-const team_userModel = require('./team_userSchema');
-const teamModel = require('./teamSchema');
-const imageModel = require('./imageSchema');
-const chsModel = require('./chsSchema');
-const chdModel = require('./chdSchema');
+const userModel = require('./models/user');
+const coloring_videoModel = require('./models/coloring_video');
+const colored_chdModel = require('./models/colored_chd');
+const downloadable_contentModel = require('./models/downloadable_content');
+const team_userModel = require('./models/team_user');
+const teamModel = require('./models/team');
+const imageModel = require('./models/image');
+const chsModel = require('./models/chs');
+const chdModel = require('./models/chd');
+
+// temporarilly save data
+//const data = [];
 
 // create
 // (1)-user

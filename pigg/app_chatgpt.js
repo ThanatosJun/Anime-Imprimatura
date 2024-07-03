@@ -4,14 +4,15 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const bcrypt = require('bcrypt');
 const dotenv = require('dotenv');
-const apiRouter = require('./api');
+const apiRouter = require('./api'); // 引入 API 路由
+const userModel = require('./models/user'); // 確保路徑正確
 
 // 加載環境變量
 dotenv.config();
 
 const app = express();
 const port = 3000;
-const dbName = "mydb";
+let connectStatus = false;
 
 // 使用環境變量中的 MONGO_URI，並進行錯誤檢查
 const uri = process.env.MONGO_URI;
@@ -45,45 +46,43 @@ app.use((req, res, next) => {
 
 // Connect to MongoDB
 async function connectMongoDB() {
-  try {
-      await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-      console.log('Connected to MongoDB.');
-      connectStatus = true;
-  } catch (error) {
-      console.log(error);
-  }
+    try {
+        await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+        console.log('Connected to MongoDB.');
+        connectStatus = true;
+    } catch (error) {
+        console.log(error);
+    }
 }
 connectMongoDB();
 
-/* 根路由
+// 根路由
 app.get('/', async (req, res) => {
-  try {
-    const user = await userModel.findOne({});
-    res.render('account_setting', { user });
-  } catch (err) {
-    console.error('Error:', err);
-    res.send('Error loading user settings');
-  }
+    try {
+        const user = await userModel.findOne({});
+        res.render('account_setting', { user });
+    } catch (err) {
+        console.error('Error:', err);
+        res.send('Error loading user settings');
+    }
 });
 
 // 更新用戶信息的路由
 app.post('/edituser', async (req, res) => {
-  try {
-    const { newGmail, newPassword } = req.body;
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await userModel.updateOne({}, { $set: { gmail: newGmail, password: hashedPassword } }, { upsert: true });
-    res.redirect('/');
-  } catch (err) {
-    console.error('Error:', err);
-    res.send('Error updating user settings');
-  }
+    try {
+        const { newGmail, newPassword } = req.body;
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await userModel.updateOne({}, { $set: { gmail: newGmail, password: hashedPassword } }, { upsert: true });
+        res.redirect('/');
+    } catch (err) {
+        console.error('Error:', err);
+        res.send('Error updating user settings');
+    }
 });
-*/
 
-// import and use api route
+// 使用 API 路由
 app.use('/api', apiRouter);
 
-// 啟動服務器並插入用戶數據
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running on http://localhost:${port}`);
 });
