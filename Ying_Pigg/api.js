@@ -339,9 +339,10 @@ router.post('/image/delete', function (req, res) {
 // (1)-user
 router.post('/user/update', async (req, res) => {
     try {
-        const { user_id, gmail, password } = req.body;
+        const { user_id, user_name, gmail, password } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10); // 假設你想要哈希密碼
         const updateData = {
+            user_name: user_name,
             gmail: gmail,
             password: hashedPassword
         };
@@ -459,17 +460,6 @@ router.post('/image/update', function (req, res) {
         }
     });
 });
-
-
-// collection
-// (1)-user
-// (2)-coloring_video
-// (3)-colored_chd
-// (4)-downloadable_content
-// (5)-team_user
-// (6)-team
-// (7)-chs
-// (8)-chd
 
 // export model
 module.exports = router;

@@ -30,6 +30,8 @@ exports.login = async (req, res)=>{
 // signin
 exports.signin = async (req, res)=>{
     try{
+        //check if the user exsist
+        const user = await User.findOne({gmail: req.body.gmail});
         
     }
 }
