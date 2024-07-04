@@ -11,6 +11,7 @@
   "description": "",
   "dependencies": {
     "express": "^4.19.2",
+    "mongoose": "^8.4.4",
     "node-modules": "^1.0.1",
     "pug": "^3.0.3"
   }

@@ -55,6 +55,7 @@ async function connectMongoDB() {
 }
 connectMongoDB();
 
+/*
 // 根路由
 app.get('/', async (req, res) => {
   try {
@@ -79,6 +80,7 @@ app.post('/edituser', async (req, res) => {
   }
 });
 
+*/
 
 // import and use api route
 app.use('/api', apiRouter);
