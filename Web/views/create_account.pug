@@ -10,8 +10,8 @@ html(lang="en")
       .logo-placeholder
     main.content
       .form-container
-        form(method="POST" action="/signin")
-          input(type="text" placeholder="Username" name="username" required)
+        form(method="POST" action="/api/signin")
+          input(type="text" placeholder="Username" name="user_name" required)
           input(type="text" placeholder="Gmail" name="gmail" required)
           input(type="password" placeholder="Password" name="password" required)
           button(type="submit") Join us

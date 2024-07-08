@@ -10,14 +10,13 @@ const imageModel = require('./models/image');
 const chsModel = require('./models/chs');
 const chdModel = require('./models/chd');
 
-// temporarilly save data
-//const data = [];
-
 // User routes
 const userController = require('./controller/userController');
-router.post('/signin', userController.signin);
+router.post('/signin', (req, res, next) => {
+    console.log("POST /signin called");
+    next();
+}, userController.signin);
 router.post('/login', userController.login);
-
 
 // create
 // (1)-user
