@@ -7,6 +7,7 @@ const connectMongoDB = require('./database'); // 引入數據庫連接模塊
 const apiRouter = require('./api');
 const userModel = require('./models/user');
 const bcrypt = require('bcrypt');
+const port = 3000;
 
 var app = express();
 
@@ -78,6 +79,13 @@ app.post('/edituser', async (req, res) => {
     console.error('Error:', err);
     res.send('Error updating user settings');
   }
+});
+
+app.listen(port, (err) => {
+  if(err){
+    return console.error(err);
+  }
+  return console.log(`Server is running on ${port}`);
 });
 
 app.use('/api', apiRouter);
