@@ -11,7 +11,7 @@ html(lang="en")
     main.content
       .login-container
         .login-box
-          form
+          form(method="POST" action="/login")
             .input-group
               input(type="email" id="email" name="email" placeholder="Email" required)
             .input-group
@@ -21,4 +21,4 @@ html(lang="en")
               label(for="remember") Remember me
             button(type="submit") Sign in
           p Not a member? 
-            a(href="create_account.html") Create an account
+            a(href="create_account") Create an account

@@ -13,6 +13,12 @@ const chdModel = require('./models/chd');
 // temporarilly save data
 //const data = [];
 
+// User routes
+const userController = require('./controller/userController');
+router.post('/signin', userController.signin);
+router.post('/login', userController.login);
+
+
 // create
 // (1)-user
 router.post('/user/save', function (req, res) {
