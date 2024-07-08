@@ -4,9 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const connectMongoDB = require('./database'); // 引入數據庫連接模塊
-const apiRouter = require('./api');
 const userModel = require('./models/user');
 const bcrypt = require('bcrypt');
+const port = 3000;
 
 var app = express();
 
@@ -24,6 +24,15 @@ var generatedVisitorRouter = require('./routes/generated_visitor');
 var loginRouter = require('./routes/login');
 var teamGalleryFRouter = require('./routes/team_gallery_f');
 var teamGalleryTRouter = require('./routes/team_gallery_t');
+
+//Temporarily save data
+const data = [];
+
+//Middleware to log requests
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -70,9 +79,9 @@ app.get('/', async (req, res) => {
 
 app.post('/edituser', async (req, res) => {
   try {
-    const { newGmail, newPassword } = req.body;
+    const { userId, newGmail, newPassword } = req.body;
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await userModel.updateOne({}, { $set: { gmail: newGmail, password: hashedPassword } }, { upsert: true });
+    await userModel.updateOne({ _id: userId }, { $set: { gmail: newGmail, password: hashedPassword } });
     res.redirect('/');
   } catch (err) {
     console.error('Error:', err);
@@ -80,6 +89,15 @@ app.post('/edituser', async (req, res) => {
   }
 });
 
+// import and use api route
+const apiRouter = require('./api');
 app.use('/api', apiRouter);
+
+app.listen(port, (err) => {
+  if(err){
+    return console.error(err);
+  }
+  return console.log(`Server is running on ${port}`);
+});
 
 module.exports = app;
