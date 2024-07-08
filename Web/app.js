@@ -93,6 +93,12 @@ app.post('/edituser', async (req, res) => {
 const apiRouter = require('./api');
 app.use('/api', apiRouter);
 
+// 404 processer
+app.use((req, res, next) =>{
+  console.log('404 not found:', req.originalUrl);
+  res.status(404).send('not found');
+})
+
 app.listen(port, (err) => {
   if(err){
     return console.error(err);
