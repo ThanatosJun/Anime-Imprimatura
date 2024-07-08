@@ -12,11 +12,11 @@ const chdModel = require('./models/chd');
 
 // User routes
 const userController = require('./controller/userController');
-router.post('/signin', (req, res, next) => {
+router.post('/api/signin', (req, res, next) => {
     console.log("POST /signin called");
     next();
 }, userController.signin);
-router.post('/login', userController.login);
+router.post('/api/login', userController.login);
 
 // create
 // (1)-user
