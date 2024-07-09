@@ -4,7 +4,7 @@ require("dotenv").config();
 const User = require('../models/user');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs"); // hash password
-const router = require("express");
+// const router = require("express");
 
 // login
 exports.login = async (req, res)=>{
@@ -32,21 +32,25 @@ exports.login = async (req, res)=>{
 exports.signin = async (req, res) => {
     try {
         const { user_name, gmail, password } = req.body;
+        console.log('Received signin request: ', { user_name, gmail, password })''
 
         // Check if all required fields are provided
         if (!user_name || !gmail || !password) {
+            console.log("Missing fields");
             return res.status(400).json({ error: "All fields are required." });
         }
 
         // Check if the username exists
         const existingUsername = await User.findOne({ user_name });
         if (existingUsername) {
+            console.log("Username already in use", existingUsername);
             return res.status(400).json({ error: "Username is already in use." });
         }
 
         // Check if the gmail exists
         const existingEmail = await User.findOne({ gmail });
         if (existingEmail) {
+            console.log("Gmail already in use", existingEmail);
             return res.status(400).json({ error: "Email is already in use." });
         }
 
@@ -62,6 +66,7 @@ exports.signin = async (req, res) => {
 
         // Save the new user
         await newUser.save();
+        console.log("New user saved: ", newUser);
 
         // Generate JWT
         const token = jwt.sign(

@@ -1,3 +1,4 @@
+require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -6,6 +7,7 @@ var logger = require('morgan');
 const connectMongoDB = require('./database'); // 引入數據庫連接模塊
 const userModel = require('./models/user');
 const bcrypt = require('bcrypt');
+const bodyParser = require('body-parser'); //處理http請求的數據
 const port = 3000;
 
 var app = express();
@@ -27,6 +29,10 @@ var teamGalleryTRouter = require('./routes/team_gallery_t');
 
 //Temporarily save data
 const data = [];
+
+// process http data
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 //Middleware to log requests
 app.use((req, res, next) => {
@@ -50,6 +56,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// import and use api route
+const apiRouter = require('./api');
+app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -89,9 +99,6 @@ app.post('/edituser', async (req, res) => {
   }
 });
 
-// import and use api route
-const apiRouter = require('./api');
-app.use('/api', apiRouter);
 
 // 404 processer
 app.use((req, res, next) =>{
