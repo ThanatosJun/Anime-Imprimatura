@@ -379,7 +379,7 @@ footer {
   border: 1px;
 }
 
-.login input[type="email"], input[type="password"] {
+.login input[type="gmail"], input[type="password"] {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
