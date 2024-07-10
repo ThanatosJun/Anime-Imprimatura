@@ -299,6 +299,15 @@ def __init__(CHD_Name):
     'device': 0,
     }
 
+def get_new_file_path(file_path):
+    base, ext = os.path.splitext(file_path)
+    i = 1
+    new_file_path = file_path
+    while os.path.exists(new_file_path):
+        new_file_path = f"{base}({i}){ext}"
+        i += 1
+    return new_file_path
+
 # Function for main process
 def main(CHD_Name):
     __init__(CHD_Name) # initialize
@@ -323,8 +332,12 @@ def main(CHD_Name):
     # rename and move .pt and .onnx
     CHD_modelpt =  CHD_modeldir + "\\" + CHD_Name + ".pt"
     CHD_modelonnx =  CHD_modeldir + "\\" + CHD_Name + ".onnx"
+    if os.path.exists(CHD_modelpt):
+        CHD_modelpt = get_new_file_path(CHD_modelpt)
+    if os.path.exists(CHD_modelonnx):
+        CHD_modelonnx = get_new_file_path(CHD_modelonnx)
     os.rename(CHD_model_path, CHD_modelpt)
-    os.rename(onnxCHD_model_path, CHD_modelonnx )
+    os.rename(onnxCHD_model_path, CHD_modelonnx)
     # move_model(CHD_model_path, CHD_modelpt)
     # move_model(onnxCHD_model_path, CHD_modelonnx)
     return CHD_modelpt

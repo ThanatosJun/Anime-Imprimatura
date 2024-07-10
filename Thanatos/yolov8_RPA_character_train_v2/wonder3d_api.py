@@ -8,7 +8,6 @@ from gradio_client import Client
 import os
 import shutil
 def generate(image_dir): 
-	image_dir = "CHD_Images"
 	files = os.listdir(image_dir)
 	#@title Wonder3d API by flamehaze1115
 	# Initialize the client with the demo space URL
