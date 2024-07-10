@@ -20,9 +20,11 @@ html(lang="en")
           button.gallery-btn Personal Gallery
           button.gallery-btn Team Gallery
         .gallery-grid
+          if image && images.length > 0
+            each image in images
             .gallery-item
               .image
-              img(src=image.url, alt=image.description)
+              img(src=image.path, alt=image.description)
               p Congue id ac mi
             .gallery-item
               .image
