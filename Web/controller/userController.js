@@ -4,7 +4,6 @@ require("dotenv").config();
 const User = require('../models/user');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs"); // hash password
-// const router = require("express");
 
 // login
 exports.login = async (req, res)=>{

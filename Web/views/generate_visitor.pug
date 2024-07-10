@@ -15,16 +15,17 @@ html(lang="en")
         a(href="/gallery") Gallery
       a.login-btn(href="login") Log In
     .content
-      .upload-section
-        .upload
-          span Upload CHD*3
-          .upload-box#uploadBox1
-            input(type="file" accept="image/*" multiple onchange="handleFiles(this.files, 'uploadBox1')")
-        .upload
-          span Upload CHS
-          .upload-box#uploadBox2
-            input(type="file" accept="image/*" onchange="handleFiles(this.files, 'uploadBox2')")
-      button.generate-btn ⚡ Generate
+      form(id="uploadForm", method="post", action="/upload", enctype="multipart/form-data")
+        .upload-section
+          .upload
+            span Upload CHD*3
+            .upload-box#uploadBox1
+              input(type="file" name="chd" accept="image/*" multiple onchange="handleFiles(this.files, 'uploadBox1')")
+          .upload
+            span Upload CHS
+            .upload-box#uploadBox2
+              input(type="file" name="chs" accept="image/*" onchange="handleFiles(this.files, 'uploadBox2')")
+        button(type="button" class="generate-btn" onclick="submitForm()") ⚡ Generate
 
     script.
       let imagePaths = { uploadBox1: [], uploadBox2: [] };
@@ -68,4 +69,22 @@ html(lang="en")
           });
 
           console.log('Image paths:', imagePaths);
+      }
+      function submitForm() {
+        const form = document.getElementById('uploadForm');
+        const formData = new FormData(form);
+
+        fetch('/upload', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          // 在這裡處理生成圖片後的跳轉邏輯
+          window.location.href = '/generated';
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
       }

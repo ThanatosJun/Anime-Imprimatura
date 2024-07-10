@@ -9,8 +9,20 @@ const userModel = require('./models/user');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser'); //處理http請求的數據
 const port = 3000;
+const multer = require('multer');
 
 var app = express();
+
+// Multer setup
+const storage = multer.diskStorage({
+  destination: function(req, file, cb){
+    cb(null, 'uploads/'); //uploaded file route
+  },
+  filename: function(req, file, cb){
+    cb(null, Date.now() + path.extname(file.originalname)); //generate UNIQUE file name
+  }
+});
+const upload = multer({ storage: storage });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -99,6 +111,11 @@ app.post('/edituser', async (req, res) => {
   }
 });
 
+// multer (con.)
+app.post('/upload', upload.fields([{name: 'chd', maxCount: 3}, {name: 'chs', maxCount: 1}]), (req, res)=>{
+  console.log(req.files); // 在這裡調用AI模型，生成新圖片，並重定向到生成頁面
+  res.redirect('/generated');
+})
 
 // 404 processer
 app.use((req, res, next) =>{

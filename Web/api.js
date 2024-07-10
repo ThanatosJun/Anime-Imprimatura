@@ -22,6 +22,13 @@ router.post('/login', (req, res, next) => {
     next();
 }, userController.login);
 
+// Image routes
+const imageController = require('./controller/imageController');
+router.post('/uploadAndGenerate', (req, res, next) => {
+    console.log('POST /api/upload', req.body);
+    next();
+}, imageController.uploadAndGenerate);
+
 // create
 // (1)-user
 router.post('/user/save', function (req, res) {
