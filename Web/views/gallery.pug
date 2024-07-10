@@ -20,27 +20,29 @@ html(lang="en")
           button.gallery-btn Personal Gallery
           button.gallery-btn Team Gallery
         .gallery-grid
-          .gallery-item
-            .image
-            p Congue id ac mi
-          .gallery-item
-            .image
-            p Cursus accumsan
-          .gallery-item
-            .image
-            p Nisi massa aliquet
-          .gallery-item
-            .image
-            p Pretium congue ut
-          .gallery-item
-            .image
-            p Eleifend amet
-          .gallery-item
-            .image
-            p Fames viverra
-          .gallery-item
-            .image
-            p Duis ut et
-          .gallery-item
-            .image
-            p Bibendum eu
+          each image in images
+            .gallery-item
+              .image
+              img(src=image.url, alt=image.description)
+              p Congue id ac mi
+            .gallery-item
+              .image
+              p Cursus accumsan
+            .gallery-item
+              .image
+              p Nisi massa aliquet
+            .gallery-item
+              .image
+              p Pretium congue ut
+            .gallery-item
+              .image
+              p Eleifend amet
+            .gallery-item
+              .image
+              p Fames viverra
+            .gallery-item
+              .image
+              p Duis ut et
+            .gallery-item
+              .image
+              p Bibendum eu

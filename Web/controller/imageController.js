@@ -20,7 +20,7 @@ const upload = multer({ storage: storage });
 exports.uploadAndGenerate = async (req, res) => {
   // 設定Multer處理多個文件上傳
   const uploadMiddleware = upload.fields([
-    { name: 'chd', maxCount: 4 },
+    { name: 'chd', maxCount: 3 },
     { name: 'chs', maxCount: 1 }
   ]);
 
