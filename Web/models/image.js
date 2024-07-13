@@ -3,12 +3,9 @@ const Schema = mongoose.Schema
 
 //create schema
 const imageSchema = new mongoose.Schema({
-    chs_id: {
+    umage_id:{
         type: Number,
-        required: true,
-    }, 
-    chd_id: {
-        type: Number,
+        required: true
     },
     character: {
         type: String,
