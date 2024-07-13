@@ -1,0 +1,27 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Generate Visitor
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body.generate-visitor
+    header.navigation-bar
+      .logo-placeholder
+      .nav
+        a(href="/") Home
+        a(href="/#how-to-use") How to Use
+        a(href="/#about-us") About Us
+        a(href="/gallery") Gallery
+      a.login-btn(href="login") Log In
+    .content
+      form(id="uploadForm", method="post", action="/upload", enctype="multipart/form-data")
+        .upload-section
+          .upload
+            span the name of the character
+            input(type="text" placeholder="character name" name="character_name")
+          .upload
+            span Upload CHD
+            .upload-box#uploadBox1
+              input(type="file" name="chd" accept="image/*" onchange="handleFiles(this.files, 'uploadBox1')")
+        button(type="button" class="generate-btn" onclick="submitForm()") ⚡ Generate

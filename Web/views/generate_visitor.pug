@@ -18,12 +18,13 @@ html(lang="en")
       form(id="uploadForm", method="post", action="/upload", enctype="multipart/form-data")
         .upload-section
           .upload
-            span the name of the character
-            input(type="text" placeholder="character name" name="character_name")
-          .upload
-            span Upload CHD
+            span Upload CHD*3
             .upload-box#uploadBox1
-              input(type="file" name="chd" accept="image/*" onchange="handleFiles(this.files, 'uploadBox1')")
+              input(type="file" name="chd" accept="image/*" multiple onchange="handleFiles(this.files, 'uploadBox1')")
+          .upload
+            span Upload CHS
+            .upload-box#uploadBox2
+              input(type="file" name="chs" accept="image/*" onchange="handleFiles(this.files, 'uploadBox2')")
         button(type="button" class="generate-btn" onclick="submitForm()") ⚡ Generate
 
     script.
