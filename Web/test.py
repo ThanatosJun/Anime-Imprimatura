@@ -1,5 +1,14 @@
-def main():
-    print("route")
-    
-if __name__ == "__main__":
-    main()
+import requests
+import sys 
+import json
+
+
+result = {
+    'Name': sys.argv[1],
+    'From': sys.argv[2]
+}
+
+json = json.dumps(result)
+
+print(str(json))
+sys.stdout.flush()
