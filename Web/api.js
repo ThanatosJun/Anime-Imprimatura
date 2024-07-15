@@ -29,6 +29,10 @@ router.post('/uploadAndGenerate', (req, res, next) => {
     next();
 }, imageController.uploadAndGenerate);
 
+// Gallery routes
+const galleryController = require('./controller/galleryController');
+router.get('/gallery', galleryController.getGallery);
+
 // create
 // (1)-user
 router.post('/user/save', function (req, res) {
