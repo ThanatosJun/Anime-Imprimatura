@@ -144,6 +144,14 @@ app.post('/upload', upload.fields([{name: 'chd', maxCount: 3}, {name: 'chs', max
   res.redirect('/generated');
 })
 
+// app.post('/upload', upload.single('upload-box'), (req, res) => {
+//   if (!req.file) {
+//     return res.status(400).send('No file uploaded.');
+//   }
+//   const filePath = path.join(__dirname, 'uploads', req.file.filename);
+//   res.send({ filePath: filePath }); // 返回文件路径
+// });
+
 // Handle 404 errors
 app.use((req, res, next) =>{
   console.log('404 not found:', req.originalUrl);
