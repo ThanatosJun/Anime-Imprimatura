@@ -1,33 +1,35 @@
 require('dotenv').config();
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-const connectMongoDB = require('./database'); // 引入數據庫連接模塊
-const userModel = require('./models/user');
-const bcrypt = require('bcrypt');
-const bodyParser = require('body-parser'); //處理http請求的數據
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const connectMongoDB = require('./database'); // Import the database connection module
+const userModel = require('./models/user'); // Import the user model
+const bcrypt = require('bcrypt'); // For password hashing
+const bodyParser = require('body-parser'); // To handle HTTP request data
+const multer = require('multer'); // For handling file uploads
+let { PythonShell } = require('python-shell'); // For running Python scripts
 const port = 3000;
-const multer = require('multer');
 
 var app = express();
 
-// Multer setup
+// Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: function(req, file, cb){
-    cb(null, 'uploads/'); //uploaded file route
+    cb(null, 'uploads/'); // Specify the upload directory
   },
   filename: function(req, file, cb){
-    cb(null, Date.now() + path.extname(file.originalname)); //generate UNIQUE file name
+    cb(null, Date.now() + path.extname(file.originalname)); // Generate a unique file name
   }
 });
 const upload = multer({ storage: storage });
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views')); // Specify the views directory
+app.set('view engine', 'pug'); // Use Pug as the view engine
 
+// Import route handlers
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var accountManagementRouter = require('./routes/account_management');
@@ -39,19 +41,20 @@ var loginRouter = require('./routes/login');
 var teamGalleryFRouter = require('./routes/team_gallery_f');
 var teamGalleryTRouter = require('./routes/team_gallery_t');
 
-//Temporarily save data
+// Temporarily save data
 const data = [];
 
-// process http data
+// Middleware to process HTTP request data
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//Middleware to log requests
+// Middleware to log requests
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
   next();
 });
 
+// Use the imported routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/account_management', accountManagementRouter);
@@ -63,17 +66,18 @@ app.use('/login', loginRouter);
 app.use('/team_gallery_f', teamGalleryFRouter);
 app.use('/team_gallery_t', teamGalleryTRouter);
 
+// Setup logging, JSON handling, URL encoding, cookies, and static files
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// import and use api route
+// Import and use api route
 const apiRouter = require('./api');
 app.use('/api', apiRouter);
 
-// catch 404 and forward to error handler
+// Catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
@@ -89,6 +93,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+// Route to render account settings
 app.get('/', async (req, res) => {
   try {
     const user = await userModel.findOne({});
@@ -99,6 +104,28 @@ app.get('/', async (req, res) => {
   }
 });
 
+// Route to call Python script
+app.get('/call/python', pythonProcess)
+
+function pythonProcess(req, res) {
+  let options = {
+    args:
+      [
+        req.query.name,
+        req.query.from
+      ]
+  }
+
+  PythonShell.run('./test.py', options, (err, data) => {
+    if (err) res.send(err)
+    const parsedString = JSON.parse(data)
+    console.log(`name: ${parsedString.Name}, from: ${parsedString.From}`)
+    res.json(parsedString)
+  })
+
+}
+
+// Route to handle user editing
 app.post('/edituser', async (req, res) => {
   try {
     const { userId, newGmail, newPassword } = req.body;
@@ -111,18 +138,19 @@ app.post('/edituser', async (req, res) => {
   }
 });
 
-// multer (con.)
+// multer (con.) // Route to handle file uploads
 app.post('/upload', upload.fields([{name: 'chd', maxCount: 3}, {name: 'chs', maxCount: 1}]), (req, res)=>{
   console.log(req.files); // 在這裡調用AI模型，生成新圖片，並重定向到生成頁面
   res.redirect('/generated');
 })
 
-// 404 processer
+// Handle 404 errors
 app.use((req, res, next) =>{
   console.log('404 not found:', req.originalUrl);
   res.status(404).send('not found');
 })
 
+// Start the server
 app.listen(port, (err) => {
   if(err){
     return console.error(err);
