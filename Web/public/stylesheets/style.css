@@ -123,7 +123,7 @@ body {
   background-color: #666;
 }
 
-.generate-btn {
+.train-btn {
   display: block;
   margin: 50px auto;
   background: #E6FFFDB5;
@@ -250,7 +250,104 @@ footer {
   margin-top: 10px;
 }
 
-/* Generate Visitor Page Styles */
+/* Generate Visitor Detect Page Styles */
+.generate-visitor-detect .content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.generate-visitor-detect .upload-section {
+  display: flex;
+  gap: 100px;
+  justify-content: space-around;
+  width: 100%;
+  margin-bottom: 20px;
+  flex-direction: column;
+}
+
+.generate-visitor-detect .upload {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  gap: 10px;
+}
+
+.generate-visitor-detect .upload input {
+  padding: 10px;
+  opacity: 0.7;
+  border-radius: 40px;
+  height: 40px;
+  width: auto;
+}
+
+.generate-visitor-detect .upload-box {
+  width: 424px;
+  height: 301px;
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 40px;
+  opacity: 0.7;
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.generate-visitor-detect .upload-box input[type="file"] {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
+
+.generate-visitor-detect .upload span {
+  z-index: 1;
+}
+
+.generate-visitor-detect .character-label {
+  margin-right: 10px;
+}
+
+.generate-visitor-detect .character-name {
+  font-weight: bold;
+}
+
+.generate-visitor-dectect .upload label {
+  border: 4px;
+  border-radius: 20px;
+  padding: 10px;
+  display: inline-block;
+  margin: 20px 0;
+}
+
+.generate-visitor-detect .preview {
+  width: 108px;
+  height: 100px;
+  object-fit: cover;
+  margin: 5px;
+}
+
+.generate-visitor-detect .detect-btn {
+  display: block;
+  margin: 50px auto;
+  background: #E6FFFDB5;
+  color: #000;
+  border: 1px solid #E6FFFDBF;
+  padding: 15px 40px;
+  cursor: pointer;
+  gap: 10px;
+  border-radius: 42px;
+  font-size: 15px;
+  text-align: center;
+}
+/* Generate Visitor Train Page Styles */
 .generate-visitor .content {
   display: flex;
   flex-direction: column;
