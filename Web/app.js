@@ -10,6 +10,8 @@ const bcrypt = require('bcrypt'); // For password hashing
 const bodyParser = require('body-parser'); // To handle HTTP request data
 const multer = require('multer'); // For handling file uploads
 let { PythonShell } = require('python-shell'); // For running Python scripts
+const axios = require('axios');
+
 const port = 3000;
 
 var app = express();
@@ -77,22 +79,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 const apiRouter = require('./api');
 app.use('/api', apiRouter);
 
-// Catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
-
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
-
 // Route to render account settings
 app.get('/', async (req, res) => {
   try {
@@ -104,25 +90,50 @@ app.get('/', async (req, res) => {
   }
 });
 
+app.get('/sss', (req, res) => {
+  // 設置 Flask 伺服器的基本 URL
+  const flaskUrl = 'http://localhost:5000';
+  // 要發送的 JSON 數據
+  const data = {
+    string: 'Hello, Flask!'
+  };
+  // 發送 POST 請求到 Flask 伺服器的 /process_string 路由
+  axios.post(`${flaskUrl}/process_string`, data)
+    .then(response => {
+      console.log('Flask 伺服器的回應：', response.data);
+    })
+    .catch(error => {
+      console.error('發送請求時出錯：', error);
+    });
+})
+
 // Route to call Python script
 app.get('/call/python', pythonProcess)
 
 function pythonProcess(req, res) {
   let options = {
-    args:
-      [
-        req.query.name,
-        req.query.from
-      ]
+    mode: 'text',
+    pythonOptions: ['-u'], // unbuffered output
+    scriptPath: '', // 如果 process.py 在同一目錄下，留空即可
+    args: [
+      req.query.name,
+      req.query.from
+    ]
   }
 
-  PythonShell.run('./test.py', options, (err, data) => {
-    if (err) res.send(err)
-    const parsedString = JSON.parse(data)
-    console.log(`name: ${parsedString.Name}, from: ${parsedString.From}`)
-    res.json(parsedString)
+  PythonShell.run('process.py', options, (err, results) => {
+    if (err) {
+      res.send(err)
+      return
+    }
+    try {
+      const parsedString = JSON.parse(results[0])
+      console.log(`name: ${parsedString.Name}, from: ${parsedString.From}`)
+      res.json(parsedString)
+    } catch (e) {
+      res.send(e.message)
+    }
   })
-
 }
 
 // Route to handle user editing
@@ -157,6 +168,22 @@ app.use((req, res, next) =>{
   console.log('404 not found:', req.originalUrl);
   res.status(404).send('not found');
 })
+
+// Catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
 
 // Start the server
 app.listen(port, (err) => {

@@ -1,17 +1,16 @@
-import requests
+from flask import Flask, request
 
-# 上传文件并获取文件路径
-def upload_file(file_path):
-    url = 'http://localhost:3000/upload'
-    files = {'upload-box': open(file_path, 'rb')}
-    response = requests.post(url, files=files)
-    if response.status_code == 200:
-        file_path = response.json().get('filePath')
-        return file_path
-    else:
-        raise Exception(f"Failed to upload file: {response.text}")
+app = Flask(__name__)
 
-# 示例使用
-file_path = 'path/to/your/image.jpg'
-uploaded_file_path = upload_file(file_path)
-print('Uploaded file path:', uploaded_file_path)
+@app.route('/process_string', methods=['POST'])
+def process_string():
+    data = request.get_json()  # 获取POST请求的JSON数据
+    dynamic_string = data.get('string', '')  # 从JSON数据中获取字符串
+
+    # 在这里处理你的动态字符串
+    processed_string = dynamic_string + ' 已经被处理过。'
+
+    return {'processed_string': processed_string}  # 返回处理过的字符串
+
+if __name__ == '__main__':
+    app.run(port=5000)  # 在5000端口上启动服务
