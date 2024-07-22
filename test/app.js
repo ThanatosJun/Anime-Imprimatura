@@ -59,15 +59,23 @@ app.post('/upload', (req, res) => {
 app.post('/send-file-path', (req, res) => {
   // extract filePath from request body
   const filePath = req.body.filePath;
+  console.log('Sending file path to Python program:', filePath);
 
   // send filePath to another server using Axios POST request
-  axios.post('http://localhost:5000/receive-file-path', { filePath: filePath })
+  axios.post('http://localhost:5000/receive-file-path', { filePath: filePath }, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
     .then(response => {
       // on successful response from the Python program
+      console.log('File path sent to Python program:', response.data);
       res.send('File path sent to Python program.');
     })
     .catch(error => {
       // If there's an error sending the filePath
+      console.error('Failed to send file path to Python program:', error.response ? error.response.data : error.message);
+      console.log("error", error.response ? error.response.data : error.message);
       res.status(500).send('Failed to send file path to Python program.');
     });
 });
@@ -76,19 +84,32 @@ app.get('/call/python', pythonProcess)
 
 function pythonProcess(req, res) {
   let options = {
-    args:
-      [
-        req.query.name,
-        req.query.from
-      ]
+    mode: 'text', // 確保以文本模式運行
+    pythonPath: 'python3', // 或者指定你本地的 python 路徑
+    pythonOptions: ['-u'], // unbuffered output
+    scriptPath: './', // 指定 process.py 所在目錄
+    args: [
+      req.query.name,
+      req.query.from
+    ]
   }
 
-  PythonShell.run('./process.py', options, (err, data) => {
-    if (err) res.send(err)
-    const parsedString = JSON.parse(data)
-    console.log(`name: ${parsedString.Name}, from: ${parsedString.From}`)
-    res.json(parsedString)
-  })
+  PythonShell.run('process.py', options, (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send(err);
+      return;
+    }
+
+    try {
+      const parsedString = JSON.parse(results.join(''));
+      console.log(`name: ${parsedString.Name}, from: ${parsedString.From}`);
+      res.json(parsedString);
+    } catch (parseError) {
+      console.error('Error parsing JSON:', parseError);
+      res.status(500).send('Error parsing JSON');
+    }
+  });
 
 }
 

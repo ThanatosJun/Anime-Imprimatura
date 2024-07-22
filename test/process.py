@@ -1,12 +1,13 @@
-import sys 
 import json
+import sys
 
-result = {
-    'Name': sys.argv[1],
-    'From': sys.argv[2]
-  }
+# 獲取命令行參數
+name = sys.argv[1]
+from_place = sys.argv[2]
 
-json = json.dumps(result)
+data = {
+    "Name": name,
+    "From": from_place
+}
 
-print(str(json))
-sys.stdout.flush()
+print(json.dumps(data))

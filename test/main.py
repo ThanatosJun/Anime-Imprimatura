@@ -20,18 +20,18 @@ def receive_file_path():
             app.logger.debug(f'Received file path: {file_path}') # Log received filePath
             print(f'Received file path: {file_path}') # Print received filePath to console
             
-            # Prepare file data to upload
-            files = {'image': open(file_path, 'rb')}
-            url = 'http://localhost:3000/upload' # URL to upload file
+            # # Prepare file data to upload
+            # files = {'image': open(file_path, 'rb')}
+            # url = 'http://localhost:3000/upload' # URL to upload file
             
-            # Send POST request to upload file
-            response = requests.post(url, files=files)
+            # # Send POST request to upload file
+            # response = requests.post(url, files=files)
             
-            if response.status_code == 200:
-                file_path = response.json().get('filePath')
-                print(f'File uploaded to: {file_path}') # Print uploaded file path
-            else:
-                print('Failed to upload file') # Print failure message if upload fails
+            # if response.status_code == 200:
+            #     file_path = response.json().get('filePath')
+            #     print(f'File uploaded to: {file_path}') # Print uploaded file path
+            # else:
+            #     print('Failed to upload file') # Print failure message if upload fails
                 
             return 'File path received', 200 # Return success message
         else:

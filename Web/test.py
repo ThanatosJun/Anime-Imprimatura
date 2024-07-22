@@ -16,4 +16,4 @@ def process_string():
     return jsonify({'message': processed_string, 'data': data})
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)  # 在5000端口上启动服务
+    app.run(port=5001, debug=True)  # 在5000端口上启动服务

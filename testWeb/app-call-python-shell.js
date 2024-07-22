@@ -3,6 +3,18 @@ const app = express()
 const axios = require('axios');
 let { PythonShell } = require('python-shell')
 
+// 设置允许所有源访问
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  // 允许的其他头部信息
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  // 允许的HTTP方法
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  // 是否允许发送Cookie信息（需要设置为true才能发送）
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
+
 // 根路徑處理函數
 app.get('/', (req, res) => {
   res.send('Welcome to the Python Shell Example! Use /call/python to make a request.')
@@ -35,9 +47,6 @@ app.get('/sss', (req, res) => {
       console.error('發送請求時出錯：', error);
     });
 })
-
-
-
 
 app.get('/call/python', pythonProcess)
 
