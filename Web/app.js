@@ -12,6 +12,13 @@ const multer = require('multer'); // For handling file uploads
 let { PythonShell } = require('python-shell'); // For running Python scripts
 const axios = require('axios');
 
+// routes of controller
+const imageController = require('./controller/imageController');
+const galleryController = require('./controller/galleryController');
+const teamController = require('./controller/teamController');
+const userController = require("./controller/userController");
+
+
 const port = 3000;
 
 var app = express();
@@ -165,11 +172,8 @@ app.post('/edituser', async (req, res) => {
   }
 });
 
-// multer (con.) // Route to handle file uploads
-app.post('/upload', upload.fields([{name: 'chd', maxCount: 3}, {name: 'chs', maxCount: 1}]), (req, res)=>{
-  console.log(req.files); // 在這裡調用AI模型，生成新圖片，並重定向到生成頁面
-  res.redirect('/generated');
-})
+// Route to handle file uploads and image generation
+app.post('/uploadAndGenerate', imageController.uploadAndGenerate);
 
 // app.post('/upload', upload.single('upload-box'), (req, res) => {
 //   if (!req.file) {

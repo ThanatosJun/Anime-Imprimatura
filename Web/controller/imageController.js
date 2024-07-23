@@ -1,5 +1,3 @@
-// this file contains "upload" and "generate".
-
 require("dotenv").config();
 const multer = require('multer');
 const path = require('path');
@@ -15,7 +13,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-console.log('file route:', path);
+
 // 處理上傳和生成
 exports.uploadAndGenerate = async (req, res) => {
   // 設定Multer處理多個文件上傳
@@ -32,7 +30,6 @@ exports.uploadAndGenerate = async (req, res) => {
 
     try {
       // 在這裡調用AI模型，生成新圖片
-      // 假設AI模型API的調用是異步的，使用await來等待結果
       const generatedImagePath = await callAIApi(req.files.chd, req.files.chs);
       
       // 假設AI生成的圖片已經保存在某個路徑
@@ -47,7 +44,7 @@ exports.uploadAndGenerate = async (req, res) => {
       }
 
       // 重定向到生成頁面
-      res.redirect('/generated');
+      res.redirect('/generated-visitor');
     } catch (error) {
       console.error('Generation error:', error);
       res.status(500).json({ error: 'Failed to generate image.' });
