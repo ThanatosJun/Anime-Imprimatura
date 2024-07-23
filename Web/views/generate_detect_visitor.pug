@@ -3,9 +3,9 @@ html(lang="en")
   head
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    title Generate Visitor Detect
+    title Generate Visitor
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body.generate-visitor-detect
+  body.generate-visitor
     header.navigation-bar
       .logo-placeholder
       .nav
@@ -17,10 +17,11 @@ html(lang="en")
     .content
       form(id="uploadForm", method="post", action="/upload", enctype="multipart/form-data")
         .upload-section
-          span the name of the character
-          label.character-name#characterName
           .upload
-            span Upload CHS
-            .upload-box#uploadBox2
-              input(type="file" name="chs" accept="image/*" onchange="handleFiles(this.files, 'uploadBox2')")
-        button(type="button" class="detect-btn" onclick="submitForm()") ⚡ Detect
+            span the name of the character
+            input(type="text" placeholder="character name" name="character_name")
+          .upload
+            span Upload CHD
+            .upload-box#uploadBox1
+              input(type="file" name="chd" accept="image/*" onchange="handleFiles(this.files, 'uploadBox1')")
+        button(type="button" class="train-btn" onclick="submitForm()") ⚡ Train

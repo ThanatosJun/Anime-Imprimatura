@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import subprocess
 import os
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -17,24 +18,22 @@ def process_string():
     # return {'processed_string': processed_string}  # 返回处理过的字符串
     return jsonify({'message': processed_string, 'data': data})
 
-@app.route('/process_image', methods=['POST'])
+@app.route('/detect', methods=['POST'])
 def process_image():
     data = request.get_json()  # 获取POST请求的JSON数据
-    image_path = data.get('image_path', '')  # 从JSON数据中获取图片路径
-    CHD_Name = data.get('CHD_Name', 'default_CHD_Name')
-
-    if not image_path or not os.path.exists(image_path):
-        return jsonify({'error': 'Invalid image path'}), 400
+    chd_name = data.get('CHD_name')
+    image_path = data.get('image_path')
 
     # 使用subprocess调用CHD_detect.py中的main函数
-    result = subprocess.run(['python', 'CHD_detect.py', CHD_Name, image_path], capture_output=True, text=True)
+    result = subprocess.run(['python', 'detect.py', chd_name, image_path], capture_output=True, text=True)
+    detect_output = json.loads(result.stdout)
 
-    if result.returncode != 0:
-        return jsonify({'error': 'Failed to process image', 'details': result.stderr}), 500
+    chd_name = detect_output['CHD_name']
+    image_path = detect_output['image_path']
+        
+    subprocess.run(['python', 'CHD_detect.py', chd_name, image_path])
 
-    processed_image_path = result.stdout.strip()
-
-    return jsonify({'message': 'Image processed successfully', 'processed_image_path': processed_image_path})
+    return jsonify({'status': 'success', 'CHD_name': chd_name, 'image_path': image_path})
 
 
 if __name__ == '__main__':

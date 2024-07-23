@@ -90,6 +90,7 @@ app.get('/', async (req, res) => {
   }
 });
 
+// check if connnection of Flask successful
 app.get('/sss', (req, res) => {
   // 設置 Flask 伺服器的基本 URL
   const flaskUrl = 'http://localhost:5001';
@@ -104,6 +105,24 @@ app.get('/sss', (req, res) => {
     })
     .catch(error => {
       console.error('發送請求時出錯：', error);
+    });
+})
+
+// post chd_name and image_path to CHD_detect.py
+app.get('/detect', (req, res) => {
+  // 設置 Flask 伺服器的基本 URL
+  const flaskUrl = 'http://localhost:5001';
+  // 要發送的 JSON 數據
+  const data = { CHD_name, image_path } = req.body;
+  // 發送 POST 請求到 Flask 伺服器的 /detect 路由
+  axios.post(`${flaskUrl}/detect`, data)
+    .then(response => {
+      console.log('Flask 伺服器的回應：', response.data);
+      res.send(response.data);
+    })
+    .catch(error => {
+      console.error('發送請求時出錯：', error);
+      res.status(500).send("Error detecting image. ");
     });
 })
 
