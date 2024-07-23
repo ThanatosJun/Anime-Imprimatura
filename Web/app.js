@@ -92,7 +92,7 @@ app.get('/', async (req, res) => {
 
 app.get('/sss', (req, res) => {
   // 設置 Flask 伺服器的基本 URL
-  const flaskUrl = 'http://localhost:5000';
+  const flaskUrl = 'http://localhost:5001';
   // 要發送的 JSON 數據
   const data = {
     string: 'Hello, Flask!'
@@ -108,32 +108,29 @@ app.get('/sss', (req, res) => {
 })
 
 // Route to call Python script
-app.get('/call/python', pythonProcess)
+app.get('/call/python', pythonProcess);
 
 function pythonProcess(req, res) {
   let options = {
     mode: 'text',
-    pythonOptions: ['-u'], // unbuffered output
-    scriptPath: '', // 如果 process.py 在同一目錄下，留空即可
-    args: [
-      req.query.name,
-      req.query.from
-    ]
-  }
+    pythonOptions: ['-u'],
+    scriptPath: '',
+    args: [req.query.name, req.query.from]
+  };
 
   PythonShell.run('process.py', options, (err, results) => {
     if (err) {
-      res.send(err)
-      return
+      res.send(err);
+      return;
     }
     try {
-      const parsedString = JSON.parse(results[0])
-      console.log(`name: ${parsedString.Name}, from: ${parsedString.From}`)
-      res.json(parsedString)
+      const parsedString = JSON.parse(results[0]);
+      console.log(`name: ${parsedString.Name}, from: ${parsedString.From}`);
+      res.json(parsedString);
     } catch (e) {
-      res.send(e.message)
+      res.send(e.message);
     }
-  })
+  });
 }
 
 // Route to handle user editing
