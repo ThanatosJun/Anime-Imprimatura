@@ -5,7 +5,7 @@ const path = require('path');
 // 設定Multer存儲
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // 文件存儲路徑
+    cb(null, path.join(__dirname, '...', 'Thanatos', 'yolov8_RPA_character_train_v2', 'CHD_images')); // 文件存儲路徑
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname)); // 文件名

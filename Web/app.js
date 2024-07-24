@@ -26,7 +26,7 @@ var app = express();
 // Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: function(req, file, cb){
-    cb(null, 'uploads/'); // Specify the upload directory
+    cb(null, path.join(__dirname, '...', 'Thanatos', 'yolov8_RPA_character_train_v2', 'CHD_images')); // Specify the upload directory
   },
   filename: function(req, file, cb){
     cb(null, Date.now() + path.extname(file.originalname)); // Generate a unique file name
