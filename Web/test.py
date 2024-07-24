@@ -26,14 +26,15 @@ def process_image():
 
     # 使用subprocess调用CHD_detect.py中的main函数
     result = subprocess.run(['python', 'detect.py', chd_name, image_path], capture_output=True, text=True)
-    detect_output = json.loads(result.stdout)
+    # detect_output = json.loads(result.stdout)
 
-    chd_name = detect_output['CHD_name']
-    image_path = detect_output['image_path']
+    # chd_name = detect_output['CHD_name']
+    # image_path = detect_output['image_path']
         
     subprocess.run(['python', 'CHD_detect.py', chd_name, image_path])
 
     return jsonify({'status': 'success', 'CHD_name': chd_name, 'image_path': image_path})
+
 
 
 if __name__ == '__main__':

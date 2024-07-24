@@ -1,11 +1,11 @@
 require("dotenv").config();
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
 // 設定Multer存儲
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '...', 'Thanatos', 'yolov8_RPA_character_train_v2', 'CHD_images')); // 文件存儲路徑
+  image_path: (req, file, cb) => {
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname)); // 文件名
@@ -31,20 +31,23 @@ exports.uploadAndGenerate = async (req, res) => {
     try {
       // 在這裡調用AI模型，生成新圖片
       const generatedImagePath = await callAIApi(req.files.chd, req.files.chs);
+      console.log("1");
       
       // 假設AI生成的圖片已經保存在某個路徑
       const generatedImage = generatedImagePath; // AI生成的圖片路徑
+      console.log("1");
 
       // 如果使用者登入，將生成的圖片路徑保存到使用者的gallery中
-      if (req.isAuthenticated()) {
-        const userId = req.user._id;
-        await User.findByIdAndUpdate(userId, {
-          $push: { gallery: generatedImage }
-        });
-      }
+      // if (req.isAuthenticated()) {
+      //   const userId = req.user._id;
+      //   await User.findByIdAndUpdate(userId, {
+      //     $push: { gallery: generatedImage }
+      //   });
+      // }
 
       // 重定向到生成頁面
-      res.redirect('/generated-visitor');
+      res.redirect('/generated_visitor');
+      console.log("1");
     } catch (error) {
       console.error('Generation error:', error);
       res.status(500).json({ error: 'Failed to generate image.' });
