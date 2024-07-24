@@ -28,7 +28,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // 处理上传和生成操作的路由
-router.post('/uploadAndGenerate', upload.single('chs'), (req, res) => {
+router.post('/uploadAndGenerate', upload.fields('chs'), (req, res) => {
   // 处理上传的文件和生成操作
   const uploadedFilePath = req.file.path;
   console.log('Uploaded file path:', uploadedFilePath);
@@ -79,7 +79,8 @@ exports.uploadAndGenerate = async (req, res) => {
       // }
 
       // 重定向到生成頁面
-      res.redirect('/generated_visitor');
+      res.json(generatedImagePath);
+      // res.redirect('/generated_visitor');
       console.log("1");
     } catch (error) {
       console.error('Generation error:', error);
