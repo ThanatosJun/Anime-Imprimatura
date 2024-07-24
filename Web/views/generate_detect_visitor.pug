@@ -23,7 +23,7 @@ html(lang="en")
             input(type="text" placeholder="character name" name="character_name")
           .upload
             span Upload CHS
-            .upload-box#uploadBox1
-              input(type="file" name="chs" accept="image/*" onchange="handleFiles(this.files, 'uploadBox1')")
+            .upload-box#uploadBoxCHS
+              input(type="file" name="chs" accept="image/*" onchange="handleFiles(this.files, 'uploadBoxCHS')")
         button(type="button" class="train-btn" onclick="submitForm()") ⚡ Detect
     script(src='/javascripts/upload.js')
