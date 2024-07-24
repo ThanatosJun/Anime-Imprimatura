@@ -1,18 +1,49 @@
 require("dotenv").config();
+const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const router = express.Router();
 
 // 設定Multer存儲
 const storage = multer.diskStorage({
-  image_path: (req, file, cb) => {
+  destination: function (req, file, cb) {
+    // 获取要保存的文件夹路径（例如，按时间或其他参数创建文件夹）
+    const uploadPath = path.join(__dirname, '..', 'Thanatos', 'yolov8_RPA_character_train_v3', 'uploads', `folder_${Date.now()}`);
+
+    // 检查文件夹是否存在，如果不存在则创建
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+
+    // 将上传路径传递给 cb
+    cb(null, uploadPath);
+    console.log("upload to dest succ");
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname)); // 文件名
   }
 });
 
+console.log("succ");
 const upload = multer({ storage: storage });
+
+// 
+router.post('/uploadAndGenerate', upload.single('chs'), (req, res) => {
+  // 处理上传的文件和生成操作
+  // 假设生成操作完成后返回生成图片的路径
+  const generatedImagePath = '/path/to/generated/image.png';
+
+  res.json({ generatedImagePath });
+});
+
+// 处理 /detect 请求的路由
+router.post('/detect', (req, res) => {
+  // 在这里处理检测逻辑
+  console.log('Detect data:', req.body);
+
+  res.json({ message: 'Detect successful' });
+});
 
 // 處理上傳和生成
 exports.uploadAndGenerate = async (req, res) => {
