@@ -112,7 +112,7 @@ html(lang="en")
           }).then(detectData => {
             console.log('Detect response:', detectData);
           }).catch(error => {
-            console.error('Error:', error);
+            console.log('Detect response failed.');
           });
         })
         .catch((error) => {

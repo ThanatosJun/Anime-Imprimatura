@@ -37,6 +37,11 @@ router.post('/uploadAndGenerate', upload.fields('chs'), (req, res) => {
   const generatedImagePath = '/path/to/generated/image.png';
 
   res.json({ generatedImagePath });
+
+  if (!req.file.path) {
+    return res.status(400).send('No file uploaded.');
+  }
+  res.status(200).json({ message: 'File uploaded successfully' });
 });
 
 // 处理 /detect 请求的路由
@@ -81,7 +86,7 @@ exports.uploadAndGenerate = async (req, res) => {
       // 重定向到生成頁面
       res.json(generatedImagePath);
       // res.redirect('/generated_visitor');
-      console.log("1");
+      console.log("Upload successful");
     } catch (error) {
       console.error('Generation error:', error);
       res.status(500).json({ error: 'Failed to generate image.' });
