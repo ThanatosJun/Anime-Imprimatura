@@ -92,7 +92,7 @@ app.get('/', async (req, res) => {
 
 app.get('/sss', (req, res) => {
   // 設置 Flask 伺服器的基本 URL
-  const flaskUrl = 'http://localhost:5000';
+  const flaskUrl = 'http://localhost:5001';
   // 要發送的 JSON 數據
   const data = {
     string: 'Hello, Flask!'

@@ -13,4 +13,4 @@ def process_string():
     return {'processed_string': processed_string}  # 返回处理过的字符串
 
 if __name__ == '__main__':
-    app.run(port=5000)  # 在5000端口上启动服务
+    app.run(port=8000)  # 在5000端口上启动服务
