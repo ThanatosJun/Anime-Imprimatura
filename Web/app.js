@@ -12,6 +12,13 @@ const multer = require('multer'); // For handling file uploads
 let { PythonShell } = require('python-shell'); // For running Python scripts
 const axios = require('axios');
 
+// routes of controller
+const imageController = require('./controller/imageController');
+const galleryController = require('./controller/galleryController');
+const teamController = require('./controller/teamController');
+const userController = require("./controller/userController");
+
+
 const port = 3000;
 
 var app = express();
@@ -19,7 +26,7 @@ var app = express();
 // Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: function(req, file, cb){
-    cb(null, 'uploads/'); // Specify the upload directory
+    cb(null, path.join(__dirname, '..', 'Thanatos', 'yolov8_RPA_character_train_v3', 'testImages')); // Specify the upload directory
   },
   filename: function(req, file, cb){
     cb(null, Date.now() + path.extname(file.originalname)); // Generate a unique file name
@@ -37,7 +44,7 @@ var usersRouter = require('./routes/users');
 var accountManagementRouter = require('./routes/account_management');
 var createAccountRouter = require('./routes/create_account');
 var galleryRouter = require('./routes/gallery');
-var generateVisitorRouter = require('./routes/generate_visitor');
+var generateDetectVisitorRouter = require('./routes/generate_detect_visitor');
 var generatedVisitorRouter = require('./routes/generated_visitor');
 var loginRouter = require('./routes/login');
 var teamGalleryFRouter = require('./routes/team_gallery_f');
@@ -62,7 +69,7 @@ app.use('/users', usersRouter);
 app.use('/account_management', accountManagementRouter);
 app.use('/create_account', createAccountRouter);
 app.use('/gallery', galleryRouter);
-app.use('/generate_visitor', generateVisitorRouter);
+app.use('/generate_detect_visitor', generateDetectVisitorRouter);
 app.use('/generated_visitor', generatedVisitorRouter);
 app.use('/login', loginRouter);
 app.use('/team_gallery_f', teamGalleryFRouter);
@@ -90,6 +97,7 @@ app.get('/', async (req, res) => {
   }
 });
 
+// check if connnection of Flask successful
 app.get('/sss', (req, res) => {
   // 設置 Flask 伺服器的基本 URL
   const flaskUrl = 'http://localhost:5001';
@@ -107,33 +115,48 @@ app.get('/sss', (req, res) => {
     });
 })
 
+// post chd_name and image_path to CHD_detect.py
+app.get('/detect', (req, res) => {
+  // 設置 Flask 伺服器的基本 URL
+  const flaskUrl = 'http://localhost:5001';
+  // 要發送的 JSON 數據
+  const data = { CHD_name, image_path } = req.body;
+  // 發送 POST 請求到 Flask 伺服器的 /detect 路由
+  axios.post(`${flaskUrl}/detect`, data)
+    .then(response => {
+      console.log('Flask 伺服器的回應：', response.data);
+      res.send(response.data);
+    })
+    .catch(error => {
+      console.error('發送請求時出錯：', error);
+      res.status(500).send("Error detecting image. ");
+    });
+})
+
 // Route to call Python script
-app.get('/call/python', pythonProcess)
+app.get('/call/python', pythonProcess);
 
 function pythonProcess(req, res) {
   let options = {
     mode: 'text',
-    pythonOptions: ['-u'], // unbuffered output
-    scriptPath: '', // 如果 process.py 在同一目錄下，留空即可
-    args: [
-      req.query.name,
-      req.query.from
-    ]
-  }
+    pythonOptions: ['-u'],
+    scriptPath: '',
+    args: [req.query.name, req.query.from]
+  };
 
   PythonShell.run('process.py', options, (err, results) => {
     if (err) {
-      res.send(err)
-      return
+      res.send(err);
+      return;
     }
     try {
-      const parsedString = JSON.parse(results[0])
-      console.log(`name: ${parsedString.Name}, from: ${parsedString.From}`)
-      res.json(parsedString)
+      const parsedString = JSON.parse(results[0]);
+      console.log(`name: ${parsedString.Name}, from: ${parsedString.From}`);
+      res.json(parsedString);
     } catch (e) {
-      res.send(e.message)
+      res.send(e.message);
     }
-  })
+  });
 }
 
 // Route to handle user editing
@@ -149,11 +172,8 @@ app.post('/edituser', async (req, res) => {
   }
 });
 
-// multer (con.) // Route to handle file uploads
-app.post('/upload', upload.fields([{name: 'chd', maxCount: 3}, {name: 'chs', maxCount: 1}]), (req, res)=>{
-  console.log(req.files); // 在這裡調用AI模型，生成新圖片，並重定向到生成頁面
-  res.redirect('/generated');
-})
+// Route to handle file uploads and image generation
+app.post('/uploadAndGenerate', imageController.uploadAndGenerate)
 
 // app.post('/upload', upload.single('upload-box'), (req, res) => {
 //   if (!req.file) {

@@ -28,6 +28,24 @@ router.post('/uploadAndGenerate', (req, res, next) => {
     console.log('POST /api/upload', req.body);
     next();
 }, imageController.uploadAndGenerate);
+// Detect route
+router.post('/detect', (req, res) => {
+    const { CHS_Name } = req.body;
+
+    const options = {
+        args: [CHS_Name]
+    };
+
+    PythonShell.run('CHD_detect.py', options, (err, results) => {
+        if (err) {
+            console.error(`Error: ${err}`);
+            res.status(500).send(err);
+        } else {
+            console.log(`Results: ${results}`);
+            res.send(results.join('\n'));
+        }
+    });
+});
 
 // Gallery routes
 const galleryController = require('./controller/galleryController');
