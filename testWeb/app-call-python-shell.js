@@ -23,17 +23,17 @@ app.get('/python', (req, res) => {
   res.send('ssd')
 })
 
-app.listen(3000, (err) => {
+app.listen(3001, (err) => {
   if (err) {
     console.error('Failed to start server:', err)
   } else {
-    console.log('server running on port 3000')
+    console.log('server running on port 3001')
   }
 })
 
 app.get('/sss', (req, res) => {
   // 設置 Flask 伺服器的基本 URL
-  const flaskUrl = 'http://localhost:5000';
+  const flaskUrl = 'http://localhost:8000';
   // 要發送的 JSON 數據
   const data = {
     string: 'Hello, Flask!'
@@ -44,7 +44,18 @@ app.get('/sss', (req, res) => {
       console.log('Flask 伺服器的回應：', response.data);
     })
     .catch(error => {
-      console.error('發送請求時出錯：', error);
+      if (error.response) {
+        // 请求成功但状态码不在 2xx 范围
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // 请求发出但没有收到响应
+        console.log(error.request);
+      } else {
+        // 在设置请求时发生了错误
+        console.log('Error', error.message);
+      }
     });
 })
 
