@@ -50,6 +50,8 @@ var loginRouter = require('./routes/login');
 var teamGalleryFRouter = require('./routes/team_gallery_f');
 var teamGalleryTRouter = require('./routes/team_gallery_t');
 
+var generateVisitorRouter = require('./routes/generate_visitor'); 
+
 // Temporarily save data
 const data = [];
 
@@ -74,6 +76,8 @@ app.use('/generated_visitor', generatedVisitorRouter);
 app.use('/login', loginRouter);
 app.use('/team_gallery_f', teamGalleryFRouter);
 app.use('/team_gallery_t', teamGalleryTRouter);
+
+app.use('/generate_visitor', generateVisitorRouter);
 
 // Setup logging, JSON handling, URL encoding, cookies, and static files
 app.use(logger('dev'));
