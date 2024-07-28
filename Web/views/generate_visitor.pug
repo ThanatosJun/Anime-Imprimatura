@@ -5,7 +5,6 @@ html(lang="en")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     title Generate Visitor
     link(rel='stylesheet', href='/stylesheets/style.css')
-    script(src='/javascripts/upload.js')
   body.generate-visitor
     header.navigation-bar
       .logo-placeholder
@@ -32,82 +31,82 @@ html(lang="en")
         //- Generate button to submit the form
         button(type="submit" class="generate-btn" onclick="submitForm()") ⚡ Generate
 
-    //- Inline script for handling file uploads and form submission
-    script.
-      let imagePaths = { uploadBox1: [], uploadBox2: [] };
+    //- //- Inline script for handling file uploads and form submission
+    script(src='/javascripts/upload.js')
+    //-   let imagePaths = { uploadBox1: [], uploadBox2: [] };
 
-      // Function to handle file selection and preview
-      function handleFiles(files, containerId) {
-          console.log('Handling files for:', containerId);
-          console.log('Files:', files);
+    //-   // Function to handle file selection and preview
+    //-   function handleFiles(files, containerId) {
+    //-       console.log('Handling files for:', containerId);
+    //-       console.log('Files:', files);
 
-          // Get the upload box DOM element, log error and return if not found
-          const container = document.getElementById(containerId);
-          if (!container) {
-              console.error('Container not found:', containerId);
-              return;
-          }
+    //-       // Get the upload box DOM element, log error and return if not found
+    //-       const container = document.getElementById(containerId);
+    //-       if (!container) {
+    //-           console.error('Container not found:', containerId);
+    //-           return;
+    //-       }
 
-          // Set max file count based on the upload box
-          const maxFiles = containerId === 'uploadBox1' ? 3 : 1;
+    //-       // Set max file count based on the upload box
+    //-       const maxFiles = containerId === 'uploadBox1' ? 3 : 1;
 
-          // Clear previous previews
-          const existingPreviews = container.querySelectorAll('img');
-          existingPreviews.forEach(img => container.removeChild(img));
+    //-       // Clear previous previews
+    //-       const existingPreviews = container.querySelectorAll('img');
+    //-       existingPreviews.forEach(img => container.removeChild(img));
 
-          // Clear previous file paths
-          imagePaths[containerId] = [];
+    //-       // Clear previous file paths
+    //-       imagePaths[containerId] = [];
 
-          // Convert file list to array and handle up to the allowed max file count
-          Array.from(files).slice(0, maxFiles).forEach(file => {
-              const img = document.createElement('img');
-              // Create a new image element for each file and add preview class
-              img.classList.add('preview');
-              img.file = file;
+    //-       // Convert file list to array and handle up to the allowed max file count
+    //-       Array.from(files).slice(0, maxFiles).forEach(file => {
+    //-           const img = document.createElement('img');
+    //-           // Create a new image element for each file and add preview class
+    //-           img.classList.add('preview');
+    //-           img.file = file;
 
-              // Use FileReader to read the file and display it as a preview image
-              const reader = new FileReader();
-              reader.onload = (function(aImg) {
-                  return function(e) {
-                      aImg.src = e.target.result;
-                      console.log('Preview added for:', aImg.src);
-                  };
-              })(img);
-              reader.readAsDataURL(file);
+    //-           // Use FileReader to read the file and display it as a preview image
+    //-           const reader = new FileReader();
+    //-           reader.onload = (function(aImg) {
+    //-               return function(e) {
+    //-                   aImg.src = e.target.result;
+    //-                   console.log('Preview added for:', aImg.src);
+    //-               };
+    //-           })(img);
+    //-           reader.readAsDataURL(file);
 
-              container.appendChild(img);
-              // Add the file URL path to the corresponding upload box in imagePaths
-              imagePaths[containerId].push(URL.createObjectURL(file));
-          });
+    //-           container.appendChild(img);
+    //-           // Add the file URL path to the corresponding upload box in imagePaths
+    //-           imagePaths[containerId].push(URL.createObjectURL(file));
+    //-       });
 
-          console.log('Image paths:', imagePaths);
-          return imagePaths;
-      }
+    //-       console.log('Image paths:', imagePaths);
+    //-       return imagePaths;
+    //-   }
 
-      // Function to handle form submission
-      function submitForm() {
-        const form = document.getElementById('uploadForm');
-        const formData = new FormData(form);
+    //-   // Function to handle form submission
+    //-   function submitForm() {
+    //-     const form = document.getElementById('uploadForm');
+    //-     const formData = new FormData(form);
 
-        // Submit the form data using fetch API
-        fetch('/upload', {
-          method: 'POST',
-          body: formData
-        })
-        .then(response => {
-          console.log('Response status:', response.status);
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Upload failed');
-          }
-        })
-        .then(data => {
-          console.log('Success:', data);
-          // 在這裡處理生成圖片後的跳轉邏輯
-          window.location.href = '/generated-visitor';
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
-      }
+    //-     // Submit the form data using fetch API
+    //-     fetch('/upload', {
+    //-       method: 'POST',
+    //-       body: formData
+    //-     })
+    //-     .then(response => {
+    //-       console.log('Response status:', response.status);
+    //-       if (response.ok) {
+    //-         return response.json();
+    //-       } else {
+    //-         throw new Error('Upload failed');
+    //-       }
+    //-     })
+    //-     .then(data => {
+    //-       console.log('Success:', data);
+    //-       // 在這裡處理生成圖片後的跳轉邏輯
+    //-       window.location.href = '/generated-visitor';
+    //-     })
+    //-     .catch((error) => {
+    //-       console.error('Error:', error);
+    //-     });
+    //-   }

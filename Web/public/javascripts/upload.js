@@ -1,0 +1,93 @@
+let imagePaths = { uploadBox1: [], uploadBox2: [] };
+
+// Function to handle file selection and preview
+function handleFiles(files, containerId) {
+    console.log('Handling files for:', containerId);
+    console.log('Files:', files);
+
+    // Get the upload box DOM element, log error and return if not found
+    const container = document.getElementById(containerId);
+    if (!container) {
+        console.error('Container not found:', containerId);
+        return;
+    }
+
+    // Set max file count based on the upload box
+    const maxFiles = containerId === 'uploadBox1' ? 3 : 1;
+
+    // Clear previous previews
+    const existingPreviews = container.querySelectorAll('img');
+    existingPreviews.forEach(img => container.removeChild(img));
+
+    // Clear previous file paths
+    imagePaths[containerId] = [];
+
+    // Convert file list to array and handle up to the allowed max file count
+    Array.from(files).slice(0, maxFiles).forEach(file => {
+        const img = document.createElement('img');
+        // Create a new image element for each file and add preview class
+        img.classList.add('preview');
+        img.file = file;
+
+        // Use FileReader to read the file and display it as a preview image
+        const reader = new FileReader();
+        reader.onload = (function(aImg) {
+            return function(e) {
+                aImg.src = e.target.result;
+                console.log('Preview added for:', aImg.src);
+            };
+        })(img);
+        reader.readAsDataURL(file);
+
+        container.appendChild(img);
+        // Add the file URL path to the corresponding upload box in imagePaths
+        imagePaths[containerId].push(URL.createObjectURL(file));
+    });
+
+    console.log('Image paths:', imagePaths);
+    return imagePaths;
+}
+
+// Function to handle form submission
+function submitForm() {
+  const form = document.getElementById('uploadForm');
+  const formData = new FormData(form);
+
+  // Submit the form data using fetch API
+  fetch('/uploadAndGenerate', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => {
+    console.log('Response status:', response.status);
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error('Upload failed');
+    }
+  })
+  .then(data => {
+    console.log('Success:', data);
+    // 在這裡處理生成圖片後的跳轉邏輯
+    window.location.href = '/generated_visitor';
+    fetch('/detect', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error('Detect request failed');
+      }
+      return response.json();
+    }).then(detectData => {
+      console.log('Detect response:', detectData);
+    }).catch(error => {
+      console.error('Error:', error);
+    });
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+}
