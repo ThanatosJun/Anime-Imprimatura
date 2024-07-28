@@ -111,3 +111,7 @@ html(lang="en")
           console.error('Error:', error);
         });
       }
+            .upload-box#uploadBoxCHS
+              input(type="file" name="chs" accept="image/*" onchange="handleFiles(this.files, 'uploadBoxCHS')")
+        button(type="button" class="generate-btn" onclick="submitForm()") ⚡ Detect
+    script(src='/javascripts/upload.js')

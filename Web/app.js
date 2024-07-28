@@ -45,6 +45,7 @@ var accountManagementRouter = require('./routes/account_management');
 var createAccountRouter = require('./routes/create_account');
 var galleryRouter = require('./routes/gallery');
 var generateDetectVisitorRouter = require('./routes/generate_detect_visitor');
+var generateTrainVisitorRouter = require('./routes/generate_train_visitor');
 var generatedVisitorRouter = require('./routes/generated_visitor');
 var loginRouter = require('./routes/login');
 var teamGalleryFRouter = require('./routes/team_gallery_f');
@@ -70,6 +71,7 @@ app.use('/account_management', accountManagementRouter);
 app.use('/create_account', createAccountRouter);
 app.use('/gallery', galleryRouter);
 app.use('/generate_detect_visitor', generateDetectVisitorRouter);
+app.use('/generate_train_visitor', generateTrainVisitorRouter);
 app.use('/generated_visitor', generatedVisitorRouter);
 app.use('/login', loginRouter);
 app.use('/team_gallery_f', teamGalleryFRouter);
@@ -174,6 +176,8 @@ app.post('/edituser', async (req, res) => {
 
 // Route to handle file uploads and image generation
 app.post('/uploadAndGenerate', imageController.uploadAndGenerate)
+
+app.post('/uploadAndTrain')
 
 // app.post('/upload', upload.single('upload-box'), (req, res) => {
 //   if (!req.file) {

@@ -1,7 +1,7 @@
-let imagePaths = { uploadBox1: [], uploadBox2: [] };
-
 // Function to handle file selection and preview
 function handleFiles(files, containerId) {
+    let imagePaths = { uploadBoxCHS: [], uploadBoxCHD: [] };
+    
     console.log('Handling files for:', containerId);
     console.log('Files:', files);
 
@@ -13,7 +13,7 @@ function handleFiles(files, containerId) {
     }
 
     // Set max file count based on the upload box
-    const maxFiles = containerId === 'uploadBox1' ? 3 : 1;
+    const maxFiles = containerId === 'uploadBoxCHS' ? 1 : 3;
 
     // Clear previous previews
     const existingPreviews = container.querySelectorAll('img');
@@ -48,7 +48,7 @@ function handleFiles(files, containerId) {
     return imagePaths;
 }
 
-// Function to handle form submission
+// Function to handle detect page form submission
 function submitForm() {
   const form = document.getElementById('uploadForm');
   const formData = new FormData(form);
@@ -68,26 +68,76 @@ function submitForm() {
   })
   .then(data => {
     console.log('Success:', data);
-    // 在這裡處理生成圖片後的跳轉邏輯
+
+    // Redirect to "generated" page after "detect"
     window.location.href = '/generated_visitor';
+
+    // Send a POST request to the '/detect' endpoint with the generated data
     fetch('/detect', {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify(data), // Convert the data to a JSON string
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json' // Specify the content type as JSON
       }
     }).then(response => {
       if (!response.ok) {
-        throw new Error('Detect request failed');
+        throw new Error('Detect request failed'); // Throw an error if the response is not ok
       }
-      return response.json();
+      return response.json(); // Parse the JSON response
     }).then(detectData => {
-      console.log('Detect response:', detectData);
+      console.log('Detect response:', detectData); // Log the response from the detect request
     }).catch(error => {
-      console.error('Error:', error);
+      console.error('Error:', error); // Log any errors that occur during the fetch
     });
   })
   .catch((error) => {
-    console.error('Error:', error);
+    console.error('Error:', error); // Log any errors that occur during the initial request
   });
 }
+
+// Function to handle train page form submission
+function submitFormCHD() {
+    const form = document.getElementById('uploadFormCHD');
+    const formData = new FormData(form);
+  
+    // Submit the form data using fetch API
+    fetch('/uploadAndTrain', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      console.log('Response status:', response.status);
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Upload failed');
+      }
+    })
+    .then(data => {
+      console.log('Success:', data);
+      
+      // Redirect to "detect" page after "train"
+      window.location.href = '/generate_detect_visitor';
+  
+      // Send a POST request to the '/detect' endpoint with the generated data
+      fetch('/train', {
+        method: 'POST',
+        body: JSON.stringify(data), // Convert the data to a JSON string
+        headers: {
+          'Content-Type': 'application/json' // Specify the content type as JSON
+        }
+      }).then(response => {
+        if (!response.ok) {
+          throw new Error('Train request failed'); // Throw an error if the response is not ok
+        }
+        return response.json(); // Parse the JSON response
+      }).then(detectData => {
+        console.log('Train response:', detectData); // Log the response from the train request
+      }).catch(error => {
+        console.error('Error:', error); // Log any errors that occur during the fetch
+      });
+    })
+    .catch((error) => {
+      console.error('Error:', error); // Log any errors that occur during the initial request
+    });
+  }

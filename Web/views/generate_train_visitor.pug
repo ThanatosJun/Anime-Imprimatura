@@ -15,14 +15,14 @@ html(lang="en")
         a(href="/gallery") Gallery
       a.login-btn(href="login") Log In
     .content
-      form(id="uploadForm", method="post", action="/upload", enctype="multipart/form-data")
+      form(id="uploadFormCHD", method="post", action="/upload", enctype="multipart/form-data")
         .upload-section
           .upload
             span the name of the character
             input(type="text" placeholder="character name" name="character_name")
           .upload
             span Upload CHD
-            .upload-box#uploadBox2
-              input(type="file" name="chd" accept="image/*" onchange="handleFiles(this.files, 'uploadBox2')")
-        button(type="button" class="train-btn" onclick="submitForm()") ⚡ Train
+            .upload-box#uploadBoxCHD
+              input(type="file" name="chd" accept="image/*" multiple onchange="handleFiles(this.files, 'uploadBoxCHD')")
+        button(type="button" class="generate-btn" onclick="submitFormCHD()") ⚡ Train
     script(src='/javascripts/upload.js')
