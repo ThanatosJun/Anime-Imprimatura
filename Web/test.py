@@ -3,6 +3,8 @@ from flask_cors import CORS
 import subprocess
 import os
 import json
+from yolov8_RPA_character_train_v3.PA_autoTraing_v5 import main
+
 
 app = Flask(__name__)
 CORS(app)
@@ -28,8 +30,7 @@ def train_image():
     print('Now executing "Train". ')
     
     # route of PA_autoTraing_v5.py
-    script_path = '/Users/pigg/Documents/GitHub/Anime-Imprimatura/Thanatos/yolov8_RPA_character_train_v3/PA_autoTraing_v5.py'
-
+    script_path = 'yolov8_RPA_character_train_v3/PA_autoTraing_v5.py'
     try:
         print(f'Received train request with CHD_name: {CHD_name}, image_path: {image_path}')
         result = subprocess.run(['python', script_path, CHD_name, image_path], capture_output=True, text=True, check=True)
