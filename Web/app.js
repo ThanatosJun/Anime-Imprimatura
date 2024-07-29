@@ -117,12 +117,12 @@ app.get('/sss', (req, res) => {
     });
 })
 
-// post chd_name and image_path to PA_autoTraing_v5.py
+// post CHD_name and image_path to PA_autoTraing_v5.py
 app.get('/train', (req, res) => {
   // 設置 Flask 伺服器的基本 URL
   const flaskUrl = 'http://localhost:5001';
   // 要發送的 JSON 數據
-  const data = { image_path } = req.body;
+  const data = { image_path, CHD_name } = req.body;
   
   console.log('Sending train request with data', data);
 
@@ -138,7 +138,7 @@ app.get('/train', (req, res) => {
     });
 })
 
-// post chd_name and image_path to CHD_detect.py
+// post CHD_name and image_path to CHD_detect.py
 app.get('/detect', (req, res) => {
   // 設置 Flask 伺服器的基本 URL
   const flaskUrl = 'http://localhost:5001';

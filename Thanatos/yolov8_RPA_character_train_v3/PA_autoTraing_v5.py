@@ -15,6 +15,7 @@ from ultralytics import YOLO
 import torch.nn as nn
 import numpy as np
 import zero123_stable_api
+import sys
 
 class CustomYOLO(YOLO):
     def __init__(self,pretrained_path):
@@ -422,4 +423,12 @@ def re_ptmodel_path(CHD_Name):
 
 # Run this .py for main file must run this
 if __name__ == "__main__":
-    main(CHD_Name="Anime008")
+    # main(CHD_Name="Anime008")
+    if len(sys.argv) != 3:
+        print("Usage: python PA_autoTraing_v5.py <image_path> <CHD_name>")
+        sys.exit(1)
+
+    image_path = sys.argv[1]
+    CHD_name = sys.argv[2]
+
+    main(image_path, CHD_name)

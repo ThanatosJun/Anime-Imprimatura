@@ -42,7 +42,7 @@ router.post('/uploadAndTrain', upload.fields([{ name: 'chd', maxCount: 1 }]), (r
   }
 
   const uploadedFilePath = req.files.chd[0].path;
-  const chdName = req.body.character_name;
+  const chdName = req.body.chdName; // Retrieve chdName from the request body
   console.log('Uploaded file path:', uploadedFilePath);
   console.log('CHD Name:', chdName);
 
@@ -51,7 +51,7 @@ router.post('/uploadAndTrain', upload.fields([{ name: 'chd', maxCount: 1 }]), (r
 
   fetch('http://localhost:5001/train', {
     method: 'POST',
-    body: JSON.stringify({ image_path: generatedImagePath, CHD_name: chdName }),
+    body: JSON.stringify({ image_path: generatedImagePath, CHD_name: chdName }), // Include chdName in the request body
     headers: {
       'Content-Type': 'application/json'
     }
@@ -64,28 +64,6 @@ router.post('/uploadAndTrain', upload.fields([{ name: 'chd', maxCount: 1 }]), (r
   .catch(error => {
     console.error('Error during train process:', error);
     res.status(500).json({ error: 'An error occurred during the train process.' });
-  });
-});
-
-// Detect
-router.post('/uploadAndDetect', (req, res) => {
-  const detectData = req.body;
-
-  fetch('http://localhost:5001/detect', {
-    method: 'POST',
-    body: JSON.stringify(detectData),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log('Detect response:', data);
-    res.status(200).json(data);
-  })
-  .catch(error => {
-    console.error('Error during detect process:', error);
-    res.status(500).json({ error: 'An error occurred during the detect process.' });
   });
 });
 

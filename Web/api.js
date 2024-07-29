@@ -31,10 +31,11 @@ router.post('/uploadAndGenerate', (req, res, next) => {
 
 // Train route
 router.post('/train', (req, res) => {
-    const { image_path } = req.body;
+    const { CHD_name, image_path } = req.body;
 
     const options = {
-        args: [image_path]
+        args: [image_path],
+        args: [CHD_name]
     };
 
     PythonShell.run('PA_autoTraing.py', options, (err, results) => {
