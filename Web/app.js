@@ -64,18 +64,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// /**
-//  * GET /generate_detect_visitor
-//  * Request: Query parameter data (URL-encoded JSON string)
-//  * Response: HTML page displaying the training results
-//  */
-// app.get('/generate_detect_visitor', (req, res) => {
-//   const data = JSON.parse(req.query.data);
-
-//   // Render the results page and display the processed data
-//   res.send(`<html><body>Training results: ${JSON.stringify(data)}</body></html>`);
-// });
-
 // Use the imported routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -208,16 +196,10 @@ app.post('/edituser', async (req, res) => {
 });
 
 // // Route to handle file uploads and image generation
-// app.post('/uploadAndGenerate', imageController.uploadAndGenerate)
+// app.post('/uploadAndGenerate', imageController.uploadAndGenerate) //return 500
 
-/**
- * Handle CHD upload and initial processing
- * @route POST /uploadAndTrain
- * @desc Handle multiple file uploads and initial processing
- * @input Array of files with key 'files'
- * @output JSON array of processed file data
- */
-// app.post('/uploadAndTrain', upload.array('files', 10), imageController.uploadAndTrain);
+// Handle CHD upload and initial processing
+// app.post('/uploadAndTrain', imageController.uploadAndTrain); //return 500
 
 /**
  * @route POST /train
@@ -251,16 +233,18 @@ function processFile(file) {
 function trainData(data) {
   return { ...data, trained: true };
 }
+
+// Handle CHD upload and initial processing
 app.post('/uploadAndTrain', imageController);
 app.post('/uploadAndDetect', imageController);
 
-// app.post('/upload', upload.single('upload-box'), (req, res) => {
-//   if (!req.file) {
-//     return res.status(400).send('No file uploaded.');
-//   }
-//   const filePath = path.join(__dirname, 'uploads', req.file.filename);
-//   res.send({ filePath: filePath }); // 返回文件路径
-// });
+app.post('/upload', upload.single('upload-box'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send('No file uploaded.');
+  }
+  const filePath = path.join(__dirname, 'uploads', req.file.filename);
+  res.send({ filePath: filePath }); // 返回文件路径
+});
 
 // Handle 404 errors
 app.use((req, res, next) =>{

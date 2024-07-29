@@ -54,7 +54,7 @@ function submitFormCHS() {
   const formData = new FormData(form);
 
   // Submit the form data using fetch API
-  fetch('/uploadAndTrain', {
+  fetch('/uploadAndDetect', {
     method: 'POST',
     body: formData
   })
@@ -69,24 +69,27 @@ function submitFormCHS() {
   .then(data => {
     console.log('Success:', data);
     
-    // Redirect to "detect" page after "train"
-    window.location.href = '/generate_detect_visitor';
+    // Redirect to "final" page after "detect"
+    window.location.href = '/generated_visitor';
 
     // Send a POST request to the '/detect' endpoint with the generated data
-    fetch('/train', {
+    fetch('/detect', {
       method: 'POST',
       body: JSON.stringify(data), // Convert the data to a JSON string
       headers: {
         'Content-Type': 'application/json' // Specify the content type as JSON
       }
-    }).then(response => {
+    })
+    .then(response => {
       if (!response.ok) {
         throw new Error('(upload.js) Train request failed'); // Throw an error if the response is not ok
       }
       return response.json(); // Parse the JSON response
-    }).then(detectData => {
+    })
+    .then(detectData => {
       console.log('(upload.js) Train response:', detectData); // Log the response from the train request
-    }).catch(error => {
+    })
+    .catch(error => {
       console.error('Error:', error); // Log any errors that occur during the fetch
     });
   })
