@@ -15,11 +15,11 @@ html(lang="en")
         a(href="/gallery") Gallery
       a.login-btn(href="login") Log In
     .content
-      form(id="uploadFormCHD", method="post", action="/upload", enctype="multipart/form-data")
+      form(id="uploadFormCHD", method="post", action="/uploadAndTrain", enctype="multipart/form-data")
         .upload-section
           .upload
             span the name of the character
-            input(type="text" placeholder="character name" name="character_name")
+            input(type="text" name="character_name" placeholder="character name" )
           .upload
             span Upload CHD
             .upload-box#uploadBoxCHD

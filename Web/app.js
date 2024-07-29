@@ -129,7 +129,28 @@ app.get('/', async (req, res) => {
 //     });
 // })
 
-// post chd_name and image_path to CHD_detect.py
+// post CHD_name and image_path to PA_autoTraing_v5.py
+app.post('/train', (req, res) => {
+  // 設置 Flask 伺服器的基本 URL
+  const flaskUrl = 'http://localhost:5001';
+  // 要發送的 JSON 數據
+  const data = { image_path, CHD_name } = req.body;
+  
+  console.log('(app.js) Sending train request with data', data);
+
+  // 發送 POST 請求到 Flask 伺服器的 /train 路由
+  axios.post(`${flaskUrl}/train`, data)
+    .then(response => {
+      console.log('(app.js) Flask Server Response: ', response.data);
+      res.send(response.data);
+    })
+    .catch(error => {
+      console.error('(app.js) Error Sending Requests: ', error);
+      res.status(500).send("Error training image. ");
+    });
+})
+
+// post CHD_name and image_path to CHD_detect.py
 app.get('/detect', (req, res) => {
   // 設置 Flask 伺服器的基本 URL
   const flaskUrl = 'http://localhost:5001';
@@ -138,11 +159,11 @@ app.get('/detect', (req, res) => {
   // 發送 POST 請求到 Flask 伺服器的 /detect 路由
   axios.post(`${flaskUrl}/detect`, data)
     .then(response => {
-      console.log('Flask 伺服器的回應：', response.data);
+      console.log('(app.js) Flask Server Response: ', response.data);
       res.send(response.data);
     })
     .catch(error => {
-      console.error('發送請求時出錯：', error);
+      console.error('(app.js) Error Sending Requests: ', error);
       res.status(500).send("Error detecting image. ");
     });
 })
@@ -230,6 +251,8 @@ function processFile(file) {
 function trainData(data) {
   return { ...data, trained: true };
 }
+app.post('/uploadAndTrain', imageController);
+app.post('/uploadAndDetect', imageController);
 
 // app.post('/upload', upload.single('upload-box'), (req, res) => {
 //   if (!req.file) {
