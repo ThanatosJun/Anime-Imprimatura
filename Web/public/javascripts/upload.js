@@ -108,7 +108,8 @@ async function submitFormCHD() {
         });
 
         if (!uploadResponse.ok) {
-            throw new Error('Upload failed');
+            const errorText = await uploadResponse.text();
+            throw new Error('Upload failed: ${errorText}');
         }
 
         // Parse the response JSON data
@@ -125,7 +126,8 @@ async function submitFormCHD() {
         });
 
         if (!trainResponse.ok) {
-            throw new Error('Train request failed');
+            const errorText = await trainResponse.text();
+            throw new Error('Train request failed: ${errorText}');
         }
 
         // Parse the train response JSON data
@@ -133,9 +135,10 @@ async function submitFormCHD() {
         console.log('Train response:', trainData);
 
         // Redirect to the "detect" page with the processed data
-        window.location.href = `/generate_detect_visitor?data=${encodeURIComponent(JSON.stringify(trainData))}`;
+        window.location.href = '/generate_detect_visitor?data=${encodeURIComponent(JSON.stringify(trainData))}';
 
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error:', error.message);
+        alert('An error occurred: ${error.message}');
     }
 }

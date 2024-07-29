@@ -94,6 +94,36 @@ exports.uploadAndGenerate = async (req, res) => {
   });
 };
 
+// Simulate file processing function
+function processFile(file) {
+  return { fileName: file.originalname, processed: true };
+}
+
+/**
+ * Handle CHD upload and initial processing
+ * @route POST /uploadAndTrain
+ * @desc Handle multiple file uploads and initial processing
+ * @input Array of files with key 'files'
+ * @output JSON array of processed file data
+ */
+exports.uploadAndTrain = async (req, res) => {
+  try {
+      const files = req.files;
+      if (!files || files.length === 0) {
+          return res.status(400).json({ message: 'No files uploaded' });
+      }
+
+      // Process the uploaded files and generate initial data for each file
+      const processedData = files.map(file => processFile(file));
+
+      // Send the processed data back to the client
+      res.json(processedData);
+  } catch (error) {
+      console.error('Error in /uploadAndTrain:', error);
+      res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+};
+
 // 假設一個調用AI模型的函數
 async function callAIApi(chdFiles, chsFiles) {
   // 模擬AI模型API調用，返回生成圖片的路徑

@@ -190,24 +190,18 @@ app.post('/edituser', async (req, res) => {
 app.post('/uploadAndGenerate', imageController.uploadAndGenerate)
 
 /**
- * POST /uploadAndTrain
- * Request: FormData with file upload
- * Response: JSON { fileName: string, processed: boolean }
+ * Handle CHD upload and initial processing
+ * @route POST /uploadAndTrain
+ * @desc Handle multiple file uploads and initial processing
+ * @input Array of files with key 'files'
+ * @output JSON array of processed file data
  */
-app.post('/uploadAndTrain', upload.single('file'), (req, res) => {
-  const file = req.file;
-
-  // Process the uploaded file and generate initial data
-  const processedData = processFile(file);
-
-  // Send the processed data back to the client
-  res.json(processedData);
-});
+app.post('/uploadAndTrain', upload.array('files', 10), imageController.uploadAndTrain);
 
 /**
- * POST /train
- * Request: JSON { fileName: string, processed: boolean }
- * Response: JSON { fileName: string, processed: boolean, trained: boolean }
+ * @route POST /train
+ * @input JSON { fileName: string, processed: boolean }
+ * @output JSON { fileName: string, processed: boolean, trained: boolean }
  */
 app.post('/train', (req, res) => {
   const data = req.body;
@@ -221,8 +215,8 @@ app.post('/train', (req, res) => {
 
 /**
 * Simulate file processing function
-* Input: File object
-* Output: JSON { fileName: string, processed: boolean }
+* @input File object
+* @output JSON { fileName: string, processed: boolean }
 */
 function processFile(file) {
   return { fileName: file.originalname, processed: true };
@@ -230,8 +224,8 @@ function processFile(file) {
 
 /**
 * Simulate data training function
-* Input: JSON { fileName: string, processed: boolean }
-* Output: JSON { fileName: string, processed: boolean, trained: boolean }
+* @input JSON { fileName: string, processed: boolean }
+* @output JSON { fileName: string, processed: boolean, trained: boolean }
 */
 function trainData(data) {
   return { ...data, trained: true };
