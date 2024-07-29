@@ -27,13 +27,34 @@ const imageController = require('./controller/imageController');
 router.post('/uploadAndGenerate', (req, res, next) => {
     console.log('POST /api/upload', req.body);
     next();
-}, imageController.uploadAndGenerate);
+}, imageController);
+
+// Train route
+router.post('/train', (req, res) => {
+    const { image_path } = req.body;
+
+    const options = {
+        args: [image_path]
+    };
+
+    PythonShell.run('PA_autoTraing.py', options, (err, results) => {
+        if (err) {
+            console.error(`Error: ${err}`);
+            res.status(500).send(err);
+        } else {
+            console.log(`Results: ${results}`);
+            res.send(results.join('\n'));
+        }
+    });
+});
 // Detect route
 router.post('/detect', (req, res) => {
     const { CHS_Name } = req.body;
+    const { image_path } = req.body;
 
     const options = {
-        args: [CHS_Name]
+        args: [CHS_Name],
+        args: [image_path]
     };
 
     PythonShell.run('CHD_detect.py', options, (err, results) => {

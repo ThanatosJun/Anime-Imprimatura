@@ -18,24 +18,52 @@ def process_string():
     # return {'processed_string': processed_string}  # 返回处理过的字符串
     return jsonify({'message': processed_string, 'data': data})
 
+# train
+@app.route('/train', methods=['POST'])
+def train_image():
+    data = request.get_json()
+    image_path = data.get('image_path')
+    
+    print('Now executing "Train". ')
+
+    try:
+        print(f'Received train request with image_path: {image_path}')
+        result = subprocess.run(['python', 'PA_autoTraing_v5.py', image_path], capture_output=True, text=True, check=True)
+        output = result.stdout
+        error = result.stderr
+        print(f'Train script output: {output}')
+        if error:
+            print(f'Train script error: {error}')
+        return jsonify({'status': 'success', 'output': output, 'error': error, 'image_path': image_path})
+    except subprocess.CalledProcessError as e:
+        print(f'Error during training: {e}')
+        return jsonify({'status': 'error', 'error': str(e), 'image_path': image_path})
+    except Exception as e:
+        print(f'Unexpected error during training: {e}')
+        return jsonify({'status': 'error', 'error': str(e), 'image_path': image_path})
+
+# detect
 @app.route('/detect', methods=['POST'])
-def process_image():
+def detect_image():
     data = request.get_json()  # 获取POST请求的JSON数据
     chd_name = data.get('CHD_name')
     image_path = data.get('image_path')
 
-    # 使用subprocess调用CHD_detect.py中的main函数
-    result = subprocess.run(['python', 'detect.py', chd_name, image_path], capture_output=True, text=True)
-    # detect_output = json.loads(result.stdout)
-
-    # chd_name = detect_output['CHD_name']
-    # image_path = detect_output['image_path']
-        
-    subprocess.run(['python', 'CHD_detect.py', chd_name, image_path])
-
-    return jsonify({'status': 'success', 'CHD_name': chd_name, 'image_path': image_path})
-
-
-
+    try:
+        print(f'Received detect request with CHD_name: {chd_name} and image_path: {image_path}')
+        result = subprocess.run(['python', 'CHD_detect.py', chd_name, image_path], capture_output=True, text=True, check=True)
+        output = result.stdout
+        error = result.stderr
+        print(f'Detect script output: {output}')
+        if error:
+            print(f'Detect script error: {error}')
+        return jsonify({'status': 'success', 'output': output, 'error': error, 'CHD_name': chd_name, 'image_path': image_path})
+    except subprocess.CalledProcessError as e:
+        print(f'Error during detection: {e}')
+        return jsonify({'status': 'error', 'error': str(e), 'CHD_name': chd_name, 'image_path': image_path})
+    except Exception as e:
+        print(f'Unexpected error during detection: {e}')
+        return jsonify({'status': 'error', 'error': str(e), 'CHD_name': chd_name, 'image_path': image_path})
+    
 if __name__ == '__main__':
     app.run(port=5001, debug=True)  # 在5000端口上启动服务
