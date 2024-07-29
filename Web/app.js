@@ -64,6 +64,18 @@ app.use((req, res, next) => {
   next();
 });
 
+/**
+ * GET /generate_detect_visitor
+ * Request: Query parameter data (URL-encoded JSON string)
+ * Response: HTML page displaying the training results
+ */
+app.get('/generate_detect_visitor', (req, res) => {
+  const data = JSON.parse(req.query.data);
+
+  // Render the results page and display the processed data
+  res.send(`<html><body>Training results: ${JSON.stringify(data)}</body></html>`);
+});
+
 // Use the imported routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -99,23 +111,23 @@ app.get('/', async (req, res) => {
   }
 });
 
-// check if connnection of Flask successful
-app.get('/sss', (req, res) => {
-  // 設置 Flask 伺服器的基本 URL
-  const flaskUrl = 'http://localhost:5001';
-  // 要發送的 JSON 數據
-  const data = {
-    string: 'Hello, Flask!'
-  };
-  // 發送 POST 請求到 Flask 伺服器的 /process_string 路由
-  axios.post(`${flaskUrl}/process_string`, data)
-    .then(response => {
-      console.log('Flask 伺服器的回應：', response.data);
-    })
-    .catch(error => {
-      console.error('發送請求時出錯：', error);
-    });
-})
+// // check if connnection of Flask successful
+// app.get('/sss', (req, res) => {
+//   // 設置 Flask 伺服器的基本 URL
+//   const flaskUrl = 'http://localhost:5001';
+//   // 要發送的 JSON 數據
+//   const data = {
+//     string: 'Hello, Flask!'
+//   };
+//   // 發送 POST 請求到 Flask 伺服器的 /process_string 路由
+//   axios.post(`${flaskUrl}/process_string`, data)
+//     .then(response => {
+//       console.log('Flask 伺服器的回應：', response.data);
+//     })
+//     .catch(error => {
+//       console.error('發送請求時出錯：', error);
+//     });
+// })
 
 // post chd_name and image_path to CHD_detect.py
 app.get('/detect', (req, res) => {
@@ -135,31 +147,31 @@ app.get('/detect', (req, res) => {
     });
 })
 
-// Route to call Python script
-app.get('/call/python', pythonProcess);
+// // Route to call Python script
+// app.get('/call/python', pythonProcess);
 
-function pythonProcess(req, res) {
-  let options = {
-    mode: 'text',
-    pythonOptions: ['-u'],
-    scriptPath: '',
-    args: [req.query.name, req.query.from]
-  };
+// function pythonProcess(req, res) {
+//   let options = {
+//     mode: 'text',
+//     pythonOptions: ['-u'],
+//     scriptPath: '',
+//     args: [req.query.name, req.query.from]
+//   };
 
-  PythonShell.run('process.py', options, (err, results) => {
-    if (err) {
-      res.send(err);
-      return;
-    }
-    try {
-      const parsedString = JSON.parse(results[0]);
-      console.log(`name: ${parsedString.Name}, from: ${parsedString.From}`);
-      res.json(parsedString);
-    } catch (e) {
-      res.send(e.message);
-    }
-  });
-}
+//   PythonShell.run('process.py', options, (err, results) => {
+//     if (err) {
+//       res.send(err);
+//       return;
+//     }
+//     try {
+//       const parsedString = JSON.parse(results[0]);
+//       console.log(`name: ${parsedString.Name}, from: ${parsedString.From}`);
+//       res.json(parsedString);
+//     } catch (e) {
+//       res.send(e.message);
+//     }
+//   });
+// }
 
 // Route to handle user editing
 app.post('/edituser', async (req, res) => {
@@ -177,7 +189,53 @@ app.post('/edituser', async (req, res) => {
 // Route to handle file uploads and image generation
 app.post('/uploadAndGenerate', imageController.uploadAndGenerate)
 
-app.post('/uploadAndTrain')
+/**
+ * POST /uploadAndTrain
+ * Request: FormData with file upload
+ * Response: JSON { fileName: string, processed: boolean }
+ */
+app.post('/uploadAndTrain', upload.single('file'), (req, res) => {
+  const file = req.file;
+
+  // Process the uploaded file and generate initial data
+  const processedData = processFile(file);
+
+  // Send the processed data back to the client
+  res.json(processedData);
+});
+
+/**
+ * POST /train
+ * Request: JSON { fileName: string, processed: boolean }
+ * Response: JSON { fileName: string, processed: boolean, trained: boolean }
+ */
+app.post('/train', (req, res) => {
+  const data = req.body;
+
+  // Further process the data
+  const trainedData = trainData(data);
+
+  // Send the further processed data back to the client
+  res.json(trainedData);
+});
+
+/**
+* Simulate file processing function
+* Input: File object
+* Output: JSON { fileName: string, processed: boolean }
+*/
+function processFile(file) {
+  return { fileName: file.originalname, processed: true };
+}
+
+/**
+* Simulate data training function
+* Input: JSON { fileName: string, processed: boolean }
+* Output: JSON { fileName: string, processed: boolean, trained: boolean }
+*/
+function trainData(data) {
+  return { ...data, trained: true };
+}
 
 // app.post('/upload', upload.single('upload-box'), (req, res) => {
 //   if (!req.file) {
