@@ -27,7 +27,7 @@ const storage = multer.diskStorage({
   }
 });
 
-exports.upload = multer({ storage });
+const upload = multer({ storage });
 console.log('Multer Done');
 
 // Train
