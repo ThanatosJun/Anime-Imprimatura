@@ -43,6 +43,7 @@ router.post('/uploadAndTrain', upload.fields([{ name: 'chd', maxCount: 1 }]), (r
 
   const uploadedFilePath = req.files.chd[0].path;
   const chdName = req.body.character_name;
+  
   console.log('Uploaded file path:', uploadedFilePath);
   console.log('CHD Name:', chdName);
 
@@ -58,7 +59,7 @@ router.post('/uploadAndTrain', upload.fields([{ name: 'chd', maxCount: 1 }]), (r
   })
   .then(response => response.json())
   .then(data => {
-    console.log('Train response:', data);
+    console.log('(imageController.js) Train response:', data);
     res.status(200).json(data);
   })
   .catch(error => {

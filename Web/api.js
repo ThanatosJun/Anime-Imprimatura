@@ -31,25 +31,27 @@ router.post('/uploadAndGenerate', (req, res, next) => {
 
 // Train route
 router.post('/train', (req, res) => {
+    script_path = '/Users/pigg/Documents/GitHub/Anime-Imprimatura/Thanatos/yolov8_RPA_character_train_v3/PA_autoTraing_v5.py'
     const { CHD_name, image_path } = req.body;
 
     const options = {
-        args: [image_path],
-        args: [CHD_name]
+        args: [CHD_name, image_path]
     };
 
-    PythonShell.run('PA_autoTraing.py', options, (err, results) => {
+    PythonShell.run(script_path, options, (err, results) => {
         if (err) {
             console.error(`Error: ${err}`);
             res.status(500).send(err);
         } else {
-            console.log(`Results: ${results}`);
+            console.log(`(api.js) Results: ${results}`);
             res.send(results.join('\n'));
         }
     });
 });
+
 // Detect route
 router.post('/detect', (req, res) => {
+    script_path = '/Users/pigg/Documents/GitHub/Anime-Imprimatura/Thanatos/yolov8_RPA_character_train_v3/CHD_detect.py'
     const { CHS_Name } = req.body;
     const { image_path } = req.body;
 
@@ -58,7 +60,7 @@ router.post('/detect', (req, res) => {
         args: [image_path]
     };
 
-    PythonShell.run('CHD_detect.py', options, (err, results) => {
+    PythonShell.run(script_path, options, (err, results) => {
         if (err) {
             console.error(`Error: ${err}`);
             res.status(500).send(err);

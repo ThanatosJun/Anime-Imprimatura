@@ -128,11 +128,11 @@ function submitFormCHD() {
       }
     }).then(response => {
       if (!response.ok) {
-        throw new Error('Train request failed'); // Throw an error if the response is not ok
+        throw new Error('(upload.js) Train request failed'); // Throw an error if the response is not ok
       }
       return response.json(); // Parse the JSON response
     }).then(detectData => {
-      console.log('Train response:', detectData); // Log the response from the train request
+      console.log('(upload.js) Train response:', detectData); // Log the response from the train request
     }).catch(error => {
       console.error('Error:', error); // Log any errors that occur during the fetch
     });

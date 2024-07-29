@@ -1,70 +1,39 @@
-require("dotenv").config();
 const express = require('express');
+const router = express.Router();
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
-const router = express.Router();
-const fetch = require('node-fetch');
+const axios = require('axios');
 
-// Multer
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    // folder path
-    const chdName = req.body.chdName;
-    const uploadPath = path.join(__dirname, 'uploads', `folder_${Date.now()}`);
+const upload = multer({ dest: 'controller/uploads/' });
 
-    // check if the folder exsists
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
+router.post('/', upload.fields([{ name: 'chd', maxCount: 1 }]), (req, res) => {
+    console.log('Received upload request');
+
+    if (!req.files || !req.files.chd || req.files.chd.length === 0) {
+        console.log('No files uploaded.');
+        return res.status(400).send('No files were uploaded.');
+    } else {
+        console.log('Files uploaded successfully.');
     }
 
-    // pass file path to cb
-    cb(null, uploadPath);
-    console.log("upload to destination successfully. ");
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
-});
+    const uploadedFilePath = req.files.chd[0].path;
+    const chdName = req.body.character_name;
 
-const upload = multer({ storage });
-console.log('Multer Done');
+    console.log('Uploaded file path:', uploadedFilePath);
+    console.log('CHD Name:', chdName);
 
-// Train
-router.post('/uploadAndTrain', upload.fields([{ name: 'chd', maxCount: 1 }]), (req, res) => {
-  console.log('Received upload request');
-
-  if (!req.files || !req.files.chd || req.files.chd.length === 0) {
-    console.log('No files uploaded.');
-    return res.status(400).send('No files were uploaded.');
-  } else {
-    console.log('Files uploaded successfully.');
-  }
-
-  const uploadedFilePath = req.files.chd[0].path;
-  const chdName = req.body.chdName; // Retrieve chdName from the request body
-  console.log('Uploaded file path:', uploadedFilePath);
-  console.log('CHD Name:', chdName);
-
-  const generatedImagePath = uploadedFilePath;
-  console.log('Generated image path:', generatedImagePath);
-
-  fetch('http://localhost:5001/train', {
-    method: 'POST',
-    body: JSON.stringify({ image_path: generatedImagePath, CHD_name: chdName }), // Include chdName in the request body
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log('Train response:', data);
-    res.status(200).json(data);
-  })
-  .catch(error => {
-    console.error('Error during train process:', error);
-    res.status(500).json({ error: 'An error occurred during the train process.' });
-  });
+    axios.post('http://localhost:5001/train', {
+        image_path: uploadedFilePath,
+        CHD_name: chdName
+    })
+    .then(response => {
+        console.log('Train response:', response.data);
+        res.status(200).json(response.data);
+    })
+    .catch(error => {
+        console.error('Error during training:', error);
+        res.status(500).json({ error: 'Error during training.' });
+    });
 });
 
 module.exports = router;
