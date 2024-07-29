@@ -31,7 +31,7 @@ const upload = multer({ storage });
 console.log('Multer Done');
 
 // Train
-router.post('/uploadAndTrain', upload.fields([{ name: 'chd', maxCount: 1 }]), (req, res) => {
+router.post('/uploadAndTrain', upload.fields([{ name: 'chd', maxCount: 3 }]), (req, res) => {
   console.log('Received upload request');
 
   if (!req.files || !req.files.chd || req.files.chd.length === 0) {

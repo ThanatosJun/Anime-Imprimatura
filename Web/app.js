@@ -64,17 +64,17 @@ app.use((req, res, next) => {
   next();
 });
 
-/**
- * GET /generate_detect_visitor
- * Request: Query parameter data (URL-encoded JSON string)
- * Response: HTML page displaying the training results
- */
-app.get('/generate_detect_visitor', (req, res) => {
-  const data = JSON.parse(req.query.data);
+// /**
+//  * GET /generate_detect_visitor
+//  * Request: Query parameter data (URL-encoded JSON string)
+//  * Response: HTML page displaying the training results
+//  */
+// app.get('/generate_detect_visitor', (req, res) => {
+//   const data = JSON.parse(req.query.data);
 
-  // Render the results page and display the processed data
-  res.send(`<html><body>Training results: ${JSON.stringify(data)}</body></html>`);
-});
+//   // Render the results page and display the processed data
+//   res.send(`<html><body>Training results: ${JSON.stringify(data)}</body></html>`);
+// });
 
 // Use the imported routes
 app.use('/', indexRouter);
@@ -207,8 +207,8 @@ app.post('/edituser', async (req, res) => {
   }
 });
 
-// Route to handle file uploads and image generation
-app.post('/uploadAndGenerate', imageController.uploadAndGenerate)
+// // Route to handle file uploads and image generation
+// app.post('/uploadAndGenerate', imageController.uploadAndGenerate)
 
 /**
  * Handle CHD upload and initial processing
@@ -217,7 +217,7 @@ app.post('/uploadAndGenerate', imageController.uploadAndGenerate)
  * @input Array of files with key 'files'
  * @output JSON array of processed file data
  */
-app.post('/uploadAndTrain', upload.array('files', 10), imageController.uploadAndTrain);
+// app.post('/uploadAndTrain', upload.array('files', 10), imageController.uploadAndTrain);
 
 /**
  * @route POST /train
