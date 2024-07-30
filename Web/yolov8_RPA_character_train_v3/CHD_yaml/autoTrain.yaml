@@ -1,7 +1,0 @@
-path: hiwrh
-train: train
-val: valid
-test: test
-
-nc: 3
-names: [MainCharacter, NoMainCharacter, Background]

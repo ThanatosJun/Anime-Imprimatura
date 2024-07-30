@@ -388,6 +388,8 @@ def main(CHD_Name, file_path):
     # create dir
     os.makedirs(CHD_modeldir, exist_ok=True)
     os.makedirs(image_dir, exist_ok=True)
+    # input image
+    
     clear_and_create_dir(image_augmentation_outputdir)
     clear_and_create_dir(dataset_train_dir)
     # Data Preprocess
@@ -406,7 +408,7 @@ def main(CHD_Name, file_path):
     move_noCHFiles(dataset_train_noCH_train, dataset_train_train)
     move_noCHFiles(dataset_train_noCH_test, dataset_train_test)
     move_noCHFiles(dataset_train_noCH_valid, dataset_train_valid)
-    # Train
+    # Train--
     CHD_model_path, onnxCHD_model_path = auto_training(model_contruction,pretrained_model,train_params)
     # rename and move .pt and .onnx
     CHD_modelpt =  CHD_modeldir + "\\" + CHD_Name + ".pt"
