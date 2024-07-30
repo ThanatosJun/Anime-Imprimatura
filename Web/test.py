@@ -3,8 +3,8 @@ from flask_cors import CORS
 import subprocess
 import os
 import json
-from yolov8_RPA_character_train_v3.PA_autoTraing_v5 import main as train_main
-
+from PA_autoTraing_v5 import main as train_main
+# from yolov8_RPA_character_train_v3.CHD_yaml import autoTrain
 
 app = Flask(__name__)
 CORS(app)
