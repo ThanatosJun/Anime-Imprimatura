@@ -1,0 +1,30 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Generate Visitor
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body.generate-visitor
+    header.navigation-bar
+      .logo-placeholder
+      .nav
+        a(href="/") Home
+        a(href="/#how-to-use") How to Use
+        a(href="/#about-us") About Us
+        a(href="/gallery") Gallery
+      a.login-btn(href="login") Log In
+    .content
+      form(id="uploadFormCHS", method="post", action="/uploadAndGenerate", enctype="multipart/form-data")
+        .upload-section
+          .upload
+            label(for="model-select") choose the model you would like to use for detecting
+            select(id="model-select" name="options")
+              //- each option in options
+              //-   option(value=option.value) #{option.text}
+          .upload
+            span Upload CHS
+            .upload-box#uploadBoxCHS
+              input(type="file" name="chs" accept="image/*" mutilple onchange="handleFiles(this.files, 'uploadBoxCHS')")
+        button(type="button" class="generate-btn" onclick="submitFormCHS()") ⚡ Detect
+    script(src='/javascripts/upload.js')

@@ -10,6 +10,15 @@ const bcrypt = require('bcrypt'); // For password hashing
 const bodyParser = require('body-parser'); // To handle HTTP request data
 const multer = require('multer'); // For handling file uploads
 let { PythonShell } = require('python-shell'); // For running Python scripts
+const axios = require('axios');
+
+// routes of controller
+const imageController = require('./controller/imageController');
+const galleryController = require('./controller/galleryController');
+const teamController = require('./controller/teamController');
+const userController = require("./controller/userController");
+
+
 const port = 3000;
 
 var app = express();
@@ -17,7 +26,7 @@ var app = express();
 // Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: function(req, file, cb){
-    cb(null, 'uploads/'); // Specify the upload directory
+    cb(null, path.join(__dirname, '..', 'Thanatos', 'yolov8_RPA_character_train_v3', 'testImages')); // Specify the upload directory
   },
   filename: function(req, file, cb){
     cb(null, Date.now() + path.extname(file.originalname)); // Generate a unique file name
@@ -35,7 +44,8 @@ var usersRouter = require('./routes/users');
 var accountManagementRouter = require('./routes/account_management');
 var createAccountRouter = require('./routes/create_account');
 var galleryRouter = require('./routes/gallery');
-var generateVisitorRouter = require('./routes/generate_visitor');
+var generateDetectVisitorRouter = require('./routes/generate_detect_visitor');
+var generateTrainVisitorRouter = require('./routes/generate_train_visitor');
 var generatedVisitorRouter = require('./routes/generated_visitor');
 var loginRouter = require('./routes/login');
 var teamGalleryFRouter = require('./routes/team_gallery_f');
@@ -60,7 +70,8 @@ app.use('/users', usersRouter);
 app.use('/account_management', accountManagementRouter);
 app.use('/create_account', createAccountRouter);
 app.use('/gallery', galleryRouter);
-app.use('/generate_visitor', generateVisitorRouter);
+app.use('/generate_detect_visitor', generateDetectVisitorRouter);
+app.use('/generate_train_visitor', generateTrainVisitorRouter);
 app.use('/generated_visitor', generatedVisitorRouter);
 app.use('/login', loginRouter);
 app.use('/team_gallery_f', teamGalleryFRouter);
@@ -77,6 +88,170 @@ app.use(express.static(path.join(__dirname, 'public')));
 const apiRouter = require('./api');
 app.use('/api', apiRouter);
 
+// Route to render account settings
+app.get('/', async (req, res) => {
+  try {
+    const user = await userModel.findOne({});
+    res.render('account_setting', { user });
+  } catch (err) {
+    console.error('Error:', err);
+    res.send('Error loading user settings');
+  }
+});
+
+// // check if connnection of Flask successful
+// app.get('/sss', (req, res) => {
+//   // 設置 Flask 伺服器的基本 URL
+//   const flaskUrl = 'http://localhost:5001';
+//   // 要發送的 JSON 數據
+//   const data = {
+//     string: 'Hello, Flask!'
+//   };
+//   // 發送 POST 請求到 Flask 伺服器的 /process_string 路由
+//   axios.post(`${flaskUrl}/process_string`, data)
+//     .then(response => {
+//       console.log('Flask 伺服器的回應：', response.data);
+//     })
+//     .catch(error => {
+//       console.error('發送請求時出錯：', error);
+//     });
+// })
+
+// post CHD_name and image_path to PA_autoTraing_v5.py
+app.post('/train', (req, res) => {
+  // 設置 Flask 伺服器的基本 URL
+  const flaskUrl = 'http://localhost:5001';
+  // 要發送的 JSON 數據
+  const data = { image_path, CHD_name } = req.body;
+  
+  console.log('(app.js) Sending train request with data', data);
+
+  // 發送 POST 請求到 Flask 伺服器的 /train 路由
+  axios.post(`${flaskUrl}/train`, data)
+    .then(response => {
+      console.log('(app.js) Flask Server Response: ', response.data);
+      res.send(response.data);
+    })
+    .catch(error => {
+      console.error('(app.js) Error Sending Requests: ', error);
+      res.status(500).send("Error training image. ");
+    });
+})
+
+// post CHD_name and image_path to CHD_detect.py
+app.get('/detect', (req, res) => {
+  // 設置 Flask 伺服器的基本 URL
+  const flaskUrl = 'http://localhost:5001';
+  // 要發送的 JSON 數據
+  const data = { CHD_name, image_path } = req.body;
+  // 發送 POST 請求到 Flask 伺服器的 /detect 路由
+  axios.post(`${flaskUrl}/detect`, data)
+    .then(response => {
+      console.log('(app.js) Flask Server Response: ', response.data);
+      res.send(response.data);
+    })
+    .catch(error => {
+      console.error('(app.js) Error Sending Requests: ', error);
+      res.status(500).send("Error detecting image. ");
+    });
+})
+
+// // Route to call Python script
+// app.get('/call/python', pythonProcess);
+
+// function pythonProcess(req, res) {
+//   let options = {
+//     mode: 'text',
+//     pythonOptions: ['-u'],
+//     scriptPath: '',
+//     args: [req.query.name, req.query.from]
+//   };
+
+//   PythonShell.run('process.py', options, (err, results) => {
+//     if (err) {
+//       res.send(err);
+//       return;
+//     }
+//     try {
+//       const parsedString = JSON.parse(results[0]);
+//       console.log(`name: ${parsedString.Name}, from: ${parsedString.From}`);
+//       res.json(parsedString);
+//     } catch (e) {
+//       res.send(e.message);
+//     }
+//   });
+// }
+
+// Route to handle user editing
+app.post('/edituser', async (req, res) => {
+  try {
+    const { userId, newGmail, newPassword } = req.body;
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await userModel.updateOne({ _id: userId }, { $set: { gmail: newGmail, password: hashedPassword } });
+    res.redirect('/');
+  } catch (err) {
+    console.error('Error:', err);
+    res.send('Error updating user settings');
+  }
+});
+
+// // Route to handle file uploads and image generation
+// app.post('/uploadAndGenerate', imageController.uploadAndGenerate) //return 500
+
+// Handle CHD upload and initial processing
+// app.post('/uploadAndTrain', imageController.uploadAndTrain); //return 500
+
+/**
+ * @route POST /train
+ * @input JSON { fileName: string, processed: boolean }
+ * @output JSON { fileName: string, processed: boolean, trained: boolean }
+ */
+app.post('/train', (req, res) => {
+  const data = req.body;
+
+  // Further process the data
+  const trainedData = trainData(data);
+
+  // Send the further processed data back to the client
+  res.json(trainedData);
+});
+
+/**
+* Simulate file processing function
+* @input File object
+* @output JSON { fileName: string, processed: boolean }
+*/
+function processFile(file) {
+  return { fileName: file.originalname, processed: true };
+}
+
+/**
+* Simulate data training function
+* @input JSON { fileName: string, processed: boolean }
+* @output JSON { fileName: string, processed: boolean, trained: boolean }
+*/
+function trainData(data) {
+  return { ...data, trained: true };
+}
+
+// Handle CHD upload and initial processing
+app.post('/uploadAndTrain', imageController);
+app.post('/uploadAndDetect', imageController);
+
+app.post('/upload', upload.single('upload-box'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send('No file uploaded.');
+  }
+  const filePath = path.join(__dirname, 'uploads', req.file.filename);
+  res.send({ filePath: filePath }); // 返回文件路径
+});
+
+// Handle 404 errors
+app.use((req, res, next) =>{
+  console.log('404 not found:', req.originalUrl);
+  res.status(404).send('not found');
+})
+
 // Catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -92,63 +267,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-// Route to render account settings
-app.get('/', async (req, res) => {
-  try {
-    const user = await userModel.findOne({});
-    res.render('account_setting', { user });
-  } catch (err) {
-    console.error('Error:', err);
-    res.send('Error loading user settings');
-  }
-});
-
-// Route to call Python script
-app.get('/call/python', pythonProcess)
-
-function pythonProcess(req, res) {
-  let options = {
-    args:
-      [
-        req.query.name,
-        req.query.from
-      ]
-  }
-
-  PythonShell.run('./test.py', options, (err, data) => {
-    if (err) res.send(err)
-    const parsedString = JSON.parse(data)
-    console.log(`name: ${parsedString.Name}, from: ${parsedString.From}`)
-    res.json(parsedString)
-  })
-
-}
-
-// Route to handle user editing
-app.post('/edituser', async (req, res) => {
-  try {
-    const { userId, newGmail, newPassword } = req.body;
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await userModel.updateOne({ _id: userId }, { $set: { gmail: newGmail, password: hashedPassword } });
-    res.redirect('/');
-  } catch (err) {
-    console.error('Error:', err);
-    res.send('Error updating user settings');
-  }
-});
-
-// multer (con.) // Route to handle file uploads
-app.post('/upload', upload.fields([{name: 'chd', maxCount: 3}, {name: 'chs', maxCount: 1}]), (req, res)=>{
-  console.log(req.files); // 在這裡調用AI模型，生成新圖片，並重定向到生成頁面
-  res.redirect('/generated');
-})
-
-// Handle 404 errors
-app.use((req, res, next) =>{
-  console.log('404 not found:', req.originalUrl);
-  res.status(404).send('not found');
-})
 
 // Start the server
 app.listen(port, (err) => {
