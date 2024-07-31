@@ -29,6 +29,7 @@ def CHS_detect(model_path, CHS_dir):
 def CHS_save(results, CHD_Name):
     CHS_yes = False
     file_path = "CHS_Detect/" + CHD_Name + "_Detect"
+    os.makedirs(file_path, exist_ok = True)  # create folder for save correct CHS
     #   for each result of an image
     for result in results:
         # for each confidence of a detected box in an image

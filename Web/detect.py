@@ -2,7 +2,7 @@ import sys
 import json
 
 result = {
-    'CHD_name': sys.argv[1],
+    'CHS_name': sys.argv[1],
     'image_path': sys.argv[2]
 }
 
