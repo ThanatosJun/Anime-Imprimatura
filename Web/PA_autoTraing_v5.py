@@ -389,8 +389,13 @@ def main(CHD_Name, file_path):
     os.makedirs(CHD_modeldir, exist_ok=True)
     os.makedirs(image_dir, exist_ok=True)
     # input image
-    new_image_path = os.path.join(image_dir, os.path.basename(file_path))
-    shutil.move(file_path, new_image_path)
+    # new_image_path = os.path.join(image_dir, os.path.basename(file_path))
+    # shutil.move(file_path, new_image_path)
+    
+    image_basename = os.path.basename(file_path)
+    new_image_path = os.path.join(image_dir, image_basename)
+    shutil.copy(file_path, new_image_path)
+    
     clear_and_create_dir(image_augmentation_outputdir)
     clear_and_create_dir(dataset_train_dir)
     # Data Preprocess
@@ -430,16 +435,16 @@ def re_ptmodel_path(CHD_Name):
 # Run this .py for main file must run this
 if __name__ == "__main__":
     # original version by Thanatos
-    main(CHD_Name="Anime008")
+    # main(CHD_Name="Anime008")
     
     # some adjustments by pigg--
-    # if len(sys.argv) != 3:
-    #     print("Usage: python PA_autoTraing_v5.py <CHD_name> <image_path>")
-    #     sys.exit(1)
+    if len(sys.argv) != 3:
+        print("Usage: python PA_autoTraing_v5.py <CHD_name> <image_path>")
+        sys.exit(1)
 
-    # CHD_name = sys.argv[1]
-    # image_path = sys.argv[2]
+    CHD_name = sys.argv[1]
+    image_path = sys.argv[2]
 
 
-    # main(CHD_name, image_path)
+    main(CHD_name, image_path)
     # 'til here
