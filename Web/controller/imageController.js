@@ -75,6 +75,7 @@ async function callAIApi(chdFiles, chsFiles) {
   // 實際實現需要根據AI模型的API來編寫
   return 'path/to/generated/image.png';
 }
+
 // Detect
 router.post('/uploadAndDetect', (req, res) => {
   const detectData = req.body;
