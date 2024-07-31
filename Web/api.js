@@ -31,7 +31,7 @@ router.post('/uploadAndGenerate', (req, res, next) => {
 
 // Train route
 router.post('/train', (req, res) => {
-    script_path = '/Users/pigg/Documents/GitHub/Anime-Imprimatura/Thanatos/yolov8_RPA_character_train_v3/PA_autoTraing_v5.py'
+    script_path = 'yolov8_RPA_character_train_v3/PA_autoTraing_v5.py'
     const { CHD_name, image_path } = req.body;
 
     const options = {

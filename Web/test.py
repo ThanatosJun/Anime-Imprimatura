@@ -3,6 +3,8 @@ from flask_cors import CORS
 import subprocess
 import os
 import json
+from PA_autoTraing_v5 import main as train_main
+# from yolov8_RPA_character_train_v3.CHD_yaml import autoTrain
 
 app = Flask(__name__)
 CORS(app)
@@ -28,26 +30,17 @@ def train_image():
     print('Now executing "Train". ')
     
     # route of PA_autoTraing_v5.py
-    script_path = '/Users/pigg/Documents/GitHub/Anime-Imprimatura/Thanatos/yolov8_RPA_character_train_v3/PA_autoTraing_v5.py'
-
+    script_path = 'yolov8_RPA_character_train_v3/PA_autoTraing_v5.py'
     try:
         print(f'Received train request with CHD_name: {CHD_name}, image_path: {image_path}')
-        result = subprocess.run(['python', script_path, CHD_name, image_path], capture_output=True, text=True, check=True)
-        output = result.stdout
-        error = result.stderr
-        print(f'Train script output: {output}')
-        if error:
-            print(f'Train script error: {error}')
-        # Append "Train Completed." to the output
-        output += "\nTrain Completed."
-        return jsonify({'status': 'success', 'output': output, 'error': error, 'CHD_name': CHD_name, 'image_path': image_path})
-    except subprocess.CalledProcessError as e:
+        train_main(CHD_name, image_path)
+
+        output = "Train script executed successfully."
+        return jsonify({'status': 'success', 'output': output, 'CHD_name': CHD_name, 'image_path': image_path})
+    except Exception as e:
         print(f'Error during training: {e}')
         return jsonify({'status': 'error', 'error': str(e), 'CHD_name': CHD_name, 'image_path': image_path})
-    except Exception as e:
-        print(f'Unexpected error during training: {e}')
-        return jsonify({'status': 'error', 'error': str(e), 'CHD_name': CHD_name, 'image_path': image_path})
-
+    
 # detect
 @app.route('/detect', methods=['POST'])
 def detect_image():
@@ -72,4 +65,4 @@ def detect_image():
         return jsonify({'status': 'error', 'error': str(e), 'CHD_name': CHD_name, 'image_path': image_path})
     
 if __name__ == '__main__':
-    app.run(port=5001, debug=True)  # 在5000端口上启动服务
+    app.run(port=5001, debug=True)  # 在5001端口上启动服务
