@@ -11,7 +11,7 @@ const options = [
 /* GET generate_detect_visitor page. */
 router.get('/', function(req, res, next) {
   const characterName = req.query.character_name;
-  res.render('generate_detect_visitor', { options }); // , { options: characterName }
+  res.render('generate_detect_visitor', { options:characterName }); // , { options: characterName }
 });
 
 module.exports = router;
