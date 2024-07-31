@@ -101,7 +101,7 @@ function submitFormCHS() {
 // Function to handle train page form submission
 async function submitFormCHD() {
     const form = document.getElementById('uploadFormCHD');
-    const characterName = getElementById('character_name');
+    const characterName = document.getElementById('character_name');
     const formData = new FormData(form);
 
     try {

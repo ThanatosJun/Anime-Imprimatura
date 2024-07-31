@@ -11,6 +11,7 @@ import shutil
 import os
 from PA_autoTraing_v5 import re_ptmodel_path
 import cv2
+import sys
 
 # Function for detect 
 def CHS_detect(model_path, CHS_dir):
@@ -63,7 +64,7 @@ def CHS_save(results, CHD_Name):
     return png_path
 
 # Function for main process
-def main(CHD_Name):
+def main(CHD_Name, file_path):
     os.makedirs("CHS_Detect/" + CHD_Name, exist_ok = True)  # create folder for save correct CHS
     model_path = re_ptmodel_path(CHD_Name)  # get CHD_model path from PA_autoTraing_v3
     results = CHS_detect(model_path, CHS_dir = "testImages")    # detect
@@ -72,5 +73,14 @@ def main(CHD_Name):
 
 # Run this .py for main file must run this
 if __name__ == "__main__":
-    main(CHD_Name="Anime008")
-    # Anime001
+    # main(CHD_Name="Anime008")
+    # # Anime001
+
+    if len(sys.argv) != 3:
+        print("Usage: python CHD_detect.py <CHD_name> <image_path>")
+        sys.exit(1)
+
+    CHD_name = sys.argv[1]
+    image_path = sys.argv[2]
+
+    main(CHD_name, image_path)

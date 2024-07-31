@@ -444,7 +444,6 @@ if __name__ == "__main__":
 
     CHD_name = sys.argv[1]
     image_path = sys.argv[2]
-
-
+    
     main(CHD_name, image_path)
     # 'til here
