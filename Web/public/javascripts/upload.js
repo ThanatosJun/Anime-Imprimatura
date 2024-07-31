@@ -131,7 +131,7 @@ async function submitFormCHD() {
 
         if (!trainResponse.ok) {
             const errorText = await trainResponse.text();
-            throw new Error('Train request failed: ${errorText}');
+            throw new Error(`Train request failed: ${errorText}`);
         }
 
         // Parse the train response JSON data
@@ -139,7 +139,7 @@ async function submitFormCHD() {
         console.log('Train response:', trainData);
 
         // Redirect to the "detect" page with the processed data
-        window.location.href = '/generate_detect_visitor?data=${encodeURIComponent(JSON.stringify(trainData))}&character_name=${encodeURIComponent(characterName)}';
+        window.location.href = `/generate_detect_visitor?data=${encodeURIComponent(JSON.stringify(trainData))}&character_name=${encodeURIComponent(characterName)}`;
 
     } catch (error) {
         console.error('Error:', error.message);

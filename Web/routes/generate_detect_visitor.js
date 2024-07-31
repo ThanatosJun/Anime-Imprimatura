@@ -10,7 +10,8 @@ const options = [
 
 /* GET generate_detect_visitor page. */
 router.get('/', function(req, res, next) {
-  const characterName = req.query.character_name;
+  const characterName = decodeURIComponent(req.query.character_name);
+  console.log(characterName);
   const options = [
     { value: characterName, text: characterName}
   ]
