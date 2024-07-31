@@ -69,6 +69,13 @@ router.post('/uploadAndTrain', upload.fields([{ name: 'chd', maxCount: 3 }]), (r
 
 });
 
+// 假設一個調用AI模型的函數
+async function callAIApi(chdFiles, chsFiles) {
+  // 模擬AI模型API調用，返回生成圖片的路徑
+  // 實際實現需要根據AI模型的API來編寫
+  return 'path/to/generated/image.png';
+}
+
 // Detect
 router.post('/uploadAndDetect', (req, res) => {
   const detectData = req.body;
