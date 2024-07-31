@@ -9,7 +9,7 @@ Features:
 from ultralytics import YOLO
 import shutil
 import os
-from PA_autoTraing_v3 import re_ptmodel_path
+from PA_autoTraing_v5 import re_ptmodel_path
 import cv2
 
 # Function for detect 

@@ -49,19 +49,13 @@ def detect_image():
     image_path = data.get('image_path')
 
     try:
-        print(f'Received detect request with CHD_name: {CHD_name} and image_path: {image_path}')
-        result = subprocess.run(['python', 'CHD_detect.py', CHD_name, image_path], capture_output=True, text=True, check=True)
-        output = result.stdout
-        error = result.stderr
-        print(f'Detect script output: {output}')
-        if error:
-            print(f'Detect script error: {error}')
-        return jsonify({'status': 'success', 'output': output, 'error': error, 'CHD_name': CHD_name, 'image_path': image_path})
-    except subprocess.CalledProcessError as e:
-        print(f'Error during detection: {e}')
-        return jsonify({'status': 'error', 'error': str(e), 'CHD_name': CHD_name, 'image_path': image_path})
+        print(f'Received detect request with CHD_name: {CHD_name}, image_path: {image_path}')
+        train_main(CHD_name, image_path)
+
+        output = "Detect script executed successfully."
+        return jsonify({'status': 'success', 'output': output, 'CHD_name': CHD_name, 'image_path': image_path})
     except Exception as e:
-        print(f'Unexpected error during detection: {e}')
+        print(f'Error during detecting: {e}')
         return jsonify({'status': 'error', 'error': str(e), 'CHD_name': CHD_name, 'image_path': image_path})
     
 if __name__ == '__main__':

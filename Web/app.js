@@ -146,6 +146,9 @@ app.get('/detect', (req, res) => {
   const flaskUrl = 'http://localhost:5001';
   // 要發送的 JSON 數據
   const data = { CHD_name, image_path } = req.body;
+  
+  console.log('(app.js) Sending detect request with data', data);
+
   // 發送 POST 請求到 Flask 伺服器的 /detect 路由
   axios.post(`${flaskUrl}/detect`, data)
     .then(response => {

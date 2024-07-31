@@ -389,7 +389,8 @@ def main(CHD_Name, file_path):
     os.makedirs(CHD_modeldir, exist_ok=True)
     os.makedirs(image_dir, exist_ok=True)
     # input image
-    
+    new_image_path = os.path.join(image_dir, os.path.basename(file_path))
+    shutil.move(file_path, new_image_path)
     clear_and_create_dir(image_augmentation_outputdir)
     clear_and_create_dir(dataset_train_dir)
     # Data Preprocess
