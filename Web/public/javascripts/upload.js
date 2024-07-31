@@ -100,28 +100,28 @@ function submitFormCHS() {
 
 // Function to handle train page form submission
 async function submitFormCHD() {
-    const form = document.getElementById('uploadFormCHD');
-    const characterName = document.getElementById('character_name').value;
+    const form = document.getElementById(`uploadFormCHD`);
+    const characterName = document.getElementById(`character_name`).value;
     const formData = new FormData(form);
 
     try {
         // Upload the file and process it
-        const uploadResponse = await fetch('/uploadAndTrain', {
+        const uploadResponse = await fetch(`/uploadAndTrain`, {
             method: 'POST',
             body: formData
         });
 
         if (!uploadResponse.ok) {
             const errorText = await uploadResponse.text();
-            throw new Error('Upload failed: ${errorText}');
+            throw new Error(`Upload failed: ${errorText}`);
         }
 
         // Parse the response JSON data
         const uploadData = await uploadResponse.json();
-        console.log('Upload response:', uploadData);
+        console.log(`Upload response:`, uploadData);
 
         // Send a POST request to the '/train' endpoint with the processed data
-        const trainResponse = await fetch('/train', {
+        const trainResponse = await fetch(`/train`, {
             method: 'POST',
             body: JSON.stringify(uploadData),
             headers: {
@@ -131,7 +131,7 @@ async function submitFormCHD() {
 
         if (!trainResponse.ok) {
             const errorText = await trainResponse.text();
-            throw new Error('Train request failed: ${errorText}');
+            throw new Error(`Train request failed: ${errorText}`);
         }
 
         // Parse the train response JSON data
@@ -139,14 +139,14 @@ async function submitFormCHD() {
         console.log('Train response:', trainData);
 
         // Redirect to the "detect" page with the processed data
-        window.location.href = '/generate_detect_visitor?data=${encodeURIComponent(JSON.stringify(trainData))}&character_name=${encodeURIComponent(characterName)}';
+        window.location.href = `/generate_detect_visitor?data=${encodeURIComponent(JSON.stringify(trainData))}&character_name=${encodeURIComponent(characterName)}`;
 
     } catch (error) {
         console.error('Error:', error.message);
-        alert('An error occurred: ${error.message}');
+        alert(`An error occurred: ${error.message}`);
     }
 }
 
 function submitFormGenerate(){
-  window.location.href = '/generated_visitor';
+  window.location.href = `/generated_visitor`;
 }

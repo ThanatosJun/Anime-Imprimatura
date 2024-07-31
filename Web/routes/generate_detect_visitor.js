@@ -12,7 +12,7 @@ const options = [
 router.get('/', function(req, res, next) {
   const characterName = req.query.character_name;
   const options = [
-    { value: characterName, text: characterName}
+    { value: characterName, text: characterName }
   ]
   res.render('generate_detect_visitor', { options });
 });
