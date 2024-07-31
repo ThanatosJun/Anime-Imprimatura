@@ -15,9 +15,16 @@ html(lang="en")
         a(href="/gallery") Gallery
       a.login-btn(href="login") Log In
     main.content
-      div Here it is!
-      .content-box
-        // Content goes here
+      .title Here it is!
+      .container
+        .content-box.chs
+          .image-title your chs
+          .image-container
+            img#center-image(src=imgSrc alt="CHS")
+        .content-box.final
+          .image-title the result
+          .image-container
+            img#center-image(src=imgSrc alt="The result")
       .buttons
         button.edit-btn Edit
         button.save-btn Save

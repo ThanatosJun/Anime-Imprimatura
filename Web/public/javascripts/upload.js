@@ -70,7 +70,7 @@ function submitFormCHS() {
     console.log('Success:', data);
     
     // Redirect to "final" page after "detect"
-    window.location.href = '/generated_visitor';
+    window.location.href = '/generate_visitor';
 
     // Send a POST request to the '/detect' endpoint with the generated data
     fetch('/detect', {
@@ -144,4 +144,8 @@ async function submitFormCHD() {
         console.error('Error:', error.message);
         alert('An error occurred: ${error.message}');
     }
+}
+
+function submitFormGenerate(){
+  window.location.href = '/generated_visitor';
 }

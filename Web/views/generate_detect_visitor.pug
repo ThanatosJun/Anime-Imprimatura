@@ -15,13 +15,13 @@ html(lang="en")
         a(href="/gallery") Gallery
       a.login-btn(href="login") Log In
     .content
-      form(id="uploadFormCHS", method="post", action="/uploadAndGenerate", enctype="multipart/form-data")
+      form(id="uploadFormCHS", method="post", action="/uploadAndDetect", enctype="multipart/form-data")
         .upload-section
           .upload
             label(for="model-select") choose the model you would like to use for detecting
             select(id="model-select" name="options")
-              //- each option in options
-              //-   option(value=option.value) #{option.text}
+              each option in options
+                option(value=option.value) #{option.text}
           .upload
             span Upload CHS
             .upload-box#uploadBoxCHS

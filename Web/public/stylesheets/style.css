@@ -420,31 +420,91 @@ footer {
   flex-direction: column;
   align-items: center;
 }
+
 .generated-visitor .content {
   gap: 10px;
+  padding: auto;
 }
+
+.generated-visitor .title {
+  text-align: center;
+  margin: 0;
+  font-size: 24px;
+  margin-bottom: 40px;
+}
+
+.generated-visitor .container {
+  display: flex;
+  width: 90%;
+  max-width: 1200px;
+}
+
 .generated-visitor .content-box {
-  width: 646px;
-  height: 425px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.generated-visitor .image-title {
+  text-align: center;
+  margin: 0;
+  font-size: 18px;
+}
+
+.generated-visitor .image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: #D9D9D9;
   border-radius: 40px;
+  padding: 20px;
+  margin: 10px;
+  flex: 1;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 550px;
+  height: 900px;
+  max-width: 100%;
 }
+
+.generated-visitor .image-container img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.generated-visitor .chs {
+  margin-right: 50px;
+}
+
+.generated-visitor .final {
+  display: flex;
+  flex-direction: column;
+}
+
 .generated-visitor .buttons {
   display: flex;
   justify-content: center;
   gap: 20px;
   margin-top: 20px;
 }
+
 .generated-visitor .edit-btn, .generated-visitor .save-btn {
-  background-color: #888;
-  color: #fff;
+  display: flex;
+  background-color: #E6FFFDB5;
   border: none;
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 40px;
   cursor: pointer;
+  font-size: 15px;
+  color: #000;
 }
+
 .generated-visitor .save-btn {
-  background-color: #6a4b82;
+  background-color: #B7A0CAB5;
+}
+
+.generated-visitor button:hover {
+  background-color: #0056b3;
 }
 
 /* Log In Page Styles */

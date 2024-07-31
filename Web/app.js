@@ -46,6 +46,7 @@ var createAccountRouter = require('./routes/create_account');
 var galleryRouter = require('./routes/gallery');
 var generateDetectVisitorRouter = require('./routes/generate_detect_visitor');
 var generateTrainVisitorRouter = require('./routes/generate_train_visitor');
+var generateVisitorRouter = require('./routes/generate_visitor');
 var generatedVisitorRouter = require('./routes/generated_visitor');
 var loginRouter = require('./routes/login');
 var teamGalleryFRouter = require('./routes/team_gallery_f');
@@ -72,6 +73,7 @@ app.use('/create_account', createAccountRouter);
 app.use('/gallery', galleryRouter);
 app.use('/generate_detect_visitor', generateDetectVisitorRouter);
 app.use('/generate_train_visitor', generateTrainVisitorRouter);
+app.use('/generate_visitor', generateVisitorRouter);
 app.use('/generated_visitor', generatedVisitorRouter);
 app.use('/login', loginRouter);
 app.use('/team_gallery_f', teamGalleryFRouter);
@@ -195,12 +197,6 @@ app.post('/edituser', async (req, res) => {
   }
 });
 
-// // Route to handle file uploads and image generation
-// app.post('/uploadAndGenerate', imageController.uploadAndGenerate) //return 500
-
-// Handle CHD upload and initial processing
-// app.post('/uploadAndTrain', imageController.uploadAndTrain); //return 500
-
 /**
  * @route POST /train
  * @input JSON { fileName: string, processed: boolean }
@@ -216,27 +212,8 @@ app.post('/train', (req, res) => {
   res.json(trainedData);
 });
 
-/**
-* Simulate file processing function
-* @input File object
-* @output JSON { fileName: string, processed: boolean }
-*/
-function processFile(file) {
-  return { fileName: file.originalname, processed: true };
-}
-
-/**
-* Simulate data training function
-* @input JSON { fileName: string, processed: boolean }
-* @output JSON { fileName: string, processed: boolean, trained: boolean }
-*/
-function trainData(data) {
-  return { ...data, trained: true };
-}
-
-// Handle CHD upload and initial processing
-app.post('/uploadAndTrain', imageController);
-app.post('/uploadAndDetect', imageController);
+app.post('/uploadAndTrain', imageController); // Handle CHD upload and initial processing
+app.post('/uploadAndDetect', imageController); // Handle CHS upload and initial processing
 
 app.post('/upload', upload.single('upload-box'), (req, res) => {
   if (!req.file) {
