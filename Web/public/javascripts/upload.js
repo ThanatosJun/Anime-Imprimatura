@@ -101,6 +101,7 @@ function submitFormCHS() {
 // Function to handle train page form submission
 async function submitFormCHD() {
     const form = document.getElementById('uploadFormCHD');
+    const characterName = getElementById('character_name');
     const formData = new FormData(form);
 
     try {
@@ -138,7 +139,7 @@ async function submitFormCHD() {
         console.log('Train response:', trainData);
 
         // Redirect to the "detect" page with the processed data
-        window.location.href = '/generate_detect_visitor?data=${encodeURIComponent(JSON.stringify(trainData))}';
+        window.location.href = '/generate_detect_visitor?data=${encodeURIComponent(JSON.stringify(trainData))}&character_name=${encodeURIComponent(characterName)}';
 
     } catch (error) {
         console.error('Error:', error.message);
