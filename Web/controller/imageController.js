@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     // folder path
     const chdName = req.body.chdName;
-    const uploadPath = path.join(__dirname, 'uploads', `folder_${Date.now()}`);
+    const uploadPath = path.join(__dirname, 'uploads', `folder_chdName`);
 
     // check if the folder exsists
     if (!fs.existsSync(uploadPath)) {
@@ -31,7 +31,7 @@ const upload = multer({ storage });
 console.log('Multer Done');
 
 // Train
-router.post('/uploadAndTrain', upload.fields([{ name: 'chd', maxCount: 1 }]), (req, res) => {
+router.post('/uploadAndTrain', upload.fields([{ name: 'chd', maxCount: 3 }]), (req, res) => {
   console.log('Received upload request');
 
   if (!req.files || !req.files.chd || req.files.chd.length === 0) {
