@@ -14,7 +14,6 @@ from PIL import Image, ImageEnhance, ImageOps, ImageChops
 from ultralytics import YOLO
 import torch.nn as nn
 import numpy as np
-import zero123_stable_api
 # some adjustments by pigg--
 import sys
 # import yolov8_RPA_character_train_v3.zero123_stable_api as zero123_stable_api
@@ -309,8 +308,10 @@ def change_yaml_path(data_yaml, newpath):
     with open(data_yaml, 'r') as file:
         data = yaml.load(file)
 
+    # 获取当前工作目录的绝对路径
+    current_directory = os.getcwd()
     # rewrite path
-    data['path'] = newpath
+    data['path'] = current_directory + "/datasets/" + newpath
 
     # rewrite all data into YAML and still in the former orders
     with open(data_yaml, 'w') as file:
@@ -360,7 +361,7 @@ def __init__(CHD_Name):
     train_params = {
     'data': data_yaml,
     'epochs': 25,
-    'batch': 16,
+    'batch': -1,
     'imgsz': 640,
     'save_period': -1,
     'workers': 0,
@@ -384,14 +385,13 @@ def get_new_file_path(file_path):
 
 # Function for main process
 def main(CHD_Name, file_path):
+    import zero123_stable_api
     __init__(CHD_Name) # initialize
     # create dir
     os.makedirs(CHD_modeldir, exist_ok=True)
     os.makedirs(image_dir, exist_ok=True)
-    # input image
-    # new_image_path = os.path.join(image_dir, os.path.basename(file_path))
-    # shutil.move(file_path, new_image_path)
-    
+
+    # input image from uploads
     image_basename = os.path.basename(file_path)
     new_image_path = os.path.join(image_dir, image_basename)
     shutil.copy(file_path, new_image_path)
@@ -406,7 +406,7 @@ def main(CHD_Name, file_path):
     CHD_augmentation(image_dir,image_augmentation_outputdir,10)
     split_dataset(image_dir, dataset_train_dir, train_ratio, test_ratio, valid_ratio)
     split_dataset(image_augmentation_outputdir, dataset_train_dir, train_ratio, test_ratio, valid_ratio)
-    # # RPA Labeling
+    # RPA Labeling
     auto_label(dataset_train_train, label_fullbody, label_head)
     auto_label(dataset_train_test, label_fullbody, label_head)
     auto_label(dataset_train_valid, label_fullbody, label_head)
@@ -426,6 +426,7 @@ def main(CHD_Name, file_path):
     os.rename(CHD_model_path, CHD_modelpt)
     os.rename(onnxCHD_model_path, CHD_modelonnx)
     return CHD_modelpt
+    # return file_path
 
 # Function for get .pt path for detetion
 def re_ptmodel_path(CHD_Name):
@@ -444,6 +445,5 @@ if __name__ == "__main__":
 
     CHD_name = sys.argv[1]
     image_path = sys.argv[2]
-    
     main(CHD_name, image_path)
     # 'til here
