@@ -10,10 +10,9 @@ const fetch = require('node-fetch');
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     // folder path
-    const chdName = req.body.character_name;
-    console.log(chdName)
-    // console.log(str(chdName))
-    const uploadPath = path.join(__dirname, 'uploads', chdName);
+    const chdName = req.body.chd;
+    console.log(decodeURIComponent(chdName));
+    const uploadPath = path.join(__dirname, 'uploads', `folder_chdName`);
 
     // check if the folder exsists
     if (!fs.existsSync(uploadPath)) {
