@@ -3,8 +3,7 @@ from flask_cors import CORS
 import subprocess
 import os
 import json
-from PA_autoTraing_v5 import main as train_main
-from CHD_detect import main as detect_main
+
 # from yolov8_RPA_character_train_v3.CHD_yaml import autoTrain
 
 app = Flask(__name__)
@@ -29,12 +28,12 @@ def train_image():
     image_path = data.get('image_path')
     
     print('Now executing "Train". ')
-    
+    import PA_autoTraing_v6
     # route of PA_autoTraing_v5.py
-    script_path = 'yolov8_RPA_character_train_v3/PA_autoTraing_v5.py'
+    script_path = 'yolov8_RPA_character_train_v3/PA_autoTraing_v6.py'
     try:
         print(f'Received train request with CHD_name: {CHD_name}, image_path: {image_path}')
-        train_main(CHD_name, image_path)
+        PA_autoTraing_v6.main(CHD_name, image_path)
 
         output = "Train script executed successfully."
         return jsonify({'status': 'success', 'output': output, 'CHD_name': CHD_name, 'image_path': image_path})
@@ -46,18 +45,19 @@ def train_image():
 @app.route('/detect', methods=['POST'])
 def detect_image():
     data = request.get_json()  # 获取POST请求的JSON数据
-    options = request.form.get('options')
+    CHD_name = data.get('CHD_name')
     image_path = data.get('image_path')
 
     try:
-        print(f'Received detect request with options: {options}, image_path: {image_path}')
-        detect_main(options, image_path)
+        print(f'Received detect request with CHD_name: {CHD_name}, image_path: {image_path}')
+        # train_main(CHD_name, image_path)
+        #  Why Train ?? by Thanatos
 
         output = "Detect script executed successfully."
-        return jsonify({'status': 'success', 'output': output, 'options': options, 'image_path': image_path})
+        return jsonify({'status': 'success', 'output': output, 'CHD_name': CHD_name, 'image_path': image_path})
     except Exception as e:
         print(f'Error during detecting: {e}')
-        return jsonify({'status': 'error', 'error': str(e), 'options': options, 'image_path': image_path})
+        return jsonify({'status': 'error', 'error': str(e), 'CHD_name': CHD_name, 'image_path': image_path})
     
 if __name__ == '__main__':
     app.run(port=5001, debug=True)  # 在5001端口上启动服务
