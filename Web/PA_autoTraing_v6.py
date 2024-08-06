@@ -354,7 +354,7 @@ def __init__(CHD_Name):
     # training parameters
     train_params = {
     'data': data_yaml,
-    'epochs': 1,
+    'epochs': 20,
     'batch': -1,
     'imgsz': 640,
     'save_period': -1,
@@ -378,7 +378,7 @@ def get_new_file_path(file_path):
     return new_file_path
 
 # Function for main process
-def main(CHD_Name, file_path):
+def main(CHD_Name, file_paths):
     import zero123_stable_api
     __init__(CHD_Name) # initialize
     # create dir
@@ -386,9 +386,10 @@ def main(CHD_Name, file_path):
     os.makedirs(image_dir, exist_ok=True)
 
     # input image from uploads
-    image_basename = os.path.basename(file_path)
-    new_image_path = os.path.join(image_dir, image_basename)
-    shutil.copy(file_path, new_image_path)
+    for file_path in file_paths:
+        image_basename = os.path.basename(file_path)
+        new_image_path = os.path.join(image_dir, image_basename)
+        shutil.copy(file_path, new_image_path)
     
     clear_and_create_dir(image_augmentation_outputdir)
     clear_and_create_dir(dataset_train_dir)
@@ -417,7 +418,7 @@ def main(CHD_Name, file_path):
     os.rename(CHD_model_path, CHD_modelpt)
     print("Successful Model:" + CHD_modelpt)
     return CHD_modelpt
-    # return file_path
+    # return file_paths
 
 # Function for get .pt path for detetion
 def re_ptmodel_path(CHD_Name):
@@ -431,10 +432,11 @@ if __name__ == "__main__":
     
     # some adjustments by pigg--
     if len(sys.argv) != 3:
-        print("Usage: python PA_autoTraing_v5.py <CHD_name> <image_path>")
+        print("Usage: python PA_autoTraing_v6.py <CHD_name> <image_path>")
         sys.exit(1)
 
     CHD_name = sys.argv[1]
     image_path = sys.argv[2]
+    print(image_path)
     main(CHD_name, image_path)
     # 'til here

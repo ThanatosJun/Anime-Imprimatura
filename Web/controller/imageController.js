@@ -10,9 +10,10 @@ const fetch = require('node-fetch');
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     // folder path
-    const chdName = req.body.chd;
-    console.log(decodeURIComponent(chdName));
-    const uploadPath = path.join(__dirname, 'uploads', `folder_chdName`);
+    const chdName = req.body.character_name;
+    console.log(chdName)
+    // console.log(str(chdName))
+    const uploadPath = path.join(__dirname, 'uploads', chdName);
 
     // check if the folder exsists
     if (!fs.existsSync(uploadPath)) {
@@ -42,7 +43,11 @@ router.post('/uploadAndTrain', upload.fields([{ name: 'chd', maxCount: 3 }]), (r
     console.log('Files uploaded successfully.');
   }
 
-  const uploadedFilePath = req.files.chd[0].path;
+  const uploadedFilePath = [];
+  for(let i = 0; i < req.files.chd.length; i++) {
+    uploadedFilePath[i] = req.files.chd[i].path;
+  }
+
   const chdName = req.body.character_name;
   
   console.log('Uploaded file path:', uploadedFilePath);
