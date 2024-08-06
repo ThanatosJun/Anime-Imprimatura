@@ -101,24 +101,6 @@ app.get('/', async (req, res) => {
   }
 });
 
-// // check if connnection of Flask successful
-// app.get('/sss', (req, res) => {
-//   // 設置 Flask 伺服器的基本 URL
-//   const flaskUrl = 'http://localhost:5001';
-//   // 要發送的 JSON 數據
-//   const data = {
-//     string: 'Hello, Flask!'
-//   };
-//   // 發送 POST 請求到 Flask 伺服器的 /process_string 路由
-//   axios.post(`${flaskUrl}/process_string`, data)
-//     .then(response => {
-//       console.log('Flask 伺服器的回應：', response.data);
-//     })
-//     .catch(error => {
-//       console.error('發送請求時出錯：', error);
-//     });
-// })
-
 // post CHD_name and image_path to PA_autoTraing_v5.py
 app.post('/train', (req, res) => {
   // 設置 Flask 伺服器的基本 URL

@@ -1,4 +1,6 @@
-// Function to handle file selection and preview
+/**
+  * Function to handle file selection and preview
+  */ 
 function handleFiles(files, containerId) {
   let imagePaths = { uploadBoxCHS: [], uploadBoxCHD: [] };
   
