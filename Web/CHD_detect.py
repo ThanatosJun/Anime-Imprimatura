@@ -63,8 +63,10 @@ def CHS_save(results, CHD_Name):
 # Function for main process
 def main(CHD_Name, image_path):
     os.makedirs("CHS_Detect/" + CHD_Name, exist_ok = True)  # create folder for save correct CHS
-    model_path = re_ptmodel_path(CHD_Name)  # get CHD_model path from PA_autoTraing_v6
-    results = CHS_detect(model_path, CHS_dir = "testImages")    # detect
+    CHS_Dir = "CHS/" + CHD_Name
+    os.makedirs("CHS/" + CHD_Name, exist_ok = True)
+    model_path = re_ptmodel_path(CHD_Name)  # get CHD_model path from PA_autoTraing_v3
+    results = CHS_detect(model_path, CHS_dir = CHS_Dir)    # detect
     CHS_save_dir = CHS_save(results, CHD_Name)  # save CHS
     return CHS_save_dir # let Next part keep continuous
 
