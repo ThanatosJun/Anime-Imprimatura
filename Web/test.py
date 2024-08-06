@@ -29,7 +29,7 @@ def train_image():
     
     print('Now executing "Train". ')
     import PA_autoTraing_v6
-    # route of PA_autoTraing_v5.py
+    # route of PA_autoTraing_v6.py
     script_path = 'yolov8_RPA_character_train_v3/PA_autoTraing_v6.py'
     try:
         print(f'Received train request with CHD_name: {CHD_name}, image_path: {image_path}')
