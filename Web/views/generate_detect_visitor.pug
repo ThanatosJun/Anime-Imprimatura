@@ -19,12 +19,12 @@ html(lang="en")
         .upload-section
           .upload
             label(for="model-select") choose the model you would like to use for detecting
-            select(id="model-select" name="options")
+            select.model-select(name="options")
               each option in options
                 option(value=option.value) #{option.text}
           .upload
             span Upload CHS
             .upload-box#uploadBoxCHS
-              input(type="file" name="chs" accept="image/*" mutilple onchange="handleFiles(this.files, 'uploadBoxCHS')")
+              input#chs(type="file" name="chs" accept="image/*" mutilple onchange="handleFiles(this.files, 'uploadBoxCHS')")
         button(type="button" class="generate-btn" onclick="submitFormCHS()") ⚡ Detect
     script(src='/javascripts/upload.js')
