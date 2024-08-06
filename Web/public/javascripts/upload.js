@@ -49,53 +49,33 @@ function handleFiles(files, containerId) {
 }
 
 // Function to handle detect page form submission
-function submitFormCHS() {
+async function submitFormCHS() {
   const form = document.getElementById(`uploadFormCHS`);
   const formData = new FormData(form);
 
-  // Submit the form data using fetch API
-  fetch(`/uploadAndDetect`, {
-    method: `POST`,
-    body: formData
-  })
-  .then(response => {
-    console.log(`Response status:`, response.status);
-    if (response.ok) {
-      return response.json();
-    } else {
-      throw new Error(`Upload failed`);
-    }
-  })
-  .then(data => {
-    console.log(`Success:`, data);
-    
-    // Redirect to "final" page after "detect"
-    window.location.href = `/generate_visitor`;
+  try {
+      // Upload the file and process it
+      const uploadResponse = await fetch(`/uploadAndDetect`, {
+          method: 'POST',
+          body: formData
+      });
 
-    // Send a POST request to the `/detect` endpoint with the generated data
-    fetch(`/detect`, {
-      method: `POST`,
-      body: JSON.stringify(data), // Convert the data to a JSON string
-      headers: {
-        'Content-Type': 'application/json' // Specify the content type as JSON
+      if (!uploadResponse.ok) {
+          const errorText = await uploadResponse.text();
+          throw new Error(`Upload failed: ${errorText}`);
       }
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`(upload.js) Detect request failed`); // Throw an error if the response is not ok
-      }
-      return response.json(); // Parse the JSON response
-    })
-    .then(detectData => {
-      console.log(`(upload.js) Detect response:`, detectData); // Log the response from the train request
-    })
-    .catch(error => {
-      console.error(`Error:`, error); // Log any errors that occur during the fetch
-    });
-  })
-  .catch((error) => {
-    console.error(`Error:`, error); // Log any errors that occur during the initial request
-  });
+
+      // Parse the response JSON data
+      const uploadData = await uploadResponse.json();
+      console.log(`Upload response:`, uploadData);
+
+      // Redirect to "final" page after "detect"
+      window.location.href = '/generate_visitor';
+
+  } catch (error) {
+      console.error(`Error:`, error.message);
+      alert(`An error occurred: ${error.message}`);
+  }
 }
 
 // Function to handle train page form submission
@@ -119,24 +99,6 @@ async function submitFormCHD() {
         // Parse the response JSON data
         const uploadData = await uploadResponse.json();
         console.log(`Upload response:`, uploadData);
-
-        // Send a POST request to the `/train` endpoint with the processed data
-        const trainResponse = await fetch(`/train`, {
-            method: 'POST',
-            body: JSON.stringify(uploadData),
-            headers: {
-                'Content-Type': 'application/json' // Specify the content type as JSON
-            }
-        });
-
-        if (!trainResponse.ok) {
-            const errorText = await trainResponse.text();
-            throw new Error(`Train request failed: ${errorText}`);
-        }
-
-        // Parse the train response JSON data
-        const trainData = await trainResponse.json();
-        console.log(`Train response:`, trainData);
 
         // Redirect to the "detect" page with the processed data
         window.location.href = `/generate_detect_visitor?data=${encodeURIComponent(JSON.stringify(trainData))}&character_name=${encodeURIComponent(characterName)}`;

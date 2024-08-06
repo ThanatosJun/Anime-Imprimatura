@@ -9,8 +9,7 @@ Features:
 from ultralytics import YOLO
 import shutil
 import os
-from PA_autoTraing_v5 import re_ptmodel_path
-import cv2
+from PA_autoTraing_v6 import re_ptmodel_path
 import sys
 
 # Function for detect 
@@ -31,6 +30,7 @@ def CHS_detect(model_path, CHS_dir):
 def CHS_save(results, CHD_Name):
     CHS_yes = False
     file_path = "CHS_Detect/" + CHD_Name + "_Detect"
+    os.makedirs(file_path, exist_ok = True)  # create folder for save correct CHS
     #   for each result of an image
     for result in results:
         # for each confidence of a detected box in an image
@@ -42,9 +42,6 @@ def CHS_save(results, CHD_Name):
                 print(path)
                 CHS_yes = True
         CHS_yes = False
-        cv2.imshow('Detection', result.plot())
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
     #   return CHD_Detect/CHD_Name dir path
     return file_path
 
@@ -64,9 +61,9 @@ def CHS_save(results, CHD_Name):
     return png_path
 
 # Function for main process
-def main(CHD_Name, file_path):
+def main(CHD_Name, image_path):
     os.makedirs("CHS_Detect/" + CHD_Name, exist_ok = True)  # create folder for save correct CHS
-    model_path = re_ptmodel_path(CHD_Name)  # get CHD_model path from PA_autoTraing_v3
+    model_path = re_ptmodel_path(CHD_Name)  # get CHD_model path from PA_autoTraing_v6
     results = CHS_detect(model_path, CHS_dir = "testImages")    # detect
     CHS_save_dir = CHS_save(results, CHD_Name)  # save CHS
     return CHS_save_dir # let Next part keep continuous

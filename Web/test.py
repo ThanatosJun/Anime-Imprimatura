@@ -29,8 +29,6 @@ def train_image():
     
     print('Now executing "Train". ')
     import PA_autoTraing_v6
-    # route of PA_autoTraing_v6.py
-    script_path = 'yolov8_RPA_character_train_v3/PA_autoTraing_v6.py'
     try:
         print(f'Received train request with CHD_name: {CHD_name}, image_path: {image_path}')
         PA_autoTraing_v6.main(CHD_name, image_path)
@@ -48,11 +46,11 @@ def detect_image():
     CHD_name = data.get('CHD_name')
     image_path = data.get('image_path')
 
+    print('Now executing "Detect". ')
+    import CHD_detect
     try:
         print(f'Received detect request with CHD_name: {CHD_name}, image_path: {image_path}')
-        # train_main(CHD_name, image_path)
-        #  Why Train ?? by Thanatos
-
+        CHD_detect.main(CHD_name, image_path)
         output = "Detect script executed successfully."
         return jsonify({'status': 'success', 'output': output, 'CHD_name': CHD_name, 'image_path': image_path})
     except Exception as e:
