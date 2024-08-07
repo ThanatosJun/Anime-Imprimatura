@@ -4,29 +4,43 @@
  * @param {string} uploadBoxId - The ID of the upload box.
  */
 function fileToImage(files, uploadBoxId) {
+  // Array to store Base64 images
   const base64Images = [];
-  
+
+  /**
+   * Processes a single file and converts it to a Base64 image.
+   * @param {File} file - The file to process.
+   * @returns {Promise} - A promise that resolves when the file is processed.
+   */
   function processFile(file) {
     return new Promise((resolve, reject) => {
-      const reader = new FileReader();
+      // FileReader to read the file
+      const reader = new FileReader(); 
+
       reader.onload = function(event) {
-        const img = new Image();
+        // Create a new image element
+        const img = new Image(); 
+
         img.onload = function() {
           // Convert image to Base64
           const base64Image = getBase64Image(img);
-          base64Images.push(base64Image);
-          resolve();
+          base64Images.push(base64Image); // Add the Base64 image to the array
+          resolve(); // Resolve the promise
         };
-        img.onerror = reject;
-        img.src = event.target.result;
+
+        img.onerror = reject; // Reject the promise if there is an error loading the image
+        img.src = event.target.result; // Set the image source to the file data
       };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
+
+      reader.onerror = reject; // Reject the promise if there is an error reading the file
+      reader.readAsDataURL(file); // Read the file as a Data URL
     });
   }
 
+  // Convert each file in the FileList to a Base64 image
   const promises = Array.from(files).map(file => processFile(file));
-  
+
+  // Wait for all files to be processed
   Promise.all(promises)
     .then(() => {
       // Store Base64 images in localStorage
@@ -43,11 +57,13 @@ function fileToImage(files, uploadBoxId) {
  * @returns {string} - The Base64 string of the image.
  */
 function getBase64Image(img) {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.height = img.naturalHeight;
-  canvas.width = img.naturalWidth;
-  ctx.drawImage(img, 0, 0);
+  const canvas = document.createElement('canvas'); // Create a canvas element
+  const ctx = canvas.getContext('2d'); // Get the canvas context
+  canvas.height = img.naturalHeight; // Set the canvas height to the image height
+  canvas.width = img.naturalWidth; // Set the canvas width to the image width
+  ctx.drawImage(img, 0, 0); // Draw the image on the canvas
+
+  // Return the Base64 string of the image
   return canvas.toDataURL('image/png');
 }
 
