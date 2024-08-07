@@ -7,13 +7,13 @@ html(lang="en")
     link(rel='stylesheet', href='/stylesheets/style.css')
   body.login
     header.navigation-bar
-      .logo-placeholder
+      a.logo-placeholder(href="/")
     main.content
       .login-container
         .login-box
           form(method="POST" action="/api/login")
             .input-group
-              input(type="gmail" id="gmail" name="gmail" placeholder="Gmail" required)
+              input(type="gmail" id="gmail" name="gmail" placeholder="Email" required)
               input(type="password" id="password" name="password" placeholder="Password" required)
             .remember-me
               input(type="checkbox" id="remember" name="remember")
