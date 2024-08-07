@@ -45,17 +45,18 @@ def detect_image():
     data = request.get_json()  # 获取POST请求的JSON数据
     CHD_name = data.get('CHD_name')
     image_path = data.get('image_path')
+    image_dir = data.get('image_dir')
 
     print('Now executing "Detect". ')
-    import CHD_detect
+    import CHD_detect_v2
     try:
         print(f'Received detect request with CHD_name: {CHD_name}, image_path: {image_path}')
-        CHD_detect.main(CHD_name, image_path)
+        CHD_detect_v2.main(CHD_name, image_path)
         output = "Detect script executed successfully."
-        return jsonify({'status': 'success', 'output': output, 'CHD_name': CHD_name, 'image_path': image_path})
+        return jsonify({'status': 'success', 'output': output, 'CHD_name': CHD_name, 'image_dir': image_dir})
     except Exception as e:
         print(f'Error during detecting: {e}')
-        return jsonify({'status': 'error', 'error': str(e), 'CHD_name': CHD_name, 'image_path': image_path})
+        return jsonify({'status': 'error', 'error': str(e), 'CHD_name': CHD_name, 'image_dir': image_dir})
     
 if __name__ == '__main__':
     app.run(port=5001, debug=True)  # 在5001端口上启动服务

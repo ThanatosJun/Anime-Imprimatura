@@ -426,7 +426,7 @@ def main(CHD_Name, file_paths):
 # Function for get .pt path for detetion
 def re_ptmodel_path(CHD_Name):
     __init__(CHD_Name)
-    return CHD_modeldir + "\\" + CHD_Name + ".pt"
+    return CHD_modeldir + "/" + CHD_Name + ".pt"
 
 # Run this .py for main file must run this
 if __name__ == "__main__":

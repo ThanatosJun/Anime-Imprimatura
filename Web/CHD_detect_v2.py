@@ -9,8 +9,9 @@ Features:
 from ultralytics import YOLO
 import shutil
 import os
-from PA_autoTraing_v5 import re_ptmodel_path
+from PA_autoTraing_v6 import re_ptmodel_path
 import cv2
+import sys
 
 # Function for detect 
 def CHS_detect(model_path, CHS_dir):
@@ -41,9 +42,9 @@ def CHS_save(results, CHD_Name):
                 print(path)
                 CHS_yes = True
         CHS_yes = False
-        cv2.imshow('Detection', result.plot())
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        # cv2.imshow('Detection', result.plot())
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
     #   return CHD_Detect/CHD_Name dir path
     return file_path
 
@@ -63,10 +64,13 @@ def CHS_save(results, CHD_Name):
     return png_path
 
 # Function for main process
-def main(CHD_Name):
+def main(CHD_Name, image_path):
     os.makedirs("CHS_Detect/" + CHD_Name, exist_ok = True)  # create folder for save correct CHS
     CHS_Dir = "CHS/" + CHD_Name
     os.makedirs("CHS/" + CHD_Name, exist_ok = True)
+    image_basename = os.path.basename(image_path)
+    new_image_path = os.path.join(CHS_Dir, image_basename)
+    shutil.copy(image_path, new_image_path)
     model_path = re_ptmodel_path(CHD_Name)  # get CHD_model path from PA_autoTraing_v3
     results = CHS_detect(model_path, CHS_dir = CHS_Dir)    # detect
     CHS_save_dir = CHS_save(results, CHD_Name)  # save CHS
@@ -74,5 +78,14 @@ def main(CHD_Name):
 
 # Run this .py for main file must run this
 if __name__ == "__main__":
-    main(CHD_Name="Anime008")
-    # Anime001
+    # main(CHD_Name="Anime008")
+    # # Anime001
+
+    if len(sys.argv) != 3:
+        print("Usage: python CHD_detect.py <CHD_name> <image_path>")
+        sys.exit(1)
+
+    CHD_name = sys.argv[1]
+    image_path = sys.argv[2]
+
+    main(CHD_name, image_path)
