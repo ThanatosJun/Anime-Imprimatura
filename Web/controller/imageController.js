@@ -105,7 +105,7 @@ router.post('/uploadAndDetect', uploadDetect.single('chs'), (req, res) => {
   const options = req.body.options;
   const uploadedFilePath = req.file.path;
 
-  console.log('chs_name: ', options);
+  console.log('chd_name: ', options);
   console.log('image_path: ', uploadedFilePath);
 
   fetch('http://localhost:5001/detect', {

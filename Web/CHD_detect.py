@@ -10,6 +10,7 @@ from ultralytics import YOLO
 import shutil
 import os
 from PA_autoTraing_v6 import re_ptmodel_path
+import cv2
 import sys
 
 # Function for detect 
@@ -29,8 +30,7 @@ def CHS_detect(model_path, CHS_dir):
 # Function for save correct CHS in CHD_Detect/CHD_Name/
 def CHS_save(results, CHD_Name):
     CHS_yes = False
-    file_path = "CHS_Detect/" + CHD_Name + "_Detect"
-    os.makedirs(file_path, exist_ok = True)  # create folder for save correct CHS
+    file_path = "CHS_Detect/" + CHD_Name
     #   for each result of an image
     for result in results:
         # for each confidence of a detected box in an image
@@ -42,6 +42,9 @@ def CHS_save(results, CHD_Name):
                 print(path)
                 CHS_yes = True
         CHS_yes = False
+        cv2.imshow('Detection', result.plot())
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
     #   return CHD_Detect/CHD_Name dir path
     return file_path
 
