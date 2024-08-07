@@ -1,3 +1,8 @@
+/**
+ * Converts files to Base64 images and stores them in localStorage.
+ * @param {FileList} files - The files to convert.
+ * @param {string} uploadBoxId - The ID of the upload box.
+ */
 function fileToImage(files, uploadBoxId) {
   const base64Images = [];
   
@@ -7,7 +12,7 @@ function fileToImage(files, uploadBoxId) {
       reader.onload = function(event) {
         const img = new Image();
         img.onload = function() {
-          // 將圖片轉換為 Base64
+          // Convert image to Base64
           const base64Image = getBase64Image(img);
           base64Images.push(base64Image);
           resolve();
@@ -32,6 +37,11 @@ function fileToImage(files, uploadBoxId) {
     });
 }
 
+/**
+ * Converts an image element to a Base64 string.
+ * @param {HTMLImageElement} img - The image element to convert.
+ * @returns {string} - The Base64 string of the image.
+ */
 function getBase64Image(img) {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
@@ -42,8 +52,11 @@ function getBase64Image(img) {
 }
 
 /**
-  * Function to handle file selection and preview
-  */ 
+ * Handles file selection and preview.
+ * @param {FileList} files - The selected files.
+ * @param {string} containerId - The ID of the container for previews.
+ * @returns {Object} - The paths of the selected images.
+ */
 function handleFiles(files, containerId) {
   let imagePaths = { uploadBoxCHS: [], uploadBoxCHD: [] };
   
@@ -93,7 +106,9 @@ function handleFiles(files, containerId) {
   return imagePaths;
 }
 
-// Function to handle detect page form submission
+/**
+ * Handles the form submission for detecting page images.
+ */
 async function submitFormCHS() {
   const form = document.getElementById(`uploadFormCHS`);
   const formData = new FormData(form);
@@ -123,7 +138,9 @@ async function submitFormCHS() {
   }
 }
 
-// Function to handle train page form submission
+/**
+ * Handles the form submission for training page images.
+ */
 async function submitFormCHD() {
     const form = document.getElementById(`uploadFormCHD`);
     const characterName = document.getElementById(`character_name`).value;
