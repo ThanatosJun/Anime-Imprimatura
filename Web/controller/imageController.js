@@ -6,8 +6,8 @@ const fs = require('fs');
 const router = express.Router();
 const fetch = require('node-fetch');
 
-// Multer
-const storage = multer.diskStorage({
+// Multer for Train
+const storageTrain = multer.diskStorage({
   destination: function (req, file, cb) {
     // folder path
     const chdName = req.body.character_name;
@@ -29,11 +29,10 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ storage });
-console.log('Multer Done');
+const uploadTrain = multer({ storage: storageTrain });
 
 // Train
-router.post('/uploadAndTrain', upload.fields([{ name: 'chd', maxCount: 3 }]), (req, res) => {
+router.post('/uploadAndTrain', uploadTrain.fields([{ name: 'chd', maxCount: 3 }]), (req, res) => {
   console.log('Received upload request');
 
   if (!req.files || !req.files.chd || req.files.chd.length === 0) {
@@ -75,20 +74,43 @@ router.post('/uploadAndTrain', upload.fields([{ name: 'chd', maxCount: 3 }]), (r
 
 });
 
-// 假設一個調用AI模型的函數
-async function callAIApi(chdFiles, chsFiles) {
-  // 模擬AI模型API調用，返回生成圖片的路徑
-  // 實際實現需要根據AI模型的API來編寫
-  return 'path/to/generated/image.png';
-}
+// Multer for Detect
+const storageDetect = multer.diskStorage({
+  destination: function (req, file, cb) {
+    // folder path
+    const options = req.body.options;
+    console.log(options)
+    const uploadPath = path.join(__dirname, 'uploadDetect', options);
+
+    // check if the folder exsists
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+
+    // pass file path to cb
+    cb(null, uploadPath);
+    console.log("upload to destination successfully. ");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+const uploadDetect = multer({ storage: storageDetect });
 
 // Detect
-router.post('/uploadAndDetect', (req, res) => {
-  const detectData = req.body;
+router.post('/uploadAndDetect', uploadDetect.single('chs'), (req, res) => {
+  console.log('Received Detect Data');
+
+  const options = req.body.options;
+  const uploadedFilePath = req.file.path;
+
+  console.log('chs_name: ', options);
+  console.log('image_path: ', uploadedFilePath);
 
   fetch('http://localhost:5001/detect', {
     method: 'POST',
-    body: JSON.stringify(detectData),
+    body: JSON.stringify({ CHD_name: options, image_path: uploadedFilePath}),
     headers: {
       'Content-Type': 'application/json'
     }

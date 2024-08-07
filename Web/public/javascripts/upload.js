@@ -93,17 +93,14 @@ function handleFiles(files, containerId) {
   return imagePaths;
 }
 
-/**
- * Handles the form submission for training page images.
- */
-async function submitFormCHD() {
-  const form = document.getElementById(`uploadFormCHD`);
-  const characterName = document.getElementById(`character_name`).value;
+// Function to handle detect page form submission
+async function submitFormCHS() {
+  const form = document.getElementById(`uploadFormCHS`);
   const formData = new FormData(form);
 
   try {
       // Upload the file and process it
-      const uploadResponse = await fetch(`/uploadAndTrain`, {
+      const uploadResponse = await fetch(`/uploadAndDetect`, {
           method: 'POST',
           body: formData
       });
@@ -117,31 +114,44 @@ async function submitFormCHD() {
       const uploadData = await uploadResponse.json();
       console.log(`Upload response:`, uploadData);
 
-      // Send a POST request to the `/train` endpoint with the processed data
-      const trainResponse = await fetch(`/train`, {
-          method: 'POST',
-          body: JSON.stringify(uploadData),
-          headers: {
-              'Content-Type': 'application/json' // Specify the content type as JSON
-          }
-      });
-
-      if (!trainResponse.ok) {
-          const errorText = await trainResponse.text();
-          throw new Error(`Train request failed: ${errorText}`);
-      }
-
-      // Parse the train response JSON data
-      const trainData = await trainResponse.json();
-      console.log(`Train response:`, trainData);
-
-      // Redirect to the "detect" page with the processed data
-      window.location.href = `/generate_detect_visitor?data=${encodeURIComponent(JSON.stringify(trainData))}&character_name=${encodeURIComponent(characterName)}`;
+      // Redirect to "final" page after "detect"
+      window.location.href = '/generate_visitor';
 
   } catch (error) {
       console.error(`Error:`, error.message);
       alert(`An error occurred: ${error.message}`);
   }
+}
+
+// Function to handle train page form submission
+async function submitFormCHD() {
+    const form = document.getElementById(`uploadFormCHD`);
+    const characterName = document.getElementById(`character_name`).value;
+    const formData = new FormData(form);
+
+    try {
+        // Upload the file and process it
+        const uploadResponse = await fetch(`/uploadAndTrain`, {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!uploadResponse.ok) {
+            const errorText = await uploadResponse.text();
+            throw new Error(`Upload failed: ${errorText}`);
+        }
+
+        // Parse the response JSON data
+        const uploadData = await uploadResponse.json();
+        console.log(`Upload response:`, uploadData);
+
+        // Redirect to the "detect" page with the processed data
+        window.location.href = `/generate_detect_visitor?data=${encodeURIComponent(JSON.stringify(trainData))}&character_name=${encodeURIComponent(characterName)}`;
+
+    } catch (error) {
+        console.error(`Error:`, error.message);
+        alert(`An error occurred: ${error.message}`);
+    }
 }
 
 /**
