@@ -26,5 +26,5 @@ html(lang="en")
             span Upload CHS
             .upload-box#uploadBoxCHS
               input#chs(type="file" name="chs" accept="image/*" mutilple onchange="handleFiles(this.files, 'uploadBoxCHS')")
-        button(type="button" class="generate-btn" onclick="submitFormCHS()") ⚡ Detect
+        button.generate-btn(type="button" onclick="submitFormCHS()") ⚡ Detect
     script(src='/javascripts/upload.js')

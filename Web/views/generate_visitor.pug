@@ -16,5 +16,5 @@ html(lang="en")
       a.login-btn(href="login") Log In
     .content
       form(id="uploadForm", method="post", action="/uploadAndGenerate", enctype="multipart/form-data")
-        button(type="button" class="generate-btn" onclick="submitFormGenerate()") ⚡ Generate
+        button.generate-btn(type="button" onclick="submitFormGenerate()") ⚡ Generate
     script(src='/javascripts/upload.js')

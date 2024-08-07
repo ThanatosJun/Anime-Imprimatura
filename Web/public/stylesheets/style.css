@@ -318,20 +318,6 @@ footer {
   margin: 5px;
 }
 
-.generate-visitor .generate-btn {
-  display: block;
-  margin: 50px auto;
-  background: #E6FFFDB5;
-  color: #000;
-  border: 1px solid #E6FFFDBF;
-  padding: 15px 40px;
-  cursor: pointer;
-  gap: 10px;
-  border-radius: 42px;
-  font-size: 15px;
-  text-align: center;
-}
-
 /* Generate Visitor Train Page Styles */
 .generate-visitor .content {
   display: flex;
@@ -398,20 +384,6 @@ footer {
   height: 100px;
   object-fit: cover;
   margin: 5px;
-}
-
-.generate-visitor .generate-btn {
-  display: block;
-  margin: 50px auto;
-  background: #E6FFFDB5;
-  color: #000;
-  border: 1px solid #E6FFFDBF;
-  padding: 15px 40px;
-  cursor: pointer;
-  gap: 10px;
-  border-radius: 42px;
-  font-size: 15px;
-  text-align: center;
 }
 
 /* Generated Visitor Page Styles */
