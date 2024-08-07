@@ -1,3 +1,46 @@
+function fileToImage(files, uploadBoxId) {
+  const base64Images = [];
+  
+  function processFile(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          // 將圖片轉換為 Base64
+          const base64Image = getBase64Image(img);
+          base64Images.push(base64Image);
+          resolve();
+        };
+        img.onerror = reject;
+        img.src = event.target.result;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  const promises = Array.from(files).map(file => processFile(file));
+  
+  Promise.all(promises)
+    .then(() => {
+      // Store Base64 images in localStorage
+      localStorage.setItem('chs', JSON.stringify(base64Images));
+    })
+    .catch(error => {
+      console.error('Error processing files:', error);
+    });
+}
+
+function getBase64Image(img) {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.height = img.naturalHeight;
+  canvas.width = img.naturalWidth;
+  ctx.drawImage(img, 0, 0);
+  return canvas.toDataURL('image/png');
+}
+
 /**
   * Function to handle file selection and preview
   */ 
@@ -107,17 +150,18 @@ async function submitFormCHD() {
 function submitFormCHS() {
   // Get form and input elements
   const form = document.getElementById(`uploadFormCHS`);
-  const chsInput = document.getElementById(`chs`);
+  const chsInput = document.getElementById('chs');
 
   // Create a FormData object from the form element
   const formData = new FormData(form);
-  const reader = new FileReader();
 
   // Check if a file has been selected
   if (chsInput.files.length === 0) {
     alert(`Please select an image to upload.`);
     return;
   }
+
+  fileToImage(chsInput.files, 'chs');
 
   // Submit the form data using fetch API
   fetch(`/uploadAndDetect`, {
@@ -136,7 +180,7 @@ function submitFormCHS() {
   .then(data => {
     console.log(`Success:`, data);
     
-    /// Redirect to the "after detect" page upon successful upload and detection
+    // Redirect to the "after detect" page upon successful upload and detection
     window.location.href = `/generate_visitor`;
   })
   .catch((error) => {
@@ -148,5 +192,5 @@ function submitFormCHS() {
  * Handles the form submission for generating page.
  */
 function submitFormGenerate() {
-
+  window.location.href = `/generated_visitor`;
 }

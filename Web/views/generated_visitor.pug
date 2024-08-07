@@ -19,12 +19,12 @@ html(lang="en")
       .container
         .content-box.chs
           .image-title your chs
-          .image-container
-            img#center-image(src=CHS alt="CHS")
+          .image-container#chsContainer
         .content-box.final
           .image-title the result
           .image-container
-            img#center-image(src=imgSrc alt="The result")
+            img#finalImage(src=imgSrc alt="The result")
       .buttons
         button.edit-btn Edit
         button.save-btn Save
+    script(src='/javascripts/getCHS.js')
