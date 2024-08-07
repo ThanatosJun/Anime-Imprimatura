@@ -15,6 +15,9 @@ html(lang="en")
         a(href="/gallery") Gallery
       a.login-btn(href="login") Log In
     .content
-      form(id="uploadForm", method="post", action="/uploadAndGenerate", enctype="multipart/form-data")
-        button.generate-btn(type="button" onclick="submitFormGenerate()") ⚡ Generate
-    script(src='/javascripts/upload.js')
+      .container
+        .image-title Detect result
+        .image-container#detectResult
+          img(src=imgSrc alt="detect result")
+      button.generate-btn(type="button" onclick="submitFormGenerate()") ⚡ Generate
+    script(src='/javascripts/detectResult.js')
