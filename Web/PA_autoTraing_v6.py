@@ -379,46 +379,49 @@ def get_new_file_path(file_path):
 
 # Function for main process
 def main(CHD_Name, file_paths):
-    import zero123_stable_api
-    __init__(CHD_Name) # initialize
-    # create dir
-    os.makedirs(CHD_modeldir, exist_ok=True)
-    os.makedirs(image_dir, exist_ok=True)
+    # import zero123_stable_api
+    # __init__(CHD_Name) # initialize
+    # # create dir
+    # os.makedirs(CHD_modeldir, exist_ok=True)
+    # os.makedirs(image_dir, exist_ok=True)
 
-    # input image from uploads
-    for file_path in file_paths:
-        image_basename = os.path.basename(file_path)
-        new_image_path = os.path.join(image_dir, image_basename)
-        shutil.copy(file_path, new_image_path)
+    # # input image from uploads
+    # for file_path in file_paths:
+    #     image_basename = os.path.basename(file_path)
+    #     new_image_path = os.path.join(image_dir, image_basename)
+    #     shutil.copy(file_path, new_image_path)
     
-    clear_and_create_dir(image_augmentation_outputdir)
-    clear_and_create_dir(dataset_train_dir)
-    # Data Preprocess
-    CHD_resize(image_dir)
-    zero123_stable_api.main(image_dir)
-    CHD_resize(image_dir)
-    CHD_sketch(image_dir)
-    CHD_augmentation(image_dir,image_augmentation_outputdir,10)
-    split_dataset(image_dir, dataset_train_dir, train_ratio, test_ratio, valid_ratio)
-    split_dataset(image_augmentation_outputdir, dataset_train_dir, train_ratio, test_ratio, valid_ratio)
-    # RPA Labeling
-    auto_label(dataset_train_train, label_fullbody, label_head)
-    auto_label(dataset_train_test, label_fullbody, label_head)
-    auto_label(dataset_train_valid, label_fullbody, label_head)
-    # Add noCH into datasets
-    move_noCHFiles(dataset_train_noCH_train, dataset_train_train)
-    move_noCHFiles(dataset_train_noCH_test, dataset_train_test)
-    move_noCHFiles(dataset_train_noCH_valid, dataset_train_valid)
-    # Train--
-    CHD_model_path = auto_training(model_contruction,pretrained_model,train_params)
-    # rename and move .pt and .onnx
-    CHD_modelpt =  CHD_modeldir + "\\" + CHD_Name + ".pt"
-    if os.path.exists(CHD_modelpt):
-        CHD_modelpt = get_new_file_path(CHD_modelpt)
-    os.rename(CHD_model_path, CHD_modelpt)
-    print("Successful Model:" + CHD_modelpt)
-    return CHD_modelpt
-    # return file_paths
+    # clear_and_create_dir(image_augmentation_outputdir)
+    # clear_and_create_dir(dataset_train_dir)
+    # # Data Preprocess
+    # CHD_resize(image_dir)
+    # zero123_stable_api.main(image_dir)
+    # CHD_resize(image_dir)
+    # CHD_sketch(image_dir)
+    # CHD_augmentation(image_dir,image_augmentation_outputdir,10)
+    # split_dataset(image_dir, dataset_train_dir, train_ratio, test_ratio, valid_ratio)
+    # split_dataset(image_augmentation_outputdir, dataset_train_dir, train_ratio, test_ratio, valid_ratio)
+    # # RPA Labeling
+    # auto_label(dataset_train_train, label_fullbody, label_head)
+    # auto_label(dataset_train_test, label_fullbody, label_head)
+    # auto_label(dataset_train_valid, label_fullbody, label_head)
+    # # Add noCH into datasets
+    # move_noCHFiles(dataset_train_noCH_train, dataset_train_train)
+    # move_noCHFiles(dataset_train_noCH_test, dataset_train_test)
+    # move_noCHFiles(dataset_train_noCH_valid, dataset_train_valid)
+    # # Train--
+    # CHD_model_path = auto_training(model_contruction,pretrained_model,train_params)
+    # # rename and move .pt and .onnx
+    # CHD_modelpt =  CHD_modeldir + "\\" + CHD_Name + ".pt"
+    # if os.path.exists(CHD_modelpt):
+    #     CHD_modelpt = get_new_file_path(CHD_modelpt)
+    # os.rename(CHD_model_path, CHD_modelpt)
+    # print("Successful Model:" + CHD_modelpt)
+    # return CHD_modelpt
+    current_directory = os.getcwd()
+    print('current directory: '+current_directory)
+    file_paths = '/Users/pigg/Documents/GitHub/Anime-Imprimatura/Web/CHD_Model/Anime008.pt'
+    return file_paths
 
 # Function for get .pt path for detetion
 def re_ptmodel_path(CHD_Name):
