@@ -29,7 +29,7 @@ def CHS_detect(model_path, CHS_dir):
 # Function for save correct CHS in CHD_Detect/CHD_Name/
 def CHS_save(results, CHD_Name):
     CHS_yes = False
-    file_path = "CHS_Detect/" + CHD_Name + "_Detect"
+    file_path = "CHS_Detect/" + CHD_Name
     #   for each result of an image
     for result in results:
         # for each confidence of a detected box in an image
@@ -76,13 +76,3 @@ def main(CHD_Name):
 if __name__ == "__main__":
     main(CHD_Name="Anime008")
     # Anime001
-
-    # Function for main process
-def main(CHD_Name):
-    os.makedirs("CHS_Detect/" + CHD_Name, exist_ok = True)  # create folder for save correct CHS
-    CHS_Dir = "CHS/" + CHD_Name
-    os.makedirs("CHS/" + CHD_Name, exist_ok = True)
-    model_path = re_ptmodel_path(CHD_Name)  # get CHD_model path from PA_autoTraing_v3
-    results = CHS_detect(model_path, CHS_dir = CHS_Dir)    # detect
-    CHS_save_dir = CHS_save(results, CHD_Name)  # save CHS
-    return CHS_save_dir # let Next part keep continuous

@@ -365,7 +365,7 @@ def __init__(CHD_Name):
     'device': 0,
     'pretrained': True,
     'augment': True,
-    }
+    } 
 
 # Function for getting a new file name if the names were the same
 def get_new_file_path(file_path):
@@ -384,6 +384,8 @@ def main(CHD_Name, file_paths):
     # # create dir
     # os.makedirs(CHD_modeldir, exist_ok=True)
     # os.makedirs(image_dir, exist_ok=True)
+
+    # # 加個 CHD_Detect用於存放一張CHD，為了 SAM用
 
     # # input image from uploads
     # for file_path in file_paths:
@@ -418,10 +420,8 @@ def main(CHD_Name, file_paths):
     # os.rename(CHD_model_path, CHD_modelpt)
     # print("Successful Model:" + CHD_modelpt)
     # return CHD_modelpt
-    current_directory = os.getcwd()
-    print('current directory: '+current_directory)
-    file_paths = '/Users/pigg/Documents/GitHub/Anime-Imprimatura/Web/CHD_Model/Anime008.pt'
-    return file_paths
+    return "CHD_Model\Anime008.pt"
+    # return file_paths
 
 # Function for get .pt path for detetion
 def re_ptmodel_path(CHD_Name):
