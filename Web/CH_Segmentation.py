@@ -2,7 +2,7 @@ import os
 import torch
 import cv2
 import numpy as np
-from segment_anything import sam_model_registry, SamAutomaticMaskGenerator
+# from segment_anything import sam_model_registry, SamAutomaticMaskGenerator
 from ultralytics import YOLO
 from pathlib import Path
 import numpy as np
@@ -93,8 +93,8 @@ class CH_Segmentation(CH_SEG__init):
         self.DEVICE = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.MODEL_TYPE = "vit_h"
         # 加載 SAM 模型
-        sam_model = sam_model_registry[self.MODEL_TYPE](checkpoint = self.CHECKPOINT_PATH).to(device = self.DEVICE)
-        self.mask_generator = SamAutomaticMaskGenerator(sam_model)
+        # sam_model = sam_model_registry[self.MODEL_TYPE](checkpoint = self.CHECKPOINT_PATH).to(device = self.DEVICE)
+        # self.mask_generator = SamAutomaticMaskGenerator(sam_model)
 
         # YOLO detect model init
         # init model_SAM path
