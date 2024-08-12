@@ -13,7 +13,7 @@ exports.login = async (req, res)=>{
         //check if the account exsist
         const user = await User.findOne({gmail: req.body.gmail});
         if(!user){
-            console.log('Account does not exiist for gmail: ', req.body.gmail);
+            console.log('Account does not exist for gmail: ', req.body.gmail);
             return res.status(400).json({error: "Account does not exsist. "});
         }
 
@@ -32,7 +32,7 @@ exports.login = async (req, res)=>{
         const token = await jwt.sign({gmail: user.gmail}, process.env.JWT_SECRET, {expiresIn: '1h'});
         
         //redirect to "gallery" page
-        res.redirect('/gallery');
+        res.redirect('/index');
 
     }catch(error){
         console.error("Login error", error);

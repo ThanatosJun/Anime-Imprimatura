@@ -99,11 +99,15 @@ const storageDetect = multer.diskStorage({
 const uploadDetect = multer({ storage: storageDetect });
 
 // Detect
-router.post('/uploadAndDetect', uploadDetect.single('chs'), (req, res) => {
+router.post('/uploadAndDetect', uploadDetect.fields([{ name: 'chs', minCount: 2 }]), (req, res) => {
   console.log('Received Detect Data');
   
   const options = req.body.options;
-  const uploadedFilePath = req.file.path;
+  const uploadedFilePath = [];
+
+  for(let i = 0; i < req.files.chs.length; i++){
+    uploadedFilePath[i] = req.files.chd[i].path;
+  }
 
   console.log('chd_name: ', options);
   console.log('image_path: ', uploadedFilePath);

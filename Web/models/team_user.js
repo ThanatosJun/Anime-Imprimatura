@@ -9,12 +9,12 @@ const team_userSchema = new mongoose.Schema({
     },
     team_id: {
         team:[{
-            type: mongoose.Schema.Types.ObjectId, ref: 'team'
+            type: mongoose.Schema.Types.ObjectId, ref: 'Team'
         }]
     }, 
     user_id: {
         user: [{
-            type: mongoose.Schema.Types.ObjectId, ref: 'user'
+            type: mongoose.Schema.Types.ObjectId, ref: 'User'
         }]
     }
 });
