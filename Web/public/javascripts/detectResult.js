@@ -1,7 +1,30 @@
 document.addEventListener('DOMContentLoaded', () => {
     // This function will be executed when the DOMContentLoaded event is triggered
 
-    const imgContainer = document.getElementById('detectResult');
+    // Retrieve Base64 image data from localStorage
+    const storedImage = JSON.parse(localStorage.getItem('chs'));
+
+    // Check if there is image data stored in localStorage
+    if (storedImage) {
+        // Ensure the imageContainer exists
+        const imageContainer = document.getElementById('chsContainer');
+
+        // Display each Base64 image
+        storedImage.forEach((storedImage, index) => {
+            const img = document.createElement('img');
+            img.src = storedImage;
+            img.alt = `CHS`; // Alt text
+            img.style.maxWidth = '100%'; // Optional: Limit the maximum width of the image
+            imageContainer.appendChild(img);
+        });
+
+        // Clear the data in localStorage after displaying the images
+        localStorage.removeItem('chs');
+    } else {
+            console.log('No images found in localStorage.');
+    }
+
+    const resultContainer = document.getElementById('detectResult');
     // Retrieve the path to the directory containing images from localStorage
     const CHS_save_dir = localStorage.getItem('CHS_save_dir');
     
@@ -21,16 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     const img = document.createElement('img');
                     img.src = imgSrc;
                     img.alt = 'Detect result';
-                    imgContainer.appendChild(img); // Add the image element to the container
+                    resultContainer.appendChild(img); // Add the image element to the container
                 });
-
-                // Clear the directory path from localStorage after displaying images
-                localStorage.removeItem('CHS_save_dir');
             })
             .catch(error => {
                 console.error('Error fetching images:', error); // Log any errors during the fetch process
             });
-        } else {
-            console.error('CHS_save_dir not found in localStorage.'); // Log an error if CHS_save_dir is not found in localStorage
-        }
+    } else {
+        console.error('CHS_save_dir not found in localStorage.'); // Log an error if CHS_save_dir is not found in localStorage
+    }
 })
