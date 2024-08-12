@@ -143,32 +143,6 @@ app.get('/detect', (req, res) => {
     });
 })
 
-// // Route to call Python script
-// app.get('/call/python', pythonProcess);
-
-// function pythonProcess(req, res) {
-//   let options = {
-//     mode: 'text',
-//     pythonOptions: ['-u'],
-//     scriptPath: '',
-//     args: [req.query.name, req.query.from]
-//   };
-
-//   PythonShell.run('process.py', options, (err, results) => {
-//     if (err) {
-//       res.send(err);
-//       return;
-//     }
-//     try {
-//       const parsedString = JSON.parse(results[0]);
-//       console.log(`name: ${parsedString.Name}, from: ${parsedString.From}`);
-//       res.json(parsedString);
-//     } catch (e) {
-//       res.send(e.message);
-//     }
-//   });
-// }
-
 // Route to handle user editing
 app.post('/edituser', async (req, res) => {
   try {
@@ -206,6 +180,23 @@ app.post('/upload', upload.single('upload-box'), (req, res) => {
   }
   const filePath = path.join(__dirname, 'uploads', req.file.filename);
   res.send({ filePath: filePath }); // 返回文件路径
+});
+
+app.get('/images', (req, res) => {
+  const folderPath = decodeURIComponent(req.query.folderPath);
+
+  fs.readdir(folderPath, (err, files) => {
+      if (err) {
+          return res.status(500).send('Unable to scan directory');
+      }
+
+      // 只返回圖片文件（根據文件擴展名過濾）
+      const imageFiles = files.filter(file => {
+          return ['.jpg', '.jpeg', '.png', '.gif'].includes(path.extname(file).toLowerCase());
+      });
+
+      res.json({ images: imageFiles });
+  });
 });
 
 // Handle 404 errors

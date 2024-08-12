@@ -101,7 +101,7 @@ const uploadDetect = multer({ storage: storageDetect });
 // Detect
 router.post('/uploadAndDetect', uploadDetect.single('chs'), (req, res) => {
   console.log('Received Detect Data');
-
+  
   const options = req.body.options;
   const uploadedFilePath = req.file.path;
 
