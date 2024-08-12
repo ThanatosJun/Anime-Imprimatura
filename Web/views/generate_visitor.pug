@@ -16,8 +16,12 @@ html(lang="en")
       a.login-btn(href="login") Log In
     .content
       .container
-        .image-title Detect result
-        .image-container#detectResult
-          img(src=imgSrc alt="detect result")
+        .content-box
+          .image-title Your CHS
+          .image-container#allChs
+        .content-box
+          .image-title Detect result
+          .image-container#detectResult
+            img(src=imgSrc alt="detect result")
       button.generate-btn(type="button" onclick="submitFormGenerate()") ⚡ Generate
     script(src='/javascripts/detectResult.js')

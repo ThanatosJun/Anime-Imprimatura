@@ -323,6 +323,7 @@ def __init__(CHD_Name):
     # image dir
     image_dir = "CHD_Images/" + CHD_Name + "_Images" # Image dir for store CHD ,CHD_SK and mutiple CHD
     image_augmentation_outputdir = "CHD_Images/" + CHD_Name + "_AugImages" # Image after augmentated
+    CHD_Detect = "CHD_Detect/" + CHD_Name
     # datasets dir for training
     dataset_train_dir = "datasets/" + CHD_Name # datasets for training
     dataset_train_train = dataset_train_dir + "/train"    # waiting for labeling images in train file
@@ -392,7 +393,7 @@ def main(CHD_Name, file_paths):
     #     image_basename = os.path.basename(file_path)
     #     new_image_path = os.path.join(image_dir, image_basename)
     #     shutil.copy(file_path, new_image_path)
-    
+
     # clear_and_create_dir(image_augmentation_outputdir)
     # clear_and_create_dir(dataset_train_dir)
     # # Data Preprocess

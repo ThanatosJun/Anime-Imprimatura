@@ -333,6 +333,17 @@ footer {
   max-width: 100%;
 }
 
+.generate-visitor .content-box {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.generate-visitor .container {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+}
 
 /* Generated Visitor Page Styles */
 .generated-visitor {
