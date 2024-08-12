@@ -1,7 +1,10 @@
-// this file is to display image of one users' in the gallery
+// this file is to display images of one users' in the gallery
 
 require("dotenv").config();
-const image = require('../models/image');
+const express = require('express');
+const router = express.Router();
+const fetch = require('node-fetch');
+const Image = require('../models/image');
 
 exports.getGallery = async (req, res) => {
     try {
