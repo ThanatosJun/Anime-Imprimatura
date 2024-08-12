@@ -67,13 +67,22 @@ def CHS_save(results, CHD_Name):
 def main(CHD_Name, image_path):
     os.makedirs("CHS_Detect/" + CHD_Name, exist_ok = True)  # create folder for save correct CHS
     CHS_Dir = "CHS/" + CHD_Name
-    os.makedirs("CHS/" + CHD_Name, exist_ok = True)
-    image_basename = os.path.basename(image_path)
-    new_image_path = os.path.join(CHS_Dir, image_basename)
-    shutil.copy(image_path, new_image_path)
+    os.makedirs(CHS_Dir, exist_ok = True)
+    
+    # input image from uploads
+    for file_path in image_path:
+        image_basename = os.path.basename(file_path)
+        new_image_path = os.path.join(CHS_Dir, image_basename)
+        shutil.copy(file_path, new_image_path)
+        
     model_path = re_ptmodel_path(CHD_Name)  # get CHD_model path from PA_autoTraing_v3
     results = CHS_detect(model_path, CHS_dir = CHS_Dir)    # detect
-    CHS_save_dir = CHS_save(results, CHD_Name)  # save CHS
+    # CHS_save_dir = CHS_save(results, CHD_Name)  # save CHS
+    CHS_save_dir = []
+    for CHD_Name in image_path:
+        CHS_save_dir_ = CHS_save(results, CHD_Name)
+        CHS_save_dir.append(CHS_save_dir_)
+    
     return CHS_save_dir # let Next part keep continuous
 
 # Run this .py for main file must run this
