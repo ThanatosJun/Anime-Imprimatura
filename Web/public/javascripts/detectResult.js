@@ -1,21 +1,32 @@
 document.addEventListener('DOMContentLoaded', () => {
     // This function will be executed when the DOMContentLoaded event is triggered
+    let resultPath = "";
 
-    // Fetch the image data from the '/image' route on the server
-    fetch('/image') // 改成python回傳的路由
-        .then(response => response.blob()) // Convert the response to a Blob object
-        .then(blob => {
-            // Create a new image element
-            const img = document.createElement('img');
-
-            // Create a URL for the Blob object and set it as the src attribute of the image
-            img.src = URL.createObjectURL(blob);
-
-            // Append the image element to the element with the ID 'detectResult'
-            document.getElementById('detectResult').appendChild(img);
-        })
-        .catch(error => {
-            // Log any errors that occur during the fetch or processing of the image
-            console.error('Error fetching the image:', error);
-        });
+    // Fetch the data from the '/detect' route on the server
+    fetch('/detect', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData) // Send the request data as a JSON string
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok'); // Handle HTTP errors
+        }
+        return response.json(); // Convert the response to JSON
+    })
+    .then(data => {
+        // Handle the JSON response
+        if (data.status === 'success') {
+            resultPath = data.CHS_save_dir; // Assign the result path from the response
+            console.log(`Result path: ${resultPath}`); // Log the result path
+        } else {
+            console.error('Detection failed:', data.message || 'Unknown error');
+        }
+    })
+    .catch(error => {
+        // Handle any errors during fetch
+        console.error('Error:', error);
+    });
 })
