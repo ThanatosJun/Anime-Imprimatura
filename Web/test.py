@@ -4,8 +4,6 @@ import subprocess
 import os
 import json
 
-# from yolov8_RPA_character_train_v3.CHD_yaml import autoTrain
-
 app = Flask(__name__)
 CORS(app)
 

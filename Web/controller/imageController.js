@@ -99,7 +99,7 @@ const storageDetect = multer.diskStorage({
 const uploadDetect = multer({ storage: storageDetect });
 
 // Detect
-router.post('/uploadAndDetect', uploadDetect.fields([{ name: 'chs', minCount: 2 }]), (req, res) => {
+router.post('/uploadAndDetect', uploadDetect.fields([{ name: 'chs', maxCount: 10 }]), (req, res) => {
   console.log('Received Detect Data');
   
   // Extract file paths from the uploaded files
