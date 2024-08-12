@@ -102,16 +102,18 @@ const uploadDetect = multer({ storage: storageDetect });
 router.post('/uploadAndDetect', uploadDetect.fields([{ name: 'chs', minCount: 2 }]), (req, res) => {
   console.log('Received Detect Data');
   
+  // Extract file paths from the uploaded files
   const options = req.body.options;
   const uploadedFilePath = [];
 
   for(let i = 0; i < req.files.chs.length; i++){
-    uploadedFilePath[i] = req.files.chd[i].path;
+    uploadedFilePath[i] = req.files.chs[i].path;
   }
 
   console.log('chd_name: ', options);
   console.log('image_path: ', uploadedFilePath);
 
+  // Send a POST request to the detect service
   fetch('http://localhost:5001/detect', {
     method: 'POST',
     body: JSON.stringify({ CHD_name: options, image_path: uploadedFilePath}),
