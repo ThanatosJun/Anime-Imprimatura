@@ -1,55 +1,36 @@
 document.addEventListener('DOMContentLoaded', () => {
     // This function will be executed when the DOMContentLoaded event is triggered
-    let resultPath = "";
 
-    // Fetch the data from the '/detect' route on the server
-    fetch('/detect', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestData) // Send the request data as a JSON string
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok'); // Handle HTTP errors
-        }
-        return response.json(); // Convert the response to JSON
-    })
-    .then(data => {
-        // Handle the JSON response
-        if (data.status === 'success') {
-            resultPath = data.CHS_save_dir; // Assign the result path from the response
-            console.log(`Result path: ${resultPath}`); // Log the result path
+    const imgContainer = document.getElementById('detectResult');
+    // Retrieve the path to the directory containing images from localStorage
+    const CHS_save_dir = localStorage.getItem('CHS_save_dir');
+    
+    // Check if CHS_save_dir is available in localStorage
+    if (CHS_save_dir) {
+        // Fetch images from the server using the directory path
+        fetch(`/images?path=${encodeURIComponent(CHS_save_dir)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok'); // Handle HTTP errors
+                }
+                return response.json(); // Convert the response to JSON
+            })
+            .then(data => {
+                // Iterate through the list of image URLs and create image elements
+                data.images.forEach(imgSrc => {
+                    const img = document.createElement('img');
+                    img.src = imgSrc;
+                    img.alt = 'Detect result';
+                    imgContainer.appendChild(img); // Add the image element to the container
+                });
 
-            // 使用 resultPath 請求圖片列表
-            loadImages(resultPath);
-        } else {
-            console.error('Detection failed:', data.message || 'Unknown error');
-        }
-    })
-    .catch(error => {
-        // Handle any errors during fetch
-        console.error('Error:', error);
-    });
-})
-
-function loadImages(folderPath) {
-    fetch(`/images?folderPath=${encodeURIComponent(folderPath)}`)
-        .then(response => response.json())
-        .then(data => {
-            const imageContainer = document.getElementById('detectResult');
-            
-            data.images.forEach(imageFileName => {
-                const imgElement = document.createElement('img');
-                imgElement.src = `${folderPath}/${imageFileName}`;
-                imgElement.alt = imageFileName;
-                imgElement.style.width = '200px';
-                imgElement.style.height = 'auto';
-                imageContainer.appendChild(imgElement);
+                // Clear the directory path from localStorage after displaying images
+                localStorage.removeItem('CHS_save_dir');
+            })
+            .catch(error => {
+                console.error('Error fetching images:', error); // Log any errors during the fetch process
             });
-        })
-        .catch(error => {
-            console.error('Error loading images:', error);
-        });
-}
+        } else {
+            console.error('CHS_save_dir not found in localStorage.'); // Log an error if CHS_save_dir is not found in localStorage
+        }
+})

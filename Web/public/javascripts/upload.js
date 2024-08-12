@@ -145,6 +145,9 @@ async function submitFormCHS() {
       const uploadData = await uploadResponse.json();
       console.log(`Upload response:`, uploadData);
 
+      // Save CHS_save_dir in localStorage
+      localStorage.setItem('CHS_save_dir', uploadData.CHS_save_dir);
+
       // Redirect to "final" page after "detect"
       window.location.href = '/generate_visitor';
 

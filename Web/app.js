@@ -4,24 +4,28 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const connectMongoDB = require('./database'); // Import the database connection module
-const userModel = require('./models/user'); // Import the user model
 const bcrypt = require('bcrypt'); // For password hashing
 const bodyParser = require('body-parser'); // To handle HTTP request data
 const multer = require('multer'); // For handling file uploads
+const fs = require('fs');
 let { PythonShell } = require('python-shell'); // For running Python scripts
 const axios = require('axios');
 
-// routes of controller
+// Import modules
+const connectMongoDB = require('./database'); // Import the database connection module
+const userModel = require('./models/user'); // Import the user model
+const apiRouter = require('./api');
+
+// Import route controllers
 const imageController = require('./controller/imageController');
 const galleryController = require('./controller/galleryController');
 const teamController = require('./controller/teamController');
 const userController = require("./controller/userController");
 
+const port = 3000; // Port for the server
 
-const port = 3000;
-
-var app = express();
+// Initialize Express application
+const app = express(); 
 
 // Multer setup for file uploads
 const storage = multer.diskStorage({
@@ -32,11 +36,27 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname)); // Generate a unique file name
   }
 });
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage }); // Create multer instance with the specified storage configuration
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views')); // Specify the views directory
 app.set('view engine', 'pug'); // Use Pug as the view engine
+
+// Middleware setup
+app.use(logger('dev')); // Log HTTP requests
+app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
+app.use(bodyParser.json()); // Parse JSON bodies
+app.use(cookieParser()); // Parse cookies
+app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from 'public'
+
+// Middleware to log requests
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
+
+// Temporarily save data (for development or debugging purposes)
+const data = [];
 
 // Import route handlers
 var indexRouter = require('./routes/index');
@@ -52,19 +72,6 @@ var loginRouter = require('./routes/login');
 var teamGalleryFRouter = require('./routes/team_gallery_f');
 var teamGalleryTRouter = require('./routes/team_gallery_t');
 
-// Temporarily save data
-const data = [];
-
-// Middleware to process HTTP request data
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-// Middleware to log requests
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
-});
-
 // Use the imported routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -79,22 +86,14 @@ app.use('/login', loginRouter);
 app.use('/team_gallery_f', teamGalleryFRouter);
 app.use('/team_gallery_t', teamGalleryTRouter);
 
-// Setup logging, JSON handling, URL encoding, cookies, and static files
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Import and use api route
-const apiRouter = require('./api');
-app.use('/api', apiRouter);
+// API route handler
+app.use('/api', apiRouter); // Prefix API routes with '/api'
 
 // Route to render account settings
 app.get('/', async (req, res) => {
   try {
-    const user = await userModel.findOne({});
-    res.render('account_setting', { user });
+    const user = await userModel.findOne({}); // Fetch user data from MongoDB
+    res.render('account_setting', { user }); // Render 'account_setting' view with user data
   } catch (err) {
     console.error('Error:', err);
     res.send('Error loading user settings');
@@ -122,26 +121,26 @@ app.post('/train', (req, res) => {
     });
 })
 
-// post CHD_name and image_path to CHD_detect.py
-app.get('/detect', (req, res) => {
-  // 設置 Flask 伺服器的基本 URL
-  const flaskUrl = 'http://localhost:5001';
-  // 要發送的 JSON 數據
-  const data = { CHD_name, image_path } = req.body;
+// // post CHD_name and image_path to CHD_detect.py
+// app.get('/detect', (req, res) => {
+//   // 設置 Flask 伺服器的基本 URL
+//   const flaskUrl = 'http://localhost:5001';
+//   // 要發送的 JSON 數據
+//   const data = { CHD_name, image_path } = req.body;
   
-  console.log('(app.js) Sending detect request with data', data);
+//   console.log('(app.js) Sending detect request with data', data);
 
-  // 發送 POST 請求到 Flask 伺服器的 /detect 路由
-  axios.post(`${flaskUrl}/detect`, data)
-    .then(response => {
-      console.log('(app.js) Flask Server Response: ', response.data);
-      res.send(response.data);
-    })
-    .catch(error => {
-      console.error('(app.js) Error Sending Requests: ', error);
-      res.status(500).send("Error detecting image. ");
-    });
-})
+//   // 發送 POST 請求到 Flask 伺服器的 /detect 路由
+//   axios.post(`${flaskUrl}/detect`, data)
+//     .then(response => {
+//       console.log('(app.js) Flask Server Response: ', response.data);
+//       res.send(response.data);
+//     })
+//     .catch(error => {
+//       console.error('(app.js) Error Sending Requests: ', error);
+//       res.status(500).send("Error detecting image. ");
+//     });
+// })
 
 // Route to handle user editing
 app.post('/edituser', async (req, res) => {
@@ -149,26 +148,11 @@ app.post('/edituser', async (req, res) => {
     const { userId, newGmail, newPassword } = req.body;
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     await userModel.updateOne({ _id: userId }, { $set: { gmail: newGmail, password: hashedPassword } });
-    res.redirect('/');
+    res.redirect('/'); // Redirect to home page after successful update
   } catch (err) {
     console.error('Error:', err);
     res.send('Error updating user settings');
   }
-});
-
-/**
- * @route POST /train
- * @input JSON { fileName: string, processed: boolean }
- * @output JSON { fileName: string, processed: boolean, trained: boolean }
- */
-app.post('/train', (req, res) => {
-  const data = req.body;
-
-  // Further process the data
-  const trainedData = trainData(data);
-
-  // Send the further processed data back to the client
-  res.json(trainedData);
 });
 
 app.post('/uploadAndTrain', imageController); // Handle CHD upload and initial processing
@@ -182,21 +166,16 @@ app.post('/upload', upload.single('upload-box'), (req, res) => {
   res.send({ filePath: filePath }); // 返回文件路径
 });
 
+// Route to provide images based on directory path
 app.get('/images', (req, res) => {
-  const folderPath = decodeURIComponent(req.query.folderPath);
+  const imagePath = req.query.path;
 
-  fs.readdir(folderPath, (err, files) => {
-      if (err) {
-          return res.status(500).send('Unable to scan directory');
-      }
+  if (!imagePath) {
+    return res.status(400).json({ error: 'Path parameter is required.' });
+  }
 
-      // 只返回圖片文件（根據文件擴展名過濾）
-      const imageFiles = files.filter(file => {
-          return ['.jpg', '.jpeg', '.png', '.gif'].includes(path.extname(file).toLowerCase());
-      });
-
-      res.json({ images: imageFiles });
-  });
+  const images = fs.readdirSync(imagePath).map(file => `/path/to/images/${file}`); // List image files
+  res.json({ images }); // Return list of image URLs
 });
 
 // Handle 404 errors
