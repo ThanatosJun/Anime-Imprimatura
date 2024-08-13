@@ -26,10 +26,10 @@ def train_image():
     image_path = data.get('image_path')
     
     print('Now executing "Train". ')
-    import PA_autoTraing_v6
+    import PA_autoTraing_v7
     try:
         print(f'Received train request with CHD_name: {CHD_name}, image_path: {image_path}')
-        PA_autoTraing_v6.main(CHD_name, image_path)
+        PA_autoTraing_v7.main(CHD_name, image_path)
 
         output = "Train script executed successfully."
         return jsonify({'status': 'success', 'output': output, 'CHD_name': CHD_name, 'image_path': image_path})

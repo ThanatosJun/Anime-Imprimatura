@@ -63,6 +63,7 @@ class PA_init():
         
         # model dir
         self.CHD_modeldir = "CHD_Model" # trained model for detect maincharacter
+        self.CHD_modelpt =  self.CHD_modeldir + "/" + CHD_Name + ".pt"
         # model for labeling
         self.label_fullbody = "model_CHD/CHD_fullbody.pt"  # predict model for predicting fullbody
         self.label_head = "model_CHD/CHD_head_AI.pt"   # predict model for predicting head
@@ -72,8 +73,6 @@ class PA_init():
         self.pretrained_model = "model_CHD/yolov8n.pt" # pretrained model for use
         # training yaml
         self.data_yaml = "CHD_yaml/autoTrain.yaml"
-        # change dataset path in .yaml
-        change_yaml_path(self.data_yaml, CHD_Name)
         # training parameters
         self.train_params = {
         'data': self.data_yaml,
@@ -111,13 +110,10 @@ class PA_init():
 
 class PA_preprocess(PA_init):
     # init
-    def __init__(self):    
-        super().__init__()
-        # create dir
-        os.makedirs(self.CHD_modeldir, exist_ok=True)
-        os.makedirs(self.image_dir, exist_ok=True)
-        self.clear_and_create_dir(self.image_augmentation_outputdir)
-        self.clear_and_create_dir(self.dataset_train_dir)
+    def __init__(self, CHD_Name):    
+        super().__init__(CHD_Name)
+        # change dataset path in .yaml
+        change_yaml_path(self.data_yaml, CHD_Name)
 
     # Function for resize image into 640x640
     def CHD_resize(self, CHD_directory):
@@ -301,8 +297,8 @@ class PA_preprocess(PA_init):
 
 class PA_train(PA_init):
     # init
-    def __init__(self):    
-        super().__init__()
+    def __init__(self, CHD_Name):    
+        super().__init__(CHD_Name)
 
     # Function for move all files in one folder to another
     def move_noCHFiles(self, sorce_dir, destination_dir):
@@ -394,7 +390,7 @@ class PA_train(PA_init):
         # Train
         CHD_model_path = self.auto_training(self.model_contruction, self.pretrained_model, self.train_params)
         # rename and move .pt
-        CHD_modelpt =  self.CHD_modeldir + "\\" + self.CHD_Name + ".pt"
+        CHD_modelpt =  self.CHD_modelpt
         if os.path.exists(CHD_modelpt):
             CHD_modelpt = self.get_new_file_path(CHD_modelpt)
         os.rename(CHD_model_path, CHD_modelpt)
@@ -402,8 +398,14 @@ class PA_train(PA_init):
         return CHD_modelpt 
 
 class Upload_images(PA_init):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, CHD_Name):
+        super().__init__(CHD_Name)
+        # create dir
+        os.makedirs(self.CHD_modeldir, exist_ok=True)
+        os.makedirs(self.image_dir, exist_ok=True)
+        os.makedirs(self.CHD_Detect, exist_ok=True)
+        self.clear_and_create_dir(self.image_augmentation_outputdir)
+        self.clear_and_create_dir(self.dataset_train_dir)
     
     def receive_images(self, file_paths):
         # input CHD images from uploads
@@ -455,5 +457,5 @@ if __name__ == "__main__":
     CHD_name = sys.argv[1]
     image_path = sys.argv[2]
     print(image_path)
-    CHD_modelpt = main(CHD_name, image_path)
+    main(CHD_name, image_path)
     # 'til here
