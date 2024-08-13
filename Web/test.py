@@ -46,9 +46,12 @@ def detect_image():
 
     print('Now executing "Detect". ')
     import CHD_detect_v2
+    CHS_save_dir = None
     try:
         print(f'Received detect request with CHD_name: {CHD_name}, image_path: {image_path}')
         CHS_save_dir = CHD_detect_v2.main(CHD_name, image_path)
+        print(CHS_save_dir)
+        
         output = "Detect script executed successfully."
         return jsonify({'status': 'success', 'output': output, 'CHD_name': CHD_name, 'CHS_save_dir': CHS_save_dir})
     except Exception as e:
