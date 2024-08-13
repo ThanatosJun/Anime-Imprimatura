@@ -6,6 +6,7 @@ html(lang="en")
     title Generated_visitor
     link(rel='stylesheet', href='/stylesheets/style.css')
   body.generated-visitor
+    script(src='/javascripts/loading.js')
     header.navigation-bar
       a.logo-placeholder(href="/")
       .nav
@@ -14,6 +15,15 @@ html(lang="en")
         a(href="/#about-us") About Us
         a(href="/gallery") Gallery
       a.login-btn(href="login") Log In
+    .loading-mask
+      .loading 
+        span(data-text="L") L
+        span(data-text="O") O
+        span(data-text="A") A
+        span(data-text="D") D
+        span(data-text="I") I
+        span(data-text="N") N
+        span(data-text="G") G
     main.content
       .title Here it is!
       .container

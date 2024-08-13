@@ -246,10 +246,3 @@ function submitFormCHS() {
     console.error(`Error:`, error); // Log any errors that occur during the initial request
   });
 }
-
-/**
- * Handles the form submission for generating page.
- */
-function submitFormGenerate() {
-  window.location.href = `/generated_visitor`;
-}

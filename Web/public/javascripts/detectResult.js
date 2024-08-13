@@ -54,3 +54,10 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('CHS_save_dir not found in localStorage.'); // Log an error if CHS_save_dir is not found in localStorage
     }
 })
+
+/**
+ * Handles the form submission for generating page.
+ */
+function submitFormGenerate() {
+    window.location.href = `/generated_visitor`;
+  }

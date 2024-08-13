@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const img = document.createElement('img');
                     img.src = imgSrc;
                     img.alt = 'Detect result';
+                    img.style.maxWidth = '100%';
                     resultContainer.appendChild(img); // Add the image element to the container
                 });
 
