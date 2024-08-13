@@ -269,39 +269,28 @@ class Coloring(CH_SEG__init):
 
     # Function for pick color in CHD and make a color dictionary
     def pick_color(self):
-        # init 
-        classes_path = self.CHD_SAM_dir + "/Classes.txt"
+        # init
         images_dir = self.CHD_SAM_dir + "/images"
         images_path = self.get_images_path(images_dir)
-        class_dictionary = self.read_files_to_dict(classes_path)
+        color_dictionary = {}
 
-        # 初始化一個空字典來存儲每張圖像的第二主色
-        second_dominant_colors = {}
-
-        # 遍歷圖像列表，並逐一提取每張圖像的第二主色
-        for index, image_path in enumerate(images_path):
-            # 計算圖像的第二主色，並將其轉換為 Python 列表
+        # Pick colors for each segmentaions' parts
+        for image_path in images_path:
+            # Get second main color and change it into pyhton list
             image = cv2.imread(image_path)
             second_color = self.get_second_dominant_color(image).tolist()
             
-            # 獲取檔名（不含路徑與副檔名）
-            file_name = os.path.basename(image_path)  # Hair_1.png
-
-            # 從檔名中提取 "Hair" 字串
+            # Get file path ex: Hair_1.png
+            file_name = os.path.basename(image_path)
+            # Get class from file path ex : Hair
             name_part = file_name.split('_')[0]  # Hair
             image_key = str(name_part)
-            print(name_part)
-            # 將索引轉換為從 1 開始的字符串，並作為字典的鍵
-            # image_key = str(index + 1)
-            
-            # 將第二主色存入字典中
-            second_dominant_colors[image_key] = second_color
-        print(second_dominant_colors)
-        color_dictionary = {key: second_dominant_colors[str(key)] for key in class_dictionary}
+            # Put scond_color in to dictionary
+            color_dictionary[image_key] = second_color
         print(color_dictionary)
         return color_dictionary
-    # {Hair: (120 , 120, 120), Face: ()}
 
+    # Function for coloring
     def color(self, color_dictionary):
         """
         1.CHS_Detect/{CH_Name}/取得每一張原圖，準備上色
@@ -309,29 +298,51 @@ class Coloring(CH_SEG__init):
         3.對照dictionary上色
         """
         CHS_paths = []
+        # Get all CHS path in folder, this is list
         CHS_paths = self.get_images_path(self.CHS_Detect_dir)
+        # Deal with all CHS
         for CHS_path in CHS_paths:
             CHS_Name = os.path.splitext(os.path.basename(CHS_path))[0]
             CHS_image = cv2.imread(CHS_path)
+            # Get CHS_SAM label
             CHS_annotations_dir = self.CHS_SAM_dir + "/" + f"{CHS_Name}/annotations"
             CHS_annotations_paths = self.get_files_path(CHS_annotations_dir)
+            # Announce main points dictionary for coloring
             position_dictionary = {}
+            # Save all main points into position_dictionary
             for CHS_annotation_path in CHS_annotations_paths:
                 cls, points = self.extract_class_and_points(CHS_annotation_path)
                 position_dictionary[cls] = points
+            # Color and save image
             CHS_Finished = self.fill_color_demo(CHS_image, color_dictionary, position_dictionary)    
             CHS_save_path = os.path.join(self.CHS_Finished_dir, f"{CHS_Name}_Fin.png")
             cv2.imwrite(CHS_save_path, CHS_Finished)
-            
+        return self.CHS_Finished_dir
+    
+def main():
+    # ==請在以下從前端給 CH_Name，也就是使用者輸入的CHD名字==
 
-if __name__ == "__main__":
-    CH_Name = "Anime008"
+    # ====
+    color_dictionary , CHS_Finished_dir = get_colored(CH_Name)
+    return color_dictionary , CHS_Finished_dir
+
+def get_colored(CH_Name):
     CH_Seg = CH_Segmentation(CH_Name)
     CH_Seg.CHD_SEG()
     CH_Seg.CHS_SEG()
     CH_Col = Coloring(CH_Name)
     color_dictionary = CH_Col.pick_color()
-    CH_Col.color(color_dictionary)
+    CHS_Finished_dir = CH_Col.color(color_dictionary)
+    return color_dictionary, CHS_Finished_dir          
+
+# if __name__ == "__main__":
+#     CH_Name = "Anime008"
+#     CH_Seg = CH_Segmentation(CH_Name)
+#     CH_Seg.CHD_SEG()
+#     CH_Seg.CHS_SEG()
+#     CH_Col = Coloring(CH_Name)
+#     color_dictionary = CH_Col.pick_color()
+#     CHS_Finished_dir = CH_Col.color(color_dictionary)
 
 # """
 # # 顯示顏色預覽(不重要可以不用寫)
