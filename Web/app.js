@@ -174,7 +174,13 @@ app.get('/images', (req, res) => {
     return res.status(400).json({ error: 'Path parameter is required.' });
   }
 
-  const images = fs.readdirSync(imagePath).map(file => `/path/to/images/${file}`); // List image files
+  const absolutePath = path.resolve(__dirname, imagePath);
+
+  if (!fs.existsSync(absolutePath)) {
+    return res.status(404).json({ error: 'Directory not found.' });
+  }
+
+  const images = fs.readdirSync(absolutePath).map(file => `/path/to/images/${file}`); // List image files
   res.json({ images }); // Return list of image URLs
 });
 
