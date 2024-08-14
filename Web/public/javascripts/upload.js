@@ -127,7 +127,16 @@ function handleFiles(files, containerId) {
  */
 async function submitFormCHS() {
   const form = document.getElementById(`uploadFormCHS`);
+  const chsInput = document.getElementById('chs');
   const formData = new FormData(form);
+
+  // Check if a file has been selected
+  if (chsInput.files.length === 0) {
+    alert(`Please select an image to upload.`);
+    return;
+  }
+
+  fileToImage(chsInput.files, 'chs');
 
   try {
       // Upload the file and process it
@@ -203,46 +212,46 @@ async function submitFormCHD() {
     }
 }
 
-/**
- * Handles the form submission for detecting page images.
- */
-function submitFormCHS() {
-  // Get form and input elements
-  const form = document.getElementById(`uploadFormCHS`);
-  const chsInput = document.getElementById('chs');
+// /**
+//  * Handles the form submission for detecting page images.
+//  */
+// function submitFormCHS() {
+//   // Get form and input elements
+//   const form = document.getElementById(`uploadFormCHS`);
+//   const chsInput = document.getElementById('chs');
 
-  // Create a FormData object from the form element
-  const formData = new FormData(form);
+//   // Create a FormData object from the form element
+//   const formData = new FormData(form);
 
-  // Check if a file has been selected
-  if (chsInput.files.length === 0) {
-    alert(`Please select an image to upload.`);
-    return;
-  }
+//   // Check if a file has been selected
+//   if (chsInput.files.length === 0) {
+//     alert(`Please select an image to upload.`);
+//     return;
+//   }
 
-  fileToImage(chsInput.files, 'chs');
+//   fileToImage(chsInput.files, 'chs');
 
-  // Submit the form data using fetch API
-  fetch(`/uploadAndDetect`, {
-    method: `POST`,
-    body: formData
-  })
-  .then(response => {
-    console.log(`Response status:`, response.status);
-    // Check if the response is successful
-    if (response.ok) {
-      return response.json();
-    } else {
-      throw new Error(`Upload failed`);
-    }
-  })
-  .then(data => {
-    console.log(`Success:`, data);
+//   // Submit the form data using fetch API
+//   fetch(`/uploadAndDetect`, {
+//     method: `POST`,
+//     body: formData
+//   })
+//   .then(response => {
+//     console.log(`Response status:`, response.status);
+//     // Check if the response is successful
+//     if (response.ok) {
+//       return response.json();
+//     } else {
+//       throw new Error(`Upload failed`);
+//     }
+//   })
+//   .then(data => {
+//     console.log(`Success:`, data);
     
-    // Redirect to the "after detect" page upon successful upload and detection
-    window.location.href = `/generate_visitor`;
-  })
-  .catch((error) => {
-    console.error(`Error:`, error); // Log any errors that occur during the initial request
-  });
-}
+//     // Redirect to the "after detect" page upon successful upload and detection
+//     window.location.href = `/generate_visitor`;
+//   })
+//   .catch((error) => {
+//     console.error(`Error:`, error); // Log any errors that occur during the initial request
+//   });
+// }
