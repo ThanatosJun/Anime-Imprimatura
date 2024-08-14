@@ -437,14 +437,14 @@ def change_yaml_path(data_yaml, newpath):
 
 # Function for main process
 def main(CHD_Name, file_paths):
-    Up_img = Upload_images(CHD_Name)
-    Up_img.receive_images(file_paths)
-    PA_pre = PA_preprocess(CHD_Name)
-    PA_tra = PA_train(CHD_Name)
-    PA_pre.main()
-    CHD_modelpt = PA_tra.main()
-    return CHD_modelpt
-
+    # Up_img = Upload_images(CHD_Name)
+    # Up_img.receive_images(file_paths)
+    # PA_pre = PA_preprocess(CHD_Name)
+    # PA_tra = PA_train(CHD_Name)
+    # PA_pre.main()
+    # CHD_modelpt = PA_tra.main()
+    # return CHD_modelpt
+    return 'k'
 
 
 # Run this .py for main file must run this
