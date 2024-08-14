@@ -176,6 +176,7 @@ app.get('/images', (req, res) => {
   }
 
   const absolutePath = path.resolve(__dirname, imagePath);
+  console.log(`absolutePath: ${absolutePath}`);
 
   if (!fs.existsSync(absolutePath)) {
     return res.status(404).json({ error: 'Directory not found.' });
