@@ -59,27 +59,28 @@ document.addEventListener('DOMContentLoaded', () => {
 /**
  * Handles the form submission for training page images.
  */
-async function submitFormGenerate() {
+async function submitFormSegment() {
     // const data = document.getElementById(`data`);
     // const formData = new FormData(form);
 
     try {
-        const generateResponse = await fetch(`/startGenerate`, {
+        const segmentResponse = await fetch(`/uploadAndSegment`, {
             method: 'POST'
             // body: formData
         });
 
-        if (!generateResponse.ok) {
-            const errorText = await uploadResponse.text();
-            throw new Error(`Generate failed: ${errorText}`);
+        if (!segmentResponse.ok) {
+            const errorText = await segmentResponse.text();
+            throw new Error(`Segment failed: ${errorText}`);
         }
 
         // Parse the response JSON data
-        const generateData = await generateResponse.json();
-        console.log(`Generate response:`, generateData);
+        const segmentData = await segmentResponse.json();
+        console.log(`Segment response:`, segmentData);
 
         // Save color_dictionary in localStorage
-        localStorage.setItem('color_dictionary', generateData.color_dictionary);
+        localStorage.setItem('color_dictionary', segmentData.color_dictionary);
+        localStorage.setItem('CHS_Finished_dir', segmentData.CHS_Finished_dir);
 
         // Redirect to "final" page after "generate"
         window.location.href = '/generated_visitor';

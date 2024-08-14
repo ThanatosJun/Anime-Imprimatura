@@ -517,6 +517,12 @@ footer {
   background-color: #0056b3;
 }
 
+.generated-visitor .color-box {
+  height: 10px;
+  width: 10px;
+  padding: 10px;
+}
+
 /* Log In Page Styles */
 .login .login-container {
   display: flex;
