@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const img = document.createElement('img');
             img.src = storedImage;
             img.alt = `CHS`; // Alt text
-            img.style.maxWidth = '100%'; // Optional: Limit the maximum width of the image
+            img.classList.add('responsive-image'); // Add class for styling
             imageContainer.appendChild(img);
         });
 
@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const img = document.createElement('img');
                     img.src = imgSrc;
                     img.alt = 'Detect result';
+                    img.classList.add('responsive-image'); // Add class for styling
                     resultContainer.appendChild(img); // Add the image element to the container
                 });
             })
@@ -56,8 +57,35 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 /**
- * Handles the form submission for generating page.
+ * Handles the form submission for training page images.
  */
-function submitFormGenerate() {
-    window.location.href = `/generated_visitor`;
-  }
+async function submitFormGenerate() {
+    // const data = document.getElementById(`data`);
+    // const formData = new FormData(form);
+
+    try {
+        const generateResponse = await fetch(`/startGenerate`, {
+            method: 'POST'
+            // body: formData
+        });
+
+        if (!generateResponse.ok) {
+            const errorText = await uploadResponse.text();
+            throw new Error(`Generate failed: ${errorText}`);
+        }
+
+        // Parse the response JSON data
+        const generateData = await generateResponse.json();
+        console.log(`Generate response:`, generateData);
+
+        // Save color_dictionary in localStorage
+        localStorage.setItem('color_dictionary', generateData.color_dictionary);
+
+        // Redirect to "final" page after "generate"
+        window.location.href = '/generated_visitor';
+
+    } catch (error) {
+        console.error(`Error:`, error.message);
+        alert(`An error occurred: ${error.message}`);
+    }
+}

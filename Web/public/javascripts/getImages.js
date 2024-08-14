@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const img = document.createElement('img');
                     img.src = imgSrc;
                     img.alt = 'Detect result';
+                    img.classList.add('responsive-image'); // Add class for styling
                     img.style.maxWidth = '100%';
                     resultContainer.appendChild(img); // Add the image element to the container
                 });
@@ -34,4 +35,16 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('CHS_save_dir not found in localStorage.'); // Log an error if CHS_save_dir is not found in localStorage
     }
+
+    fetch('/get-color')
+    .then(response => response.json())
+    .then(data => {
+        // 解析顏色tuple並轉換為RGB格式
+        const colorTuple = data.color;
+        const rgbColor = `rgb(${colorTuple[0]}, ${colorTuple[1]}, ${colorTuple[2]})`;
+
+        // 動態更改div的背景顏色
+        document.getElementById('colorBox').style.backgroundColor = rgbColor;
+    })
+    .catch(error => console.error('Error:', error));
 });
