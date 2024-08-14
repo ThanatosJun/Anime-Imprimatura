@@ -319,7 +319,7 @@ class Coloring(CH_SEG__init):
             cv2.imwrite(CHS_save_path, CHS_Finished)
         return self.CHS_Finished_dir
     
-def main():
+def main(CH_Name):
     # ==請在以下從前端給 CH_Name，也就是使用者輸入的CHD名字==
 
     # ====
