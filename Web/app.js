@@ -48,6 +48,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(bodyParser.json()); // Parse JSON bodies
 app.use(cookieParser()); // Parse cookies
 app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from 'public'
+app.use('/path/to/images', express.static(path.join(__dirname, 'CHD_Detect')));
 
 // Middleware to log requests
 app.use((req, res, next) => {
