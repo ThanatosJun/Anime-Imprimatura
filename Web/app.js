@@ -48,6 +48,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(bodyParser.json()); // Parse JSON bodies
 app.use(cookieParser()); // Parse cookies
 app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from 'public'
+app.use('/path/to/images', express.static(absolutePath));
 
 // Middleware to log requests
 app.use((req, res, next) => {
@@ -180,8 +181,6 @@ app.get('/images', (req, res) => {
   if (!fs.existsSync(absolutePath)) {
     return res.status(404).json({ error: 'Directory not found.' });
   }
-
-  app.use('/path/to/images', express.static(absolutePath));
 
   const images = fs.readdirSync(absolutePath).map(file => `/path/to/images/${file}`); // List image files
   res.json({ images }); // Return list of image URLs
