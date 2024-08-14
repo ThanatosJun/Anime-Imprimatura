@@ -133,7 +133,7 @@ router.post('/uploadAndDetect', uploadDetect.fields([{ name: 'chs', maxCount: 10
 });
 
 // Segment
-router.post('/uploadAndSegment', uploadSegment.single('CH_Name'), (req, res) => {
+router.post('/uploadAndSegment', (req, res) => {
   console.log('Received Detect Data');
   
   // Extract file paths from the uploaded files
