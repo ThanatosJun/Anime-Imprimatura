@@ -9,8 +9,6 @@ Features:
 from ultralytics import YOLO
 import shutil
 import os
-from PA_autoTraing_v6 import re_ptmodel_path
-import cv2
 import sys
 
 # Function for detect 
@@ -42,26 +40,8 @@ def CHS_save(results, CHD_Name):
                 print(path)
                 CHS_yes = True
         CHS_yes = False
-        # cv2.imshow('Detection', result.plot())
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
     #   return CHD_Detect/CHD_Name dir path
     return file_path
-
-# def jpg_to_png(img):
-    # 原始文件路徑
-    jpg_path = img
-
-    # 分離文件名與副檔名
-    file_name, file_ext = os.path.splitext(jpg_path)
-
-    # 替換副檔名為 .png
-    png_path = f"{file_name}.png"
-    
-    # 使用 os.rename() 更改文件名
-    os.rename(jpg_path, png_path)
-
-    return png_path
 
 # Function for main process
 def main(CHD_Name, image_path):
@@ -74,22 +54,20 @@ def main(CHD_Name, image_path):
         image_basename = os.path.basename(file_path)
         new_image_path = os.path.join(CHS_Dir, image_basename)
         shutil.copy(file_path, new_image_path)
-        
-    model_path = re_ptmodel_path(CHD_Name)  # get CHD_model path from PA_autoTraing_v3
+    model_path = "CHD_Model/" + CHD_Name + ".pt"
     results = CHS_detect(model_path, CHS_dir = CHS_Dir)    # detect
+    CHS_save_dir = CHS_save(results, CHD_Name)  # save CHS
+
     # CHS_save_dir = CHS_save(results, CHD_Name)  # save CHS
     CHS_save_dir = []
     for CHD_Name in image_path:
         CHS_save_dir_ = CHS_save(results, CHD_Name)
         CHS_save_dir.append(CHS_save_dir_)
-    
+        
     return CHS_save_dir # let Next part keep continuous
 
 # Run this .py for main file must run this
 if __name__ == "__main__":
-    # main(CHD_Name="Anime008")
-    # # Anime001
-
     if len(sys.argv) != 3:
         print("Usage: python CHD_detect.py <CHD_name> <image_path>")
         sys.exit(1)

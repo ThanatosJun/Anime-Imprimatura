@@ -132,4 +132,31 @@ router.post('/uploadAndDetect', uploadDetect.fields([{ name: 'chs', maxCount: 10
   });
 });
 
+// Segment
+router.post('/uploadAndSegment', uploadSegment.single('CH_Name'), (req, res) => {
+  console.log('Received Detect Data');
+  
+  // Extract file paths from the uploaded files
+  const CH_Name = req.body.options;
+  console.log('CH_Name: ', CH_Name);
+
+  // Send a POST request to the segment service
+  fetch('http://localhost:5001/segment', {
+    method: 'POST',
+    body: JSON.stringify({ CH_Name: CH_Name}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Segment response:', data);
+    res.status(200).json(data);
+  })
+  .catch(error => {
+    console.error('Error during segment process:', error);
+    res.status(500).json({ error: 'An error occurred during the segment process.' });
+  });
+});
+
 module.exports = router;
