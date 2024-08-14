@@ -58,5 +58,26 @@ def detect_image():
         print(f'Error during detecting: {e}')
         return jsonify({'status': 'error', 'error': str(e), 'CHD_name': CHD_name, 'CHS_save_dir': CHS_save_dir})
     
+# segment
+@app.route('/segment', methods=['POST'])
+def segment_image():
+    data = request.get_json()  # 获取POST请求的JSON数据
+    CH_Name = data.get('CH_Name')
+
+    print('Now executing "Segmentation". ')
+    import CH_Segmentation
+    color_dictionary, CHS_Finished_dir = None
+    try:
+        print(f'Received segment request with CH_Name: {CH_Name}')
+        color_dictionary, CHS_Finished_dir  = CH_Segmentation.main(CH_Name)
+        print("Color Dictionary: ", color_dictionary)
+        print("CHS Finished dir: ", CHS_Finished_dir)
+        
+        output = "Segment script executed successfully."
+        return jsonify({'status': 'success', 'output': output, 'CH_Name': CH_Name})
+    except Exception as e:
+        print(f'Error during segmenting: {e}')
+        return jsonify({'status': 'error', 'error': str(e), 'CH_Name': CH_Name,})
+    
 if __name__ == '__main__':
     app.run(port=5001, debug=True)  # 在5001端口上启动服务
