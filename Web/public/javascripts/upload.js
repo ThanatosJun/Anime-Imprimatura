@@ -186,21 +186,8 @@ async function submitFormCHD() {
             throw new Error(`Upload failed: ${errorText}`);
         }
 
-        // Parse the response JSON data
-        const uploadData = await uploadResponse.json();
-        console.log(`Upload response:`, uploadData);
-
-        // Send a POST request to the '/train' endpoint with the processed data
-        const trainResponse = await fetch(`/train`, {
-            method: 'POST',
-            body: JSON.stringify(uploadData),
-            headers: {
-                'Content-Type': 'application/json' // Specify the content type as JSON
-            }
-        });
-
         // Parse the train response JSON data
-        const trainData = await trainResponse.json();
+        const trainData = await uploadResponse.json();
         console.log('Train response:', trainData);
 
         // Redirect to the "detect" page with the processed data
