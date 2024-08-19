@@ -188,6 +188,11 @@ async function submitFormCHD() {
   const formData = new FormData(form);
   const loadingMasks = document.getElementsByClassName('loading-mask');
 
+  if (loadingMasks.length === 0) {
+    console.error('Loading mask elements are missing');
+    return;
+  }
+
   // Save character_name in localStorage
   localStorage.setItem('character_name', uploadData.characterName);
 
