@@ -49,6 +49,7 @@ app.use(bodyParser.json()); // Parse JSON bodies
 app.use(cookieParser()); // Parse cookies
 app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from 'public'
 app.use('/path/to/images', express.static(path.join(__dirname)));
+app.use(express.json());
 
 // Middleware to log requests
 app.use((req, res, next) => {
