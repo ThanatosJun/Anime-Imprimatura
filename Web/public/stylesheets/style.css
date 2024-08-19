@@ -517,6 +517,16 @@ footer {
   background-color: #0056b3;
 }
 
+.generated-visitor .color-container {
+  display: flex;
+  flex-direction: row;
+  padding: auto;
+}
+
+.generated-visitor .color-title {
+  padding: 5px;
+}
+
 .generated-visitor .color-box {
   height: 10px;
   width: 10px;

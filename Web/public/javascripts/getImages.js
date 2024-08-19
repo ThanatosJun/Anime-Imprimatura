@@ -55,16 +55,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 colorBox.style.color = rgbColor;
             } else {
                 // 如果找不到對應的元素，可以選擇創建新的元素
+                let newColorTitle = document.createElement('div');
                 let newColorBox = document.createElement('div');
+                
+                newColorTitle.classList.add('color-title');
+                newColorTitle.id = `color-title-${segment-part}`;
+                newColorTitle.textContent = `${segment_part}`;
+
                 newColorBox.classList.add('color-box');
                 newColorBox.id = `color-box-${segment_part}`;
-                newColorBox.textContent = `${segment_part}`;
 
                 let colorTuple = color_dictionary[segment_part];
                 let rgbColor = `rgb(${colorTuple[0]}, ${colorTuple[1]}, ${colorTuple[2]})`;
 
                 newColorBox.style.color = rgbColor;
 
+                colorContainer.appendChild(newColorTitle);
                 colorContainer.appendChild(newColorBox);
             }
         }
