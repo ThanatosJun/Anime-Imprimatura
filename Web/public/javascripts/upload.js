@@ -129,12 +129,14 @@ async function submitFormCHS() {
   const form = document.getElementById(`uploadFormCHS`);
   const chsInput = document.getElementById('chs');
   const formData = new FormData(form);
+  const loadingMasks = document.getElementsByClassName('loading-mask');
 
   // Check if a file has been selected
   if (chsInput.files.length === 0) {
     alert(`Please select an image to upload.`);
     return;
   }
+
   if (loadingMasks.length === 0) {
     console.error('Loading mask elements are missing');
     return;
