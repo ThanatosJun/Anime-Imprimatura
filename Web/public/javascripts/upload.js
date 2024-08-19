@@ -135,6 +135,16 @@ async function submitFormCHS() {
     alert(`Please select an image to upload.`);
     return;
   }
+  if (loadingMasks.length === 0) {
+    console.error('Loading mask elements are missing');
+    return;
+  }
+
+  var loadingMask = loadingMasks[0];
+
+  // Display the loading mask
+  loadingMask.style.display = 'block';
+  loadingMask.style.opacity = 1;
 
   fileToImage(chsInput.files, 'chs');
 
@@ -174,6 +184,22 @@ async function submitFormCHD() {
     const characterName = document.getElementById(`character_name`).value;
     const formData = new FormData(form);
 
+    const loadingMasks = document.getElementsByClassName('loading-mask');
+
+    if (loadingMasks.length === 0) {
+      console.error('Loading mask elements are missing');
+      return;
+    }
+
+    var loadingMask = loadingMasks[0];
+
+    // Display the loading mask
+    loadingMask.style.display = 'block';
+    loadingMask.style.opacity = 1;
+
+    // Save character_name in localStorage
+    localStorage.setItem('character_name', uploadData.characterName);
+    
     try {
         // Upload the file and process it
         const uploadResponse = await fetch(`/uploadAndTrain`, {
