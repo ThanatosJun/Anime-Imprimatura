@@ -129,6 +129,7 @@ async function submitFormCHS() {
   const form = document.getElementById(`uploadFormCHS`);
   const chsInput = document.getElementById('chs');
   const formData = new FormData(form);
+  const loadingMasks = document.getElementsByClassName('loading-mask');
 
   // Check if a file has been selected
   if (chsInput.files.length === 0) {
@@ -136,11 +137,69 @@ async function submitFormCHS() {
     return;
   }
 
+  var loadingMask = loadingMasks[0];
+
+  // Display the loading mask
+  loadingMask.style.display = 'block';
+  loadingMask.style.opacity = 1;
+
   fileToImage(chsInput.files, 'chs');
 
   try {
+    // Upload the file and process it
+    const uploadResponse = await fetch(`/uploadAndDetect`, {
+        method: 'POST',
+        body: formData
+    });
+
+    if (!uploadResponse.ok) {
+        const errorText = await uploadResponse.text();
+        throw new Error(`Upload failed: ${errorText}`);
+    }
+
+    // Parse the response JSON data
+    const uploadData = await uploadResponse.json();
+    console.log(`Upload response:`, uploadData);
+
+    // Save CHS_save_dir in localStorage
+    localStorage.setItem('CHS_save_dir', uploadData.CHS_save_dir);
+
+    // Redirect to "final" page after "detect"
+    window.location.href = '/generate_visitor';
+  } catch (error) {
+    console.error(`Error:`, error.message);
+    alert(`An error occurred: ${error.message}`);
+  } finally {
+    // Hide the loading mask regardless of success or failure
+    loadingMask.style.transition = 'opacity 600ms';
+    loadingMask.style.opacity = 0;
+    setTimeout(function() {
+        loadingMask.style.display = 'none';
+    }, 600); // Wait for the fade-out animation to complete before hiding
+  }
+}
+
+/**
+ * Handles the form submission for training page images.
+ */
+async function submitFormCHD() {
+  const form = document.getElementById(`uploadFormCHD`);
+  const characterName = document.getElementById(`character_name`).value;
+  const formData = new FormData(form);
+  const loadingMasks = document.getElementsByClassName('loading-mask');
+
+  // Save character_name in localStorage
+  localStorage.setItem('character_name', uploadData.characterName);
+
+  var loadingMask = loadingMasks[0];
+
+  // Display the loading mask
+  loadingMask.style.display = 'block';
+  loadingMask.style.opacity = 1;
+
+  try {
       // Upload the file and process it
-      const uploadResponse = await fetch(`/uploadAndDetect`, {
+      const uploadResponse = await fetch(`/uploadAndTrain`, {
           method: 'POST',
           body: formData
       });
@@ -154,104 +213,31 @@ async function submitFormCHS() {
       const uploadData = await uploadResponse.json();
       console.log(`Upload response:`, uploadData);
 
-      // Save CHS_save_dir in localStorage
-      localStorage.setItem('CHS_save_dir', uploadData.CHS_save_dir);
+      // Send a POST request to the '/train' endpoint with the processed data
+      const trainResponse = await fetch(`/train`, {
+          method: 'POST',
+          body: JSON.stringify(uploadData),
+          headers: {
+              'Content-Type': 'application/json' // Specify the content type as JSON
+          }
+      });
 
-      // Redirect to "final" page after "detect"
-      window.location.href = '/generate_visitor';
+      // Parse the train response JSON data
+      const trainData = await trainResponse.json();
+      console.log('Train response:', trainData);
+
+      // Redirect to the "detect" page with the processed data
+      window.location.href = `/generate_detect_visitor?character_name=${encodeURIComponent(characterName)}`;
 
   } catch (error) {
       console.error(`Error:`, error.message);
       alert(`An error occurred: ${error.message}`);
+  } finally {
+    // Hide the loading mask regardless of success or failure
+    loadingMask.style.transition = 'opacity 600ms';
+    loadingMask.style.opacity = 0;
+    setTimeout(function() {
+        loadingMask.style.display = 'none';
+    }, 600); // Wait for the fade-out animation to complete before hiding
   }
 }
-
-/**
- * Handles the form submission for training page images.
- */
-async function submitFormCHD() {
-    const form = document.getElementById(`uploadFormCHD`);
-    const characterName = document.getElementById(`character_name`).value;
-    const formData = new FormData(form);
-
-    try {
-        // Upload the file and process it
-        const uploadResponse = await fetch(`/uploadAndTrain`, {
-            method: 'POST',
-            body: formData
-        });
-
-        if (!uploadResponse.ok) {
-            const errorText = await uploadResponse.text();
-            throw new Error(`Upload failed: ${errorText}`);
-        }
-
-        // Parse the response JSON data
-        const uploadData = await uploadResponse.json();
-        console.log(`Upload response:`, uploadData);
-
-        // Send a POST request to the '/train' endpoint with the processed data
-        const trainResponse = await fetch(`/train`, {
-            method: 'POST',
-            body: JSON.stringify(uploadData),
-            headers: {
-                'Content-Type': 'application/json' // Specify the content type as JSON
-            }
-        });
-
-        // Parse the train response JSON data
-        const trainData = await trainResponse.json();
-        console.log('Train response:', trainData);
-
-        // Redirect to the "detect" page with the processed data
-        window.location.href = `/generate_detect_visitor?data=${encodeURIComponent(JSON.stringify(trainData))}&character_name=${encodeURIComponent(characterName)}`;
-
-    } catch (error) {
-        console.error(`Error:`, error.message);
-        alert(`An error occurred: ${error.message}`);
-    }
-}
-
-// /**
-//  * Handles the form submission for detecting page images.
-//  */
-// function submitFormCHS() {
-//   // Get form and input elements
-//   const form = document.getElementById(`uploadFormCHS`);
-//   const chsInput = document.getElementById('chs');
-
-//   // Create a FormData object from the form element
-//   const formData = new FormData(form);
-
-//   // Check if a file has been selected
-//   if (chsInput.files.length === 0) {
-//     alert(`Please select an image to upload.`);
-//     return;
-//   }
-
-//   fileToImage(chsInput.files, 'chs');
-
-//   // Submit the form data using fetch API
-//   fetch(`/uploadAndDetect`, {
-//     method: `POST`,
-//     body: formData
-//   })
-//   .then(response => {
-//     console.log(`Response status:`, response.status);
-//     // Check if the response is successful
-//     if (response.ok) {
-//       return response.json();
-//     } else {
-//       throw new Error(`Upload failed`);
-//     }
-//   })
-//   .then(data => {
-//     console.log(`Success:`, data);
-    
-//     // Redirect to the "after detect" page upon successful upload and detection
-//     window.location.href = `/generate_visitor`;
-//   })
-//   .catch((error) => {
-//     console.error(`Error:`, error); // Log any errors that occur during the initial request
-//   });
-// }

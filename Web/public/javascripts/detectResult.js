@@ -60,13 +60,19 @@ document.addEventListener('DOMContentLoaded', () => {
  * Handles the form submission for training page images.
  */
 async function submitFormSegment() {
-    // const data = document.getElementById(`data`);
-    // const formData = new FormData(form);
+    const characterName = localStorage.getItem('character_name');
+    const loadingMasks = document.getElementsByClassName('loading-mask');
+
+    var loadingMask = loadingMasks[0];
+
+    // Display the loading mask
+    loadingMask.style.display = 'block';
+    loadingMask.style.opacity = 1;
 
     try {
         const segmentResponse = await fetch(`/uploadAndSegment`, {
-            method: 'POST'
-            // body: formData
+            method: 'POST',
+            body: characterName
         });
 
         if (!segmentResponse.ok) {
@@ -78,6 +84,9 @@ async function submitFormSegment() {
         const segmentData = await segmentResponse.json();
         console.log(`Segment response:`, segmentData);
 
+        // Clear the data in localStorage
+        localStorage.removeItem('character_name');
+
         // Save color_dictionary in localStorage
         localStorage.setItem('color_dictionary', segmentData.color_dictionary);
         localStorage.setItem('CHS_Finished_dir', segmentData.CHS_Finished_dir);
@@ -88,5 +97,12 @@ async function submitFormSegment() {
     } catch (error) {
         console.error(`Error:`, error.message);
         alert(`An error occurred: ${error.message}`);
+    } finally {
+        // Hide the loading mask regardless of success or failure
+        loadingMask.style.transition = 'opacity 600ms';
+        loadingMask.style.opacity = 0;
+        setTimeout(function() {
+            loadingMask.style.display = 'none';
+        }, 600); // Wait for the fade-out animation to complete before hiding
     }
 }
