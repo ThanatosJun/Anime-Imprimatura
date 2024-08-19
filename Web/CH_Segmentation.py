@@ -6,6 +6,7 @@ from pathlib import Path
 import numpy as np
 from shapely.geometry import Point, Polygon
 from sklearn.cluster import KMeans
+import sys
 
 """
 * Segmentation
@@ -320,10 +321,8 @@ class Coloring(CH_SEG__init):
         return self.CHS_Finished_dir
     
 def main(CH_Name):
-    # ==請在以下從前端給 CH_Name，也就是使用者輸入的CHD名字==
-
-    # ====
     color_dictionary , CHS_Finished_dir = get_colored(CH_Name)
+    print("====2====")
     return color_dictionary , CHS_Finished_dir
 
 def get_colored(CH_Name):
@@ -335,35 +334,10 @@ def get_colored(CH_Name):
     CHS_Finished_dir = CH_Col.color(color_dictionary)
     return color_dictionary, CHS_Finished_dir          
 
-# if __name__ == "__main__":
-#     CH_Name = "Anime008"
-#     CH_Seg = CH_Segmentation(CH_Name)
-#     CH_Seg.CHD_SEG()
-#     CH_Seg.CHS_SEG()
-#     CH_Col = Coloring(CH_Name)
-#     color_dictionary = CH_Col.pick_color()
-#     CHS_Finished_dir = CH_Col.color(color_dictionary)
-
-# """
-# # 顯示顏色預覽(不重要可以不用寫)
-# import matplotlib.pyplot as plt
-# def show_color_previews(color_dict):
-#     fig, axs = plt.subplots(1, len(color_dict), figsize=(12, 3))
-#     if len(color_dict) == 1:
-#         axs = [axs]
-#     for ax, (title, color) in zip(axs, color_dict.items()):
-#         color_array = np.array(color) / 255.0
-#         ax.imshow([[color_array]])
-#         ax.set_title(f'{title}: {color}')
-#         ax.axis('off')
-#     plt.show()
-# combined_dict = {'Eye': [57, 37, 17], 'Face': [198, 222, 253], 'Hair': [102, 95, 128]}
-# show_color_previews(combined_dict)
-# """
-
-                
-
-
+if __name__ == "__main__":
+    CH_Name = sys.argv[1]
+    print("====1====")
+    main(CH_Name)
 
                 # def plot_polygon_and_points(polygon_points, points):
                 #     """

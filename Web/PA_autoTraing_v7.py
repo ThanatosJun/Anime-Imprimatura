@@ -414,9 +414,19 @@ class Upload_images(PA_init):
             new_image_path = os.path.join(self.image_dir, image_basename)
             shutil.copy(file_path, new_image_path)
         # input a CHD image preparing for segmentation
-        image_basename = os.path.basename(file_paths[0])
-        new_image_path = os.path.join(self.CHD_Detect, image_basename)
-        shutil.copy(file_path, new_image_path)
+        CHD_side_model = YOLO("model_CHD/CHD_Side.pt")
+        classify_results = CHD_side_model.predict(file_paths)
+        # Check which image is frontside
+        for result in classify_results:
+            if result.probs.top1 == 1:
+                print(f"======={result.probs.top1}=======")
+                image_basename = os.path.basename(result.path)
+                new_image_path = os.path.join(self.CHD_Detect, image_basename)
+                shutil.copy(result.path, new_image_path)
+                break
+
+
+        
         
 # Function for change autoTrain.yaml along with user input CHD_Name
 def change_yaml_path(data_yaml, newpath):
@@ -437,14 +447,16 @@ def change_yaml_path(data_yaml, newpath):
 
 # Function for main process
 def main(CHD_Name, file_paths):
-    # Up_img = Upload_images(CHD_Name)
-    # Up_img.receive_images(file_paths)
+    Up_img = Upload_images(CHD_Name)
+    Up_img.receive_images(file_paths)
     # PA_pre = PA_preprocess(CHD_Name)
     # PA_tra = PA_train(CHD_Name)
     # PA_pre.main()
     # CHD_modelpt = PA_tra.main()
+    print(f"======2======={file_paths}")
+    return file_paths
     # return CHD_modelpt
-    return 'k'
+
 
 
 # Run this .py for main file must run this
@@ -456,6 +468,6 @@ if __name__ == "__main__":
 
     CHD_name = sys.argv[1]
     image_path = sys.argv[2]
-    print(image_path)
+    print(f"======1======={image_path}")
     main(CHD_name, image_path)
     # 'til here
