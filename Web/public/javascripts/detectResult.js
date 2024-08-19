@@ -70,6 +70,8 @@ async function submitFormSegment() {
     if (!characterName) {
         console.error('characterName not found in localStorage');
         return;
+    } else {
+        console.log(`characterName: ${characterName}`);
     }
 
     if (loadingMasks.length === 0) {
@@ -86,6 +88,9 @@ async function submitFormSegment() {
     try {
         const segmentResponse = await fetch(`/uploadAndSegment`, {
             method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
             body: JSON.stringify({ options: characterName })
         });
 
