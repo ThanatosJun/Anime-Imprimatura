@@ -138,6 +138,7 @@ router.post('/uploadAndSegment', (req, res) => {
 
   // Check the content of req.body
   console.log('Request body:', req.body);
+  console.log('Option value:', req.body.options);
   
   // Extract file paths from the uploaded files
   const CH_Name = req.body.options;
