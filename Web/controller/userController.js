@@ -98,6 +98,7 @@ exports.signin = async (req, res) => {
             token
         });
 
+
     } catch (error) {
         console.error("Signin error:", error);
         res.status(500).json({ error: "An error occurred during registration. Please try again." });

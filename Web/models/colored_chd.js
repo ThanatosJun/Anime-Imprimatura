@@ -1,11 +1,14 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+//automatically generate colored_chd_id
+const { v4: uuidv4 } = require('uuid'); 
 
 //create schema
 const colored_chdSchema = new mongoose.Schema({
     colored_chd_id: {
         type: Number,
-        required: true
+        required: true,
+        default: uuidv4
     }, 
     file_route: {
         data: Buffer,
@@ -14,7 +17,7 @@ const colored_chdSchema = new mongoose.Schema({
     download_size: {
         type: Number
     },
-    downloadable_content_id: {
+    gallery_id: {
         type: Number,
         required: true
     }

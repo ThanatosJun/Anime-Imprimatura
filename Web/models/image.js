@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 //create schema
 const imageSchema = new mongoose.Schema({
-    umage_id:{
+    image_id:{
         type: Number,
         required: true
     },
