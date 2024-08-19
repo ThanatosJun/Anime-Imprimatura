@@ -81,7 +81,7 @@ async function submitFormSegment() {
     try {
         const segmentResponse = await fetch(`/uploadAndSegment`, {
             method: 'POST',
-            body: characterName
+            body: JSON.stringify({ options: characterName})
         });
 
         if (!segmentResponse.ok) {
