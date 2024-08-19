@@ -67,6 +67,11 @@ async function submitFormSegment() {
     const characterName = localStorage.getItem('character_name');
     const loadingMasks = document.getElementsByClassName('loading-mask');
 
+    if (loadingMasks.length === 0) {
+        console.error('Loading mask elements are missing');
+        return;
+      }
+
     var loadingMask = loadingMasks[0];
 
     // Display the loading mask
