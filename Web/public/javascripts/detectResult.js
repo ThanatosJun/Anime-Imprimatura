@@ -67,6 +67,11 @@ async function submitFormSegment() {
     const characterName = localStorage.getItem('character_name');
     const loadingMasks = document.getElementsByClassName('loading-mask');
 
+    if (!characterName) {
+        console.error('characterName not found in localStorage');
+        return;
+    }
+
     if (loadingMasks.length === 0) {
         console.error('Loading mask elements are missing');
         return;
@@ -81,7 +86,7 @@ async function submitFormSegment() {
     try {
         const segmentResponse = await fetch(`/uploadAndSegment`, {
             method: 'POST',
-            body: JSON.stringify({ options: characterName})
+            body: JSON.stringify({ options: characterName })
         });
 
         if (!segmentResponse.ok) {
