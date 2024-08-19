@@ -21,7 +21,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     }
-    //personalGallery: Blob
 });
 
 //define model

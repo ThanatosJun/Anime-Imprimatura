@@ -14,7 +14,7 @@ const colored_chdSchema = new mongoose.Schema({
     download_size: {
         type: Number
     },
-    downloadable_content_id: {
+    gallery_id: {
         type: Number,
         required: true
     }

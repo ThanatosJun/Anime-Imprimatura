@@ -3,7 +3,7 @@ const router = express.Router();
 const userModel = require('./models/user');
 const coloring_videoModel = require('./models/coloring_video');
 const colored_chdModel = require('./models/colored_chd');
-const downloadable_contentModel = require('./models/downloadable_content');
+const galleryModel = require('./models/Gallery');
 const team_userModel = require('./models/team_user');
 const teamModel = require('./models/team');
 const imageModel = require('./models/image');
@@ -50,15 +50,15 @@ router.post('/colored_chd/save', function (req, res) {
         }
     });
 });
-// (4)-downloadable_content
-router.post('/downloadable_content/save', function (req, res) {
-    const newDownloadable_Content = new downloadable_contentModel(req.body);
-    newdownloadable_content.save(function (err, data) {
+// (4)-Gallery
+router.post('/Gallery/save', function (req, res) {
+    const newGallery = new galleryModel(req.body);
+    newGallery.save(function (err, data) {
         if (err) {
             console.error(err);
             res.status(500).send('Error inserting data');
         } else {
-            res.send("downloadable_content data inserted.");
+            res.send("Gallery data inserted.");
         }
     });
 });
@@ -157,9 +157,9 @@ router.get('/colored_chd/findall', function (req, res) {
         }
     });
 });
-// (4)-downloadable_content
-router.get('/downloadable_content/findall', function (req, res) {
-    downloadable_contentModel.find(function (err, data) {
+// (4)-Gallery
+router.get('/Gallery/findall', function (req, res) {
+    galleryModel.find(function (err, data) {
         if (err) {
             console.error(err);
             res.status(500).send('Error retrieving data');
@@ -262,15 +262,15 @@ router.post('/colored_chd/delete', function (req, res) {
         }
     });
 });
-// (4)-downloadable_content
-router.post('/downloadable_content/delete', function (req, res) {
-    downloadable_contentModel.findByIdAndDelete(req.body.downloadable_content_id, function (err, data) {
+// (4)-Gallery
+router.post('/Gallery/delete', function (req, res) {
+    galleryModel.findByIdAndDelete(req.body.gallery_id, function (err, data) {
         if (err) {
             console.error(err);
             res.status(500).send('Error deleting data');
         } else {
             res.send(data);
-            console.log("downloadable_content data deleted!");
+            console.log("Gallery data deleted!");
         }
     });
 });
@@ -377,20 +377,20 @@ router.post('/colored_chd/update', function (req, res) {
         }
     });
 });
-// (4)-downloadable_content
-router.post('/downloadable_content/update', function (req, res) {
+// (4)-Gallery
+router.post('/Gallery/update', function (req, res) {
     const updateData = {
         user_id: req.body.user_id,
         team_id: req.body.team_id
     };
 
-    downloadable_contentModel.findByIdAndUpdate(req.body.downloadable_content_id, updateData, function (err, data) {
+    galleryModel.findByIdAndUpdate(req.body.gallery_id, updateData, function (err, data) {
         if (err) {
             console.error(err);
             res.status(500).send('Error updating data');
         } else {
             res.send(data);
-            console.log("downloadable_content data updated!");
+            console.log("Gallery data updated!");
         }
     });
 });
@@ -465,7 +465,7 @@ router.post('/image/update', function (req, res) {
 // (1)-user
 // (2)-coloring_video
 // (3)-colored_chd
-// (4)-downloadable_content
+// (4)-Gallery
 // (5)-team_user
 // (6)-team
 // (7)-chs
