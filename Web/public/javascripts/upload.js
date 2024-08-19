@@ -136,6 +136,17 @@ async function submitFormCHS() {
     return;
   }
 
+  if (loadingMasks.length === 0) {
+    console.error('Loading mask elements are missing');
+    return;
+  }
+
+  var loadingMask = loadingMasks[0];
+
+  // Display the loading mask
+  loadingMask.style.display = 'block';
+  loadingMask.style.opacity = 1;
+
   fileToImage(chsInput.files, 'chs');
 
   try {
@@ -180,14 +191,14 @@ async function submitFormCHD() {
     return;
   }
 
-  // Save character_name in localStorage
-  localStorage.setItem('character_name', uploadData.characterName);
-
   var loadingMask = loadingMasks[0];
 
   // Display the loading mask
   loadingMask.style.display = 'block';
   loadingMask.style.opacity = 1;
+
+  // Save character_name in localStorage
+  localStorage.setItem('character_name', uploadData.characterName);
 
     try {
         // Upload the file and process it
