@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const img = document.createElement('img');
             img.src = storedImage;
             img.alt = `CHS`; // Alt text
+            img.style.width = '150px';
+            img.style.height = '200px';
             img.classList.add('responsive-image'); // Add class for styling
             imageContainer.appendChild(img);
         });
@@ -44,6 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     const img = document.createElement('img');
                     img.src = imgSrc;
                     img.alt = 'Detect result';
+                    img.style.width = '150px';
+                    img.style.height = '200px';
                     img.classList.add('responsive-image'); // Add class for styling
                     resultContainer.appendChild(img); // Add the image element to the container
                 });

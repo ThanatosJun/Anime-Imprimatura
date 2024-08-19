@@ -43,6 +43,18 @@ def CHS_save(results, CHD_Name):
     #   return CHD_Detect/CHD_Name dir path
     return file_path
 
+    # Function for getting all path in folder
+def get_image_path(dataset_train_path):
+    image_paths = []
+    # Go Through all files
+    for root, dirs, files in os.walk(dataset_train_path):
+        for file in files:
+            # Check picture extension type
+            if file.endswith(('.jpg', '.jpeg', '.png', '.bmp', '.gif')):
+                # store completed data path
+                image_paths.append(os.path.join(root, file))
+    return image_paths
+
 # Function for main process
 def main(CHD_Name, image_path):
     os.makedirs("CHS_Detect/" + CHD_Name, exist_ok = True)  # create folder for save correct CHS
@@ -59,11 +71,8 @@ def main(CHD_Name, image_path):
     CHS_save_dir = CHS_save(results, CHD_Name)  # save CHS
 
     # CHS_save_dir = CHS_save(results, CHD_Name)  # save CHS
-    CHS_save_dir = []
-    for CHD_Name in image_path:
-        CHS_save_dir_ = CHS_save(results, CHD_Name)
-        CHS_save_dir.append(CHS_save_dir_)
-        
+    # CHS_relist = get_image_path(CHS_save_dir)
+    
     return CHS_save_dir # let Next part keep continuous
 
 # Run this .py for main file must run this
