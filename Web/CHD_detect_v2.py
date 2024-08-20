@@ -10,6 +10,11 @@ from ultralytics import YOLO
 import shutil
 import os
 import sys
+# Function for recreate dir
+def clear_and_create_dir(directory):
+        if os.path.exists(directory):
+            shutil.rmtree(directory)
+        os.makedirs(directory, exist_ok=True)
 
 # Function for detect 
 def CHS_detect(model_path, CHS_dir):
@@ -57,9 +62,9 @@ def get_image_path(dataset_train_path):
 
 # Function for main process
 def main(CHD_Name, image_path):
-    os.makedirs("CHS_Detect/" + CHD_Name, exist_ok = True)  # create folder for save correct CHS
+    clear_and_create_dir("CHS_Detect/" + CHD_Name)  # create folder for save correct CHS
     CHS_Dir = "CHS/" + CHD_Name
-    os.makedirs(CHS_Dir, exist_ok = True)
+    clear_and_create_dir(CHS_Dir)
     
     # input image from uploads
     for file_path in image_path:

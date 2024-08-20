@@ -6,6 +6,7 @@ from pathlib import Path
 import numpy as np
 from shapely.geometry import Point, Polygon
 from sklearn.cluster import KMeans
+import shutil
 import sys
 
 """
@@ -34,6 +35,11 @@ class CH_SEG__init():
         os.makedirs(self.CHS_SAM_dir, exist_ok=True)
         # Announce a list to store all class models detect
         self.class_list = []
+    # Function for recreate dir
+    def clear_and_create_dir(self, directory):
+        if os.path.exists(directory):
+            shutil.rmtree(directory)
+        os.makedirs(directory, exist_ok=True)
 
 # Class for Sementate CHD and CHS from user and preprocess
 class CH_Segmentation(CH_SEG__init):
@@ -181,7 +187,7 @@ class Coloring(CH_SEG__init):
         super().__init__(CH_Name)
         # Set colored CHS's save dir
         self.CHS_Finished_dir = "CHS_Finished/" + CH_Name
-        os.makedirs(self.CHS_Finished_dir, exist_ok=True)
+        self.clear_and_create_dir(self.CHS_Finished_dir)
     
     # Function for getting all image path in folder
     def get_images_path(self, images_dir):
@@ -346,7 +352,6 @@ class Coloring(CH_SEG__init):
             for CHS_annotation_path in CHS_annotations_paths:
                 cls, points = self.extract_class_and_points(CHS_annotation_path)
                 position_dictionary[cls] = points
-                print(f"color points:{points}")
             # Color and save image
             CHS_Finished = self.fill_color_demo(CHS_image, color_dictionary, position_dictionary)
             CHS_save_path = os.path.join(self.CHS_Finished_dir, f"{CHS_Name}_Fin.png")
