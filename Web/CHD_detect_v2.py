@@ -31,9 +31,8 @@ def CHS_detect(model_path, CHS_dir):
     return results
 
 # Function for save correct CHS in CHD_Detect/CHD_Name/
-def CHS_save(results, CHD_Name):
+def CHS_save(results, CHS_save_dir):
     CHS_yes = False
-    file_path = "CHS_Detect/" + CHD_Name
     #   for each result of an image
     for result in results:
         # for each confidence of a detected box in an image
@@ -41,12 +40,9 @@ def CHS_save(results, CHD_Name):
             #   if there is a confidence from a box > 0.9, this image will be saved
             if box.cls.item() == 0 and box.conf.item() > 0.9 and CHS_yes == False:
                 path = result.path
-                shutil.move(path, file_path)
-                print(path)
+                shutil.move(path, CHS_save_dir)
                 CHS_yes = True
         CHS_yes = False
-    #   return CHD_Detect/CHD_Name dir path
-    return file_path
 
     # Function for getting all path in folder
 def get_image_path(dataset_train_path):
@@ -62,18 +58,23 @@ def get_image_path(dataset_train_path):
 
 # Function for main process
 def main(CHD_Name, image_path):
-    clear_and_create_dir("CHS_Detect/" + CHD_Name)  # create folder for save correct CHS
-    CHS_Dir = "CHS/" + CHD_Name
-    clear_and_create_dir(CHS_Dir)
-    
+    CHS_dir = "CHS/" + CHD_Name
+    clear_and_create_dir(CHS_dir)
+    CHS_save_dir = "CHS_Detect/" + CHD_Name
+    clear_and_create_dir(CHS_save_dir)  # create folder for save correct CHS
+    i = 1
     # input image from uploads
     for file_path in image_path:
         image_basename = os.path.basename(file_path)
-        new_image_path = os.path.join(CHS_Dir, image_basename)
+        new_image_path = os.path.join(CHS_dir, image_basename)
         shutil.copy(file_path, new_image_path)
+        print(f"{i}:move {file_path} to {CHS_dir}\n")
+        i+=1
+
     model_path = "CHD_Model/" + CHD_Name + ".pt"
-    results = CHS_detect(model_path, CHS_dir = CHS_Dir)    # detect
-    CHS_save_dir = CHS_save(results, CHD_Name)  # save CHS
+    results = CHS_detect(model_path, CHS_dir)    # detect
+    CHS_save(results, CHS_save_dir)  # save CHS
+    print("Finish SAVE CHS\n")
 
     # CHS_save_dir = CHS_save(results, CHD_Name)  # save CHS
     # CHS_relist = get_image_path(CHS_save_dir)
@@ -85,7 +86,7 @@ if __name__ == "__main__":
     if len(sys.argv) != 3:
         print("Usage: python CHD_detect.py <CHD_name> <image_path>")
         sys.exit(1)
-
+    
     CHD_name = sys.argv[1]
     image_path = sys.argv[2]
 
