@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const CHS_save_dir = localStorage.getItem('CHS_save_dir');
     const color_dictionary = localStorage.getItem('color_dictionary');
     const CHS_Finished_dir = localStorage.getItem('CHS_Finished_dir');
+
+    console.log(color_dictionary);
     
     // Check if CHS_save_dir is available in localStorage
     if (CHS_save_dir) {
@@ -43,10 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (color_dictionary){
         for (let segment_part in color_dictionary){
             console.log(`segement part: ${segment_part}`);
+            let colorTitle = document.getElementById(`color-title-${segment_part}`);
             let colorBox = document.getElementById(`color-box-${segment_part}`);
 
-            if (colorBox){
-                colorBox.textContent = `${segment_part}`;
+            if (colorTitle){
+                colorTitle.textContent = `${segment_part}`;
 
                 // 獲取顏色值並轉換為 RGB 格式
                 let colorTuple = color_dictionary[segment_part];

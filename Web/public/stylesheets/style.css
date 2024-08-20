@@ -394,6 +394,7 @@ footer {
 
 .generate-visitor .image-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   overflow: hidden;
@@ -523,6 +524,7 @@ footer {
 
 .generated-visitor .color-container {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   padding: auto;
 }
