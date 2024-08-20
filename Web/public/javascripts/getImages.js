@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const color_dictionary = localStorage.getItem('color_dictionary');
     const CHS_Finished_dir = localStorage.getItem('CHS_Finished_dir');
 
-    console.log(`color_dictionary: ${color_dictionary}`);
+    console.log(`color_dictionary: ${JSON.stringify(color_dictionary, null, 2)}`);
     
     // Check if CHS_save_dir is available in localStorage
     if (CHS_save_dir) {
