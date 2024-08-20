@@ -253,6 +253,28 @@ class Coloring(CH_SEG__init):
                     inner_main_points = eval(points_str)
         return class_name, inner_main_points
     
+    def overlay_black_lines_on_image(self, copy_img, sketch):
+        # Make sure size is the same
+        sketch = cv2.resize(sketch, (copy_img.shape[1], copy_img.shape[0]))
+
+        # Change sketch into gray
+        gray_sketch = cv2.cvtColor(sketch, cv2.COLOR_BGR2GRAY)
+
+        # Mask for black sketch
+        _, mask = cv2.threshold(gray_sketch, 50, 255, cv2.THRESH_BINARY_INV)
+
+        # Catch copy
+        combined_image = cv2.bitwise_and(copy_img, copy_img, mask=cv2.bitwise_not(mask))
+
+        # cv2.imshow('Mask', mask)
+        # cv2.waitKey(0)
+        # cv2.imshow('Raw', copy_img)
+        # cv2.waitKey(0)
+        # cv2.imshow('After image', combined_image)
+        # cv2.waitKey(0)
+        
+        return combined_image
+
     # Function for fill color in CHS
     def fill_color_demo(self, sketch, color_dictionary, position_dictionary):
         copy_img = sketch.copy()
@@ -275,6 +297,7 @@ class Coloring(CH_SEG__init):
                         raise ValueError("Position should be either a string or a tuple")
                     # Color cv2's color is BGT not RGB
                     cv2.floodFill(copy_img, mask, (x, y), (int(b), int(g), int(r)), (100, 100, 100), (100, 100, 100), cv2.FLOODFILL_FIXED_RANGE)
+        copy_img = self.overlay_black_lines_on_image(copy_img, sketch)
         return copy_img
 
     # Function for pick color in CHD and make a color dictionary
@@ -325,7 +348,7 @@ class Coloring(CH_SEG__init):
                 position_dictionary[cls] = points
                 print(f"color points:{points}")
             # Color and save image
-            CHS_Finished = self.fill_color_demo(CHS_image, color_dictionary, position_dictionary)    
+            CHS_Finished = self.fill_color_demo(CHS_image, color_dictionary, position_dictionary)
             CHS_save_path = os.path.join(self.CHS_Finished_dir, f"{CHS_Name}_Fin.png")
             cv2.imwrite(CHS_save_path, CHS_Finished)
         return self.CHS_Finished_dir
@@ -347,7 +370,7 @@ def get_colored(CH_Name):
 if __name__ == "__main__":
     # CH_Name = sys.argv[1]
     print("====1====")
-    CH_Name = "Anime008"
+    CH_Name = "TestA005"
     main(CH_Name)
 
                 # def plot_polygon_and_points(polygon_points, points):
