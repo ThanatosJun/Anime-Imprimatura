@@ -1,2 +1,5 @@
-Face
 Hair
+Face
+Clothes
+Eye
+Pants
