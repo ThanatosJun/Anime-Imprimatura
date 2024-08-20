@@ -1,9 +1,34 @@
 let color_dictionary = {
-    Clothes: [ 250, 227, 205 ],
-    Eye: [ 253, 231, 208 ],
-    Face: [ 234, 203, 175 ],
-    Hair: [ 128, 96, 103 ],
-    Pants: [ 26, 29, 34 ]
+  "Clothes": [
+    250,
+    227,
+    205
+  ],
+  "Eye": [
+    253,
+    231,
+    208
+  ],
+  "Face": [
+    234,
+    203,
+    175
+  ],
+  "Hair": [
+    128,
+    96,
+    103
+  ],
+  "Pants": [
+    26,
+    29,
+    34
+  ],
+  "Shoes": [
+    86,
+    74,
+    94
+  ]
 };
 
 for (let segment_part in color_dictionary){

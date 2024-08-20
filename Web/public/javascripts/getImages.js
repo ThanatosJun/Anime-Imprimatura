@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const CHS_save_dir = localStorage.getItem('CHS_save_dir');
     const color_dictionary = JSON.parse(localStorage.getItem('color_dictionary'));
     const CHS_Finished_dir = localStorage.getItem('CHS_Finished_dir');
-
-    console.log(`color_dictionary: ${JSON.stringify(color_dictionary, null, 2)}`);
     
     // Check if CHS_save_dir is available in localStorage
     if (CHS_save_dir) {
@@ -71,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let colorTuple = color_dictionary[segment_part];
                 let rgbColor = `rgb(${colorTuple[0]}, ${colorTuple[1]}, ${colorTuple[2]})`;
 
-                newColorBox.style.color = rgbColor;
+                newColorBox.style.backgroundColor = rgbColor;
 
                 colorContainer.appendChild(newColorTitle);
                 colorContainer.appendChild(newColorBox);
