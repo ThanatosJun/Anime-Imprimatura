@@ -403,7 +403,7 @@ class Upload_images(PA_init):
         # create dir
         os.makedirs(self.CHD_modeldir, exist_ok=True)
         self.clear_and_create_dir(self.image_dir)
-        self.clear_and_create_dir(self.CHD_Detect, exist_ok=True)
+        self.clear_and_create_dir(self.CHD_Detect)
         self.clear_and_create_dir(self.image_augmentation_outputdir)
         self.clear_and_create_dir(self.dataset_train_dir)
     
