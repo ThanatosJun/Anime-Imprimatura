@@ -75,10 +75,10 @@ def segment_image():
         print("CHS Finished dir: ", CHS_Finished_dir)
         
         output = "Segment script executed successfully."
-        return jsonify({'status': 'success', 'output': output, 'CH_Name': CH_Name})
+        return jsonify({'status': 'success', 'output': output, 'color_dictionary': color_dictionary, 'CHS_Finished_dir': CHS_Finished_dir})
     except Exception as e:
         print(f'Error during segmenting: {e}')
-        return jsonify({'status': 'error', 'error': str(e), 'CH_Name': CH_Name,})
+        return jsonify({'status': 'error', 'error': str(e), 'color_dictionary': color_dictionary, 'CHS_Finished_dir': CHS_Finished_dir})
     
 if __name__ == '__main__':
     app.run(port=5001, debug=True)  # 在5001端口上启动服务
