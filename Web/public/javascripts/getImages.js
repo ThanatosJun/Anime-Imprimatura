@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let newColorBox = document.createElement('div');
                 
                 newColorTitle.classList.add('color-title');
-                newColorTitle.id = `color-title-${segment-part}`;
+                newColorTitle.id = `color-title-${segment_part}`;
                 newColorTitle.textContent = `${segment_part}:`;
 
                 newColorBox.classList.add('color-box');
