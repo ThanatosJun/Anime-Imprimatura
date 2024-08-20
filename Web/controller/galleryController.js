@@ -7,16 +7,19 @@ const fetch = require('node-fetch');
 const Colored_Chd = require('../models/colored_chd');
 const Gallery = require('../models/gallery');
 
-exports.getGallery = async (req, res) => {
+
+// fetching personl gallery
+exports.getGalleryPersonal = async (req, res) => {
     try {
-      const images = await Image.find({ userId: req.user._id }); // 根據用戶 ID 獲取圖片
-      console.log('Fetched images:', images); // 添加日誌來檢查數據
+      // get message by user_id
+      const images = await Colored_Chd.find({ userId: req.user.user_id }); 
+      console.log('Fetched images:', images); 
       res.render('gallery', { images });
     } catch (err) {
       console.error('Error fetching gallery:', err);
       res.status(500).send('Error fetching gallery');
     }
-  };
+};
 
 // save image to personal gallery
 exports.saveToGallery_perosonal = async (req, res) => {
@@ -25,7 +28,7 @@ exports.saveToGallery_perosonal = async (req, res) => {
     console.log('Saving request: ', req.body);
 
     // check if the gallery exists
-    const existingGallery = await Gallery.findOne({ user_id: gallery.user_id});
+    const existingGallery = await Gallery.findOne({ user_id: Gallery.user_id});
     // the gallery does not exist
     if(!existingGallery){
       // create a new gallery
@@ -39,7 +42,7 @@ exports.saveToGallery_perosonal = async (req, res) => {
     // save image to colored_chd
     const newColoredChd = new Colored_Chd({
       file_route: file_route,
-      gallery_id: gallery.gallery_id
+      gallery_id: Gallery.gallery_id
     });
     await newColoredChd.save();
     console.log('saved image to colored_chd: ', newColoredChd)
@@ -53,6 +56,19 @@ exports.saveToGallery_perosonal = async (req, res) => {
   }
 }
 
+// fetching team gallery
+exports.getGalleryTeam = async (req, res) => {
+  try {
+    // get message by gallery_id
+    const images = await Colored_Chd.find({ gallery_id: req.Colored_Chd.gallery_id }); 
+    console.log('Fetched images:', images); 
+    res.render('gallery', { images });
+  } catch (err) {
+    console.error('Error fetching gallery:', err);
+    res.status(500).send('Error fetching gallery');
+  }
+};
+
 // save image to team gallery
 exports.saveToGallery_team = async (req, res) => {
   try {
@@ -60,7 +76,7 @@ exports.saveToGallery_team = async (req, res) => {
     console.log('Saving request: ', req.body);
 
     // check if the gallery exists
-    const existingGallery = await Gallery.findOne({ team_id: gallery.team_id});
+    const existingGallery = await Gallery.findOne({ team_id: Gallery.team_id});
     // the gallery does not exist
     if(!existingGallery){
       // create a new gallery
@@ -75,7 +91,7 @@ exports.saveToGallery_team = async (req, res) => {
     // save image to colored_chd
     const newColoredChd = new Colored_Chd({
       file_route: file_route,
-      gallery_id: gallery.gallery_id
+      gallery_id: Gallery.gallery_id
     });
     await newColoredChd.save();
     console.log('saved image to colored_chd: ', newColoredChd)

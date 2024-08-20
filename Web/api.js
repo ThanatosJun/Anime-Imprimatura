@@ -71,9 +71,10 @@ router.post('/detect', (req, res) => {
     });
 });
 
-// Gallery routes
+// personal gallery routes
 const galleryController = require('./controller/galleryController');
-router.get('/gallery', galleryController.getGallery);
+router.get('/team_gallery_T', galleryController.getGalleryTeam);
+router.get('/gallery', galleryController.getGalleryPersonal);
 
 // create
 // (1)-user

@@ -66,7 +66,8 @@ def segment_image():
 
     print('Now executing "Segmentation". ')
     import CH_Segmentation
-    color_dictionary, CHS_Finished_dir = None
+    color_dictionary = None
+    CHS_Finished_dir = None
     try:
         print(f'Received segment request with CH_Name: {CH_Name}')
         color_dictionary, CHS_Finished_dir  = CH_Segmentation.main(CH_Name)
