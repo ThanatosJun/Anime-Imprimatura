@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const coloredImageContainer = document.getElementById('finalImage');
     // Retrieve the path to the directory containing images from localStorage
     const CHS_save_dir = localStorage.getItem('CHS_save_dir');
-    const color_dictionary = localStorage.getItem('color_dictionary');
+    const color_dictionary = JSON.parse(localStorage.getItem('color_dictionary'));
     const CHS_Finished_dir = localStorage.getItem('CHS_Finished_dir');
 
     console.log(`color_dictionary: ${JSON.stringify(color_dictionary, null, 2)}`);

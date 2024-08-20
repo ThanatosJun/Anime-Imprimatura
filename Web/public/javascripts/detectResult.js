@@ -107,7 +107,7 @@ async function submitFormSegment() {
         localStorage.removeItem('character_name');
 
         // Save color_dictionary in localStorage
-        localStorage.setItem('color_dictionary', segmentData.color_dictionary);
+        localStorage.setItem('color_dictionary', JSON.stringify(segmentData.color_dictionary));
         localStorage.setItem('CHS_Finished_dir', segmentData.CHS_Finished_dir);
 
         // Redirect to "final" page after "generate"
