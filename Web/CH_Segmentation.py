@@ -146,15 +146,24 @@ class CH_Segmentation(CH_SEG__init):
         # init random points
         random_points = []
         
-        # Get n radndom points
+        # Shrink the polygon by the specified amount (in pixels)
+        shrunken_polygon = polygon.buffer(-5)
+        
+        # Initialize random points list
+        random_points = []
+        
+        # Get n random points
         while len(random_points) < num_points:
-            # Generate radndom point in polygon
-            minx, miny, maxx, maxy = polygon.bounds
-            random_point = Point(np.random.uniform(minx, maxx), np.random.uniform(miny, maxy))
-
-            # Check whether random point is in polyhon
-            if polygon.contains(random_point):
-                random_points.append((random_point.x, random_point.y))
+            # Generate random point in the bounding box of the shrunken polygon
+            minx, miny, maxx, maxy = shrunken_polygon.bounds
+            for _ in range(num_points * 100):  # 增加尝试次数，以提高生成点的准确性
+                random_point = Point(np.random.uniform(minx, maxx), np.random.uniform(miny, maxy))
+                
+                # Check whether random point is in the shrunken polygon
+                if shrunken_polygon.contains(random_point):
+                    random_points.append((random_point.x, random_point.y))
+                    if len(random_points) == num_points:
+                        break
         return random_points
 
 # Class for coloring
@@ -220,9 +229,9 @@ class Coloring(CH_SEG__init):
         sorted_indices = np.argsort(counts)
         # Get second main color to skip white
         second_dominant_color = kmeans.cluster_centers_[unique[sorted_indices[-2]]]
-        # print(image)
-        # print(f"color:{kmeans.cluster_centers_[unique[sorted_indices]]}")
-        # print(f"second_dominant_color = {second_dominant_color}")
+        # Convert from (b, g, r) to (r, g, b)
+        second_dominant_color = second_dominant_color.astype(int)[::-1]
+        print(f"color rgb:{second_dominant_color}")
         return second_dominant_color.astype(int)
 
     # Function for getting CHS label in txt
@@ -264,7 +273,7 @@ class Coloring(CH_SEG__init):
                     # If Error
                     else:
                         raise ValueError("Position should be either a string or a tuple")
-                    # Color
+                    # Color cv2's color is BGT not RGB
                     cv2.floodFill(copy_img, mask, (x, y), (int(b), int(g), int(r)), (100, 100, 100), (100, 100, 100), cv2.FLOODFILL_FIXED_RANGE)
         return copy_img
 
@@ -314,6 +323,7 @@ class Coloring(CH_SEG__init):
             for CHS_annotation_path in CHS_annotations_paths:
                 cls, points = self.extract_class_and_points(CHS_annotation_path)
                 position_dictionary[cls] = points
+                print(f"color points:{points}")
             # Color and save image
             CHS_Finished = self.fill_color_demo(CHS_image, color_dictionary, position_dictionary)    
             CHS_save_path = os.path.join(self.CHS_Finished_dir, f"{CHS_Name}_Fin.png")
@@ -335,8 +345,9 @@ def get_colored(CH_Name):
     return color_dictionary, CHS_Finished_dir          
 
 if __name__ == "__main__":
-    CH_Name = sys.argv[1]
+    # CH_Name = sys.argv[1]
     print("====1====")
+    CH_Name = "Anime008"
     main(CH_Name)
 
                 # def plot_polygon_and_points(polygon_points, points):
