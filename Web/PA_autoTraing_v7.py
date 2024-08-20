@@ -402,8 +402,8 @@ class Upload_images(PA_init):
         super().__init__(CHD_Name)
         # create dir
         os.makedirs(self.CHD_modeldir, exist_ok=True)
-        os.makedirs(self.image_dir, exist_ok=True)
-        os.makedirs(self.CHD_Detect, exist_ok=True)
+        self.clear_and_create_dir(self.image_dir)
+        self.clear_and_create_dir(self.CHD_Detect, exist_ok=True)
         self.clear_and_create_dir(self.image_augmentation_outputdir)
         self.clear_and_create_dir(self.dataset_train_dir)
     
@@ -447,8 +447,8 @@ def change_yaml_path(data_yaml, newpath):
 
 # Function for main process
 def main(CHD_Name, file_paths):
-    Up_img = Upload_images(CHD_Name)
-    Up_img.receive_images(file_paths)
+    # Up_img = Upload_images(CHD_Name)
+    # Up_img.receive_images(file_paths)
     # PA_pre = PA_preprocess(CHD_Name)
     # PA_tra = PA_train(CHD_Name)
     # PA_pre.main()
@@ -465,7 +465,6 @@ if __name__ == "__main__":
     if len(sys.argv) != 3:
         print("Usage: python PA_autoTraing_v7.py <CHD_name> <image_path>")
         sys.exit(1)
-
     CHD_name = sys.argv[1]
     image_path = sys.argv[2]
     print(f"======1======={image_path}")
