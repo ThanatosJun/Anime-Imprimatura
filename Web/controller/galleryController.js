@@ -7,12 +7,11 @@ const fetch = require('node-fetch');
 const Colored_Chd = require('../models/colored_chd');
 const Gallery = require('../models/gallery');
 
-
 // fetching personl gallery
 exports.getGalleryPersonal = async (req, res) => {
     try {
       // get message by user_id
-      const images = await Colored_Chd.find({ userId: req.user.user_id }); 
+      const images = await Colored_Chd.find({ user_id: Gallery.user_id }); 
       console.log('Fetched images:', images); 
       res.render('gallery', { images });
     } catch (err) {

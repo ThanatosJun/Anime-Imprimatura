@@ -31,8 +31,11 @@ exports.login = async (req, res)=>{
         //generate jwt and return
         const token = await jwt.sign({gmail: user.gmail}, process.env.JWT_SECRET, {expiresIn: '1h'});
         
+        // 设置 user_id 到 cookie
+        res.cookie('user_id', user._id.toString(), { httpOnly: true });
+
         //redirect to "gallery" page
-        res.redirect('/index');
+        res.redirect('/gallery');
 
     }catch(error){
         console.error("Login error", error);

@@ -65,6 +65,15 @@ router.post('/uploadAndTrain', uploadTrain.fields([{ name: 'chd', maxCount: 3 }]
   .then(response => response.json())
   .then(data => {
     console.log('(imageController.js) Train response:', data);
+    // clear the data
+    const uploadDir = path.join(__dirname, 'uploads', chdName);
+    fs.rmdir(uploadDir, { recursive: true }, (err) => {
+      if (err) {
+        console.error('Error while deleting directory:', err);
+      } else {
+        console.log('Upload directory successfully deleted:', uploadDir);
+      }
+    });
     res.status(200).json(data);
   })
   .catch(error => {
@@ -124,6 +133,15 @@ router.post('/uploadAndDetect', uploadDetect.fields([{ name: 'chs', maxCount: 10
   .then(response => response.json())
   .then(data => {
     console.log('Detect response:', data);
+    // clear the data
+    const uploadDir = path.join(__dirname, 'uploadDetect', options);
+    fs.rmdir(uploadDir, { recursive: true }, (err) => {
+      if (err) {
+        console.error('Error while deleting directory:', err);
+      } else {
+        console.log('Upload directory successfully deleted:', uploadDir);
+      }
+    });
     res.status(200).json(data);
   })
   .catch(error => {
