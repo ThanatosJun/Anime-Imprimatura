@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const router = express.Router();
 const fetch = require('node-fetch');
+const crypto = require('crypto');
 
 // Multer for Train
 const storageTrain = multer.diskStorage({
@@ -25,7 +26,8 @@ const storageTrain = multer.diskStorage({
     console.log("upload to destination successfully. ");
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+    const uniqueSuffix = crypto.randomBytes(16).toString('hex');
+    cb(null, uniqueSuffix + path.extname(file.originalname));
   }
 });
 
@@ -101,7 +103,8 @@ const storageDetect = multer.diskStorage({
     console.log("upload to destination successfully. ");
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+    const uniqueSuffix = crypto.randomBytes(16).toString('hex');
+    cb(null, uniqueSuffix + path.extname(file.originalname));
   }
 });
 
