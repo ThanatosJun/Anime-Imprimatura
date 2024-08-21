@@ -34,8 +34,8 @@ exports.login = async (req, res)=>{
         // 设置 user_id 到 cookie
         res.cookie('user_id', user._id.toString(), { httpOnly: true });
 
-        //redirect to "gallery" page
-        res.redirect('/gallery');
+        //redirect to "team_gallery_f" page
+        res.redirect('/team_gallery_f');
 
     }catch(error){
         console.error("Login error", error);
