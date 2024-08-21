@@ -76,50 +76,99 @@ class CH_Segmentation(CH_SEG__init):
                     image = cv2.imread(image_path)  # Change image_path to image which is available for dealing
                     image_name = os.path.splitext(os.path.basename(image_path))[0]  # Get image's name
                     detect_class = result.names[0]  # Get class
-                    mask_points = result.masks.xy[0]    # Get mask points
-                    inner_points = self.find_random_points_within_polygon(mask_points,5)    # Get Main points for coloring
-                    # Check input images are CHD or CHS
-                    if (CH_Type == "CHD"):
-                        # Set save dir
-                        output_image_dir = save_dir + "/images"
-                        output_annotation_dir = save_dir + "/annotations"
-                        # Create all white background
-                        masked_image = np.ones_like(image) * 255
-                        # Check wheather is this class been saved
-                        if (class_store == False):
-                            self.class_list.append(detect_class)
-                            class_store = True      
+                    if detect_class in ["Hand", "Eye"]:
+                        print("Yes:" + detect_class)
+                        for j, mask in enumerate(result.masks.xy):
+                            mask_points = mask
+                            print(f"mask points {j} = {mask_points}")
+                            inner_points = self.find_random_points_within_polygon(mask_points,5)    # Get Main points for coloring
+                            # Check input images are CHD or CHS
+                            if (CH_Type == "CHD"):
+                                # Set save dir
+                                output_image_dir = save_dir + "/images"
+                                output_annotation_dir = save_dir + "/annotations"
+                                # Create all white background
+                                masked_image = np.ones_like(image) * 255
+                                # Check wheather is this class been saved
+                                if (class_store == False):
+                                    self.class_list.append(detect_class)
+                                    class_store = True      
+                            else:
+                                # Set save dir
+                                output_image_dir = save_dir + "/" + f"{image_name}/images"
+                                output_annotation_dir = save_dir + "/" + f"{image_name}/annotations"
+                                # Create all black background
+                                masked_image = np.zeros_like(image)
+                            os.makedirs(output_image_dir, exist_ok=True)
+                            os.makedirs(output_annotation_dir, exist_ok=True)
+                            # Announce txt path
+                            txt_filename = os.path.join(output_annotation_dir + "/", f"{detect_class}_{j+1}.txt")
+                            
+                            with open(txt_filename, 'w') as file:
+                                file.write(f"Image_Name: {image_name}\n")
+                                file.write(f"Class: {detect_class}\n")
+                                file.write(f"Inner Main Points: {inner_points}\n")
+                                file.write(f"Mask Points:\n{mask_points}\n")
+                            print(f"Finish input data into {txt_filename}")
+
+                            # Get first mask data
+                            mask_are = result.masks.data[j].cpu().numpy()
+                            # Resize mask image size
+                            mask_resized = cv2.resize(mask_are.squeeze(), (result.orig_shape[1], result.orig_shape[0]), interpolation=cv2.INTER_LINEAR)
+                            mask_bool = mask_resized.astype(bool)  # Change into booling type
+
+
+                            # Copy original image's mask to new image
+                            masked_image[mask_bool] = image[mask_bool] 
+                            # Save new image for show mask
+                            output_image_path = os.path.join(output_image_dir + "/", f"{detect_class}_{j+1}.png")
+                            cv2.imwrite(output_image_path, masked_image)
+                            print(f"Finish create a mask image {output_image_path}")
                     else:
-                        # Set save dir
-                        output_image_dir = save_dir + "/" + f"{image_name}/images"
-                        output_annotation_dir = save_dir + "/" + f"{image_name}/annotations"
-                        # Create all black background
-                        masked_image = np.zeros_like(image)
-                    os.makedirs(output_image_dir, exist_ok=True)
-                    os.makedirs(output_annotation_dir, exist_ok=True)
-                    # Announce txt path
-                    txt_filename = os.path.join(output_annotation_dir + "/", f"{detect_class}_{i+1}.txt")
-                    
-                    with open(txt_filename, 'w') as file:
-                        file.write(f"Image_Name: {image_name}\n")
-                        file.write(f"Class: {detect_class}\n")
-                        file.write(f"Inner Main Points: {inner_points}\n")
-                        file.write(f"Mask Points:\n{mask_points}\n")
-                    print(f"Finish input data into {txt_filename}")
+                        mask_points = result.masks.xy[0]    # Get mask points
+                        inner_points = self.find_random_points_within_polygon(mask_points,5)    # Get Main points for coloring
+                        # Check input images are CHD or CHS
+                        if (CH_Type == "CHD"):
+                            # Set save dir
+                            output_image_dir = save_dir + "/images"
+                            output_annotation_dir = save_dir + "/annotations"
+                            # Create all white background
+                            masked_image = np.ones_like(image) * 255
+                            # Check wheather is this class been saved
+                            if (class_store == False):
+                                self.class_list.append(detect_class)
+                                class_store = True      
+                        else:
+                            # Set save dir
+                            output_image_dir = save_dir + "/" + f"{image_name}/images"
+                            output_annotation_dir = save_dir + "/" + f"{image_name}/annotations"
+                            # Create all black background
+                            masked_image = np.zeros_like(image)
+                        os.makedirs(output_image_dir, exist_ok=True)
+                        os.makedirs(output_annotation_dir, exist_ok=True)
+                        # Announce txt path
+                        txt_filename = os.path.join(output_annotation_dir + "/", f"{detect_class}_{1}.txt")
+                        
+                        with open(txt_filename, 'w') as file:
+                            file.write(f"Image_Name: {image_name}\n")
+                            file.write(f"Class: {detect_class}\n")
+                            file.write(f"Inner Main Points: {inner_points}\n")
+                            file.write(f"Mask Points:\n{mask_points}\n")
+                        print(f"Finish input data into {txt_filename}")
 
-                    # Get first mask data
-                    mask = result.masks.data[0].cpu().numpy()
-                    # Resize mask image size
-                    mask_resized = cv2.resize(mask.squeeze(), (result.orig_shape[1], result.orig_shape[0]), interpolation=cv2.INTER_LINEAR)
-                    mask_bool = mask_resized.astype(bool)  # Change into booling type
+                        # Get first mask data
+                        mask = result.masks.data[0].cpu().numpy()
+                        # Resize mask image size
+                        mask_resized = cv2.resize(mask.squeeze(), (result.orig_shape[1], result.orig_shape[0]), interpolation=cv2.INTER_LINEAR)
+                        mask_bool = mask_resized.astype(bool)  # Change into booling type
 
 
-                    # Copy original image's mask to new image
-                    masked_image[mask_bool] = image[mask_bool] 
-                    # Save new image for show mask
-                    output_image_path = os.path.join(output_image_dir + "/", f"{detect_class}_{i+1}.png")
-                    cv2.imwrite(output_image_path, masked_image)
-                    print(f"Finish create a mask image {output_image_path}")
+                        # Copy original image's mask to new image
+                        masked_image[mask_bool] = image[mask_bool] 
+                        # Save new image for show mask
+                        output_image_path = os.path.join(output_image_dir + "/", f"{detect_class}_{1}.png")
+                        cv2.imwrite(output_image_path, masked_image)
+                        print(f"Finish create a mask image {output_image_path}")
     
     # Function for CHD segementation            
     def CHD_SEG(self):
@@ -373,9 +422,9 @@ def get_colored(CH_Name):
     return color_dictionary, CHS_Finished_dir          
 
 if __name__ == "__main__":
-    # CH_Name = sys.argv[1]
+    CH_Name = sys.argv[1]
     print("====1====")
-    CH_Name = "TestA005"
+    # CH_Name = "Anime008"
     main(CH_Name)
 
                 # def plot_polygon_and_points(polygon_points, points):
