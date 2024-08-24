@@ -322,6 +322,11 @@ footer {
   padding: 5px;
   cursor: pointer;
   margin-top: 10px;
+  margin-right: 5px;
+}
+
+.account-card .logout-btn {
+  background-color: #E6FFFDB5;
 }
 
 /* Generate Visitor Detect Page Styles */
