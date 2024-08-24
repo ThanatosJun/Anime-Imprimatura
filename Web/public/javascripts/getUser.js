@@ -1,10 +1,10 @@
+// this file get the logined user's id & mail
+
 document.addEventListener('DOMContentLoaded', async () => {
     // This function will be executed when the DOMContentLoaded event is triggered
-    var idInput = document.getElementById('user-id');
-    var emailInput = document.getElementById('user-email');
-    let user_id = "user id";
-    let user_email = "email";
-
+    window.user_id = "user-id";
+    window.user_email = "user-email";
+    
     console.log('DOM fully loaded and parsed');
 
     if (localStorage.getItem('token')) {
@@ -23,9 +23,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = await response.json(); // Wait for JSON parsing
             console.log('Content fetched:', data);
 
-            user_id = data.user.id;
-            user_email = data.user.gmail;
+            window.user_id = data.user.id;
+            window.user_email = data.user.gmail;
 
+            console.log('id:', window.user_id);
         } catch (error) {
             console.error('Error fetching content:', error); // Handle other errors
         }
@@ -33,6 +34,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log('No token found in localStorage');
     }
 
-    idInput.value = user_id;
-    emailInput.value = user_email;
+    document.dispatchEvent(new Event('getUserCompleted'));
 });

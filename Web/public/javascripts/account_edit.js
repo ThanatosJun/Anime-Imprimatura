@@ -1,3 +1,13 @@
+document.addEventListener('getUserCompleted', () => {
+    console.log('getUser has completed, executing account_edit');
+    
+    var idInput = document.getElementById('id');
+    var emailInput = document.getElementById('email');
+
+    idInput.value = window.user_id;
+    emailInput.value = window.user_email;
+});
+
 // Toggle the readOnly state of an input field and focus it if editable
 function enableEdit(id) {
     const input = document.getElementById(id);

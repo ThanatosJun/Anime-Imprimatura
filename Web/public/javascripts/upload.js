@@ -1,17 +1,15 @@
+// this file handle the img preview and the generating process's submition
+
 /**
- * Converts files to Base64 images and stores them in localStorage.
- * @param {FileList} files - The files to convert.
- * @param {string} uploadBoxId - The ID of the upload box.
- */
+ * Converts files to Base64 images and stores them in localStorage 
+ */ 
 function fileToImage(files, uploadBoxId) {
   // Array to store Base64 images
   const base64Images = [];
 
   /**
-   * Processes a single file and converts it to a Base64 image.
-   * @param {File} file - The file to process.
-   * @returns {Promise} - A promise that resolves when the file is processed.
-   */
+   * Processes a single file and converts it to a Base64 image
+   */ 
   function processFile(file) {
     return new Promise((resolve, reject) => {
       // FileReader to read the file
@@ -52,10 +50,8 @@ function fileToImage(files, uploadBoxId) {
 }
 
 /**
- * Converts an image element to a Base64 string.
- * @param {HTMLImageElement} img - The image element to convert.
- * @returns {string} - The Base64 string of the image.
- */
+ * Converts an image element to a Base64 string
+ */ 
 function getBase64Image(img) {
   const canvas = document.createElement('canvas'); // Create a canvas element
   const ctx = canvas.getContext('2d'); // Get the canvas context
@@ -68,11 +64,8 @@ function getBase64Image(img) {
 }
 
 /**
- * Handles file selection and preview.
- * @param {FileList} files - The selected files.
- * @param {string} containerId - The ID of the container for previews.
- * @returns {Object} - The paths of the selected images.
- */
+ * Handles file selection and preview
+ */ 
 function handleFiles(files, containerId) {
   let imagePaths = { uploadBoxCHS: [], uploadBoxCHD: [] };
   
@@ -225,4 +218,70 @@ async function submitFormCHD() {
         console.error(`Error:`, error.message);
         alert(`An error occurred: ${error.message}`);
     }
+}
+
+/**
+ * Handles the form submission for training page images.
+ */
+async function submitFormSegment() {
+  const characterName = localStorage.getItem('character_name');
+  const loadingMasks = document.getElementsByClassName('loading-mask');
+
+  if (!characterName) {
+      console.error('characterName not found in localStorage');
+      return;
+  } else {
+      console.log(`characterName: ${characterName}`);
+  }
+
+  if (loadingMasks.length === 0) {
+      console.error('Loading mask elements are missing');
+      return;
+    }
+
+  var loadingMask = loadingMasks[0];
+
+  // Display the loading mask
+  loadingMask.style.display = 'block';
+  loadingMask.style.opacity = 1;
+
+  try {
+      const segmentResponse = await fetch(`/uploadAndSegment`, {
+          method: 'POST',
+          headers: {
+          'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ options: characterName })
+      });
+
+      if (!segmentResponse.ok) {
+          const errorText = await segmentResponse.text();
+          throw new Error(`Segment failed: ${errorText}`);
+      }
+
+      // Parse the response JSON data
+      const segmentData = await segmentResponse.json();
+      console.log(`Segment response:`, segmentData);
+
+      // Clear the data in localStorage
+      localStorage.removeItem('character_name');
+
+      // Save color_dictionary in localStorage
+      localStorage.setItem('color_dictionary', JSON.stringify(segmentData.color_dictionary));
+      localStorage.setItem('CHS_Finished_dir', segmentData.CHS_Finished_dir);
+
+      // Redirect to "final" page after "generate"
+      window.location.href = '/generated_visitor';
+
+  } catch (error) {
+      console.error(`Error:`, error.message);
+      alert(`An error occurred: ${error.message}`);
+  } finally {
+      // Hide the loading mask regardless of success or failure
+      loadingMask.style.transition = 'opacity 600ms';
+      loadingMask.style.opacity = 0;
+      setTimeout(function() {
+          loadingMask.style.display = 'none';
+      }, 600); // Wait for the fade-out animation to complete before hiding
+  }
 }

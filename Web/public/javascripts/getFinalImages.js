@@ -1,3 +1,5 @@
+// this file get the final data of generate process
+
 document.addEventListener('DOMContentLoaded', () => {
     // This function will be executed when the DOMContentLoaded event is triggered
 
