@@ -22,6 +22,8 @@ router.post('/login', (req, res, next) => {
     next();
 }, userController.login);
 
+router.get('/content', userController.authenticateToken, userController.content);
+
 // Image routes
 const imageController = require('./controller/imageController');
 router.post('/uploadAndGenerate', (req, res, next) => {
