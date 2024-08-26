@@ -275,7 +275,6 @@ footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 60px; /* Adjust for fixed nav bar */
 }
 .account-section{
   display: flex;
@@ -314,6 +313,7 @@ footer {
   border-radius: 5px;
   background-color: #555;
   color: white;
+  margin: 5px;
 }
 .account-card button {
   background-color: white;
@@ -322,6 +322,11 @@ footer {
   padding: 5px;
   cursor: pointer;
   margin-top: 10px;
+  margin-right: 5px;
+}
+
+.account-card .logout-btn {
+  background-color: #E6FFFDB5;
 }
 
 /* Generate Visitor Detect Page Styles */
@@ -561,7 +566,7 @@ footer {
   border: solid 1px #ffffff;
 }
 
-.login input[type="gmail"], input[type="password"] {
+.login input[type="email"], input[type="password"] {
   width: 100%;
   padding: 10px;
   margin: 10px 0;

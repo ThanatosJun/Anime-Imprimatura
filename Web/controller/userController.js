@@ -5,6 +5,45 @@ const User = require('../models/user');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs"); // hash password
 
+// authenticate token
+exports.authenticateToken = async (req, res, next) => {
+    try {
+        // Retrieve the 'Authorization' header from the request
+        const authHeader = req.header('Authorization');
+        
+        // Check if the 'Authorization' header is undefined
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({ error: 'Please authenticate.' });
+        }
+
+        // Extract the token
+        const token = authHeader.split(' ')[1];
+
+        // 檢查 token 是否存在
+        if (!token) {
+            return res.status(401).json({ error: 'Token required' });
+        }
+
+        // 驗證 token
+        const user = await new Promise((resolve, reject) => {
+            jwt.verify(token, process.env.JWT_SECRET, (err, decodedUser) => {
+                if (err) reject(err);
+                else resolve(decodedUser);
+            });
+        });
+
+        // 將用戶信息附加到請求對象
+        req.user = user;
+
+        // 繼續處理請求
+        next();
+
+    } catch (error) {
+        console.error("Authentication error:", error);
+        res.status(403).json({ error: 'Invalid token' });
+    }
+};
+
 // login
 exports.login = async (req, res)=>{
     try{
@@ -28,18 +67,40 @@ exports.login = async (req, res)=>{
 
         console.log('Password is valid for user: ', user);
 
-        //generate jwt and return
-        const token = await jwt.sign({gmail: user.gmail}, process.env.JWT_SECRET, {expiresIn: '1h'});
+        if(user&&isPasswordValid){
+            //generate jwt and return
+            const token = await jwt.sign({id: user._id.toString(), gmail: user.gmail}, process.env.JWT_SECRET, {expiresIn: '1h'});
+            res.json({
+                message: 'Login successful',
+                token: token
+            });
+            
+            // // 设置 user_id 到 cookie
+            // res.cookie('user_id', user._id.toString(), { httpOnly: true });
+
+            //redirect to "account_management" page
+            //res.redirect('/account_management');
+        }
         
-        // 设置 user_id 到 cookie
-        res.cookie('user_id', user._id.toString(), { httpOnly: true });
-
-        //redirect to "gallery" page
-        res.redirect('/gallery');
-
-    }catch(error){
+    } catch(error) {
         console.error("Login error", error);
         res.status(500).json({error: "An error occurred during login. Please try again. "});
+    }
+}
+
+// content
+exports.content = async (req, res) => {
+    try {
+        if (!req.user || !req.user.gmail) {
+            console.log('User not authenticated:', req.user);
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        console.log('Authenticated user:', req.user);
+        res.json({ message: 'This is a protected resource', user: req.user });
+    } catch (error) {
+        console.error('Error in content route:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 }
 
@@ -109,3 +170,15 @@ exports.signin = async (req, res) => {
 };
 
 //logout
+exports.logout = (req, res) => {
+    try {
+        // Clear the user_id cookie
+        res.clearCookie('user_id');
+        
+        // Redirect to login page or any other page
+        res.redirect('/login');
+    } catch (error) {
+        console.error("Logout error:", error);
+        res.status(500).json({ error: "An error occurred during logout. Please try again." });
+    }
+};

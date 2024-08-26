@@ -6,6 +6,7 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
     title Account Setting
   body.account-management
+    script(src='/javascripts/getUser.js')
     header.navigation-bar
       a.logo-placeholder(href="/")
       .nav
@@ -14,20 +15,22 @@ html
         a(href="/#about-us") About Us
         a(href="/gallery") Gallery
       .profile-icon
-    .account-section
+    .content
       .account-card
         .avatar
         .input-section
           p user id
-          input(type="text", placeholder="user id", id="id", value="user id", readonly)
+          input#id(type="text", value="user id", readonly)
           span.edit-icon(onclick="enableEdit('id')") ✎
         .input-section
-          p gmail
-          input(type="email", placeholder="email", id="email", value="user email", readonly)
+          p email
+          input#email(type="email", value="user email", readonly)
           span.edit-icon(onclick="enableEdit('email')") ✎
         .input-section
           p password
           input(type="password", placeholder="password", id="password", value="user password", readonly)
           span.edit-icon(onclick="enableEdit('password')") ✎
         button(type="submit") Save Changes
+        button.logout-btn#logout-btn Log out
+    script(src='/javascripts/logout.js')
     script(src='/javascripts/account_edit.js')

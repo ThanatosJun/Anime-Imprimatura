@@ -1,3 +1,5 @@
+// this file handle the loading effect
+
 window.addEventListener('load', function() {
     // 獲取所有具有 'loading-mask' 類名的元素
     var loadingMasks = document.getElementsByClassName('loading-mask');
