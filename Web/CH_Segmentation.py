@@ -60,6 +60,50 @@ class CH_Segmentation(CH_SEG__init):
                 detect = YOLO(detect_model)
                 self.detect_list.append(detect)
     
+    def get_next_image_name(self, output_image_dir, detect_class):
+        # 遍歷目標資料夾內的所有檔案
+        files = os.listdir(output_image_dir)
+        # 設置初始計數
+        same_class_count = 1
+        
+        # 遍歷檔案，判斷是否有與 detect_class 名稱匹配的檔案
+        for file in files:
+            # 檢查檔案名稱是否以 detect_class 開頭並以 ".png" 結尾
+            if file.startswith(f"{detect_class}_") and file.endswith(".png"):
+                try:
+                    # 嘗試從檔案名稱中提取數字
+                    count = int(file.replace(f"{detect_class}_", "").replace(".png", ""))
+                    same_class_count = max(same_class_count, count + 1)
+                except ValueError:
+                    continue
+        
+        # 根據最終的 same_class_count 生成新檔案名稱
+        output_image_path = os.path.join(output_image_dir, f"{detect_class}_{same_class_count}.png")
+        
+        return output_image_path
+
+    def get_next_txt_name(self, output_annotation_dir, detect_class):
+        # 遍歷目標資料夾內的所有檔案
+        files = os.listdir(output_annotation_dir)
+        # 設置初始計數
+        same_class_count = 1
+        
+        # 遍歷檔案，判斷是否有與 detect_class 名稱匹配的 .txt 檔案
+        for file in files:
+            # 檢查檔案名稱是否以 detect_class 開頭並以 ".txt" 結尾
+            if file.startswith(f"{detect_class}_") and file.endswith(".txt"):
+                try:
+                    # 嘗試從檔案名稱中提取數字
+                    count = int(file.replace(f"{detect_class}_", "").replace(".txt", ""))
+                    same_class_count = max(same_class_count, count + 1)
+                except ValueError:
+                    continue
+        
+        # 根據最終的 same_class_count 生成新檔案名稱
+        txt_filename = os.path.join(output_annotation_dir, f"{detect_class}_{same_class_count}.txt")
+        
+        return txt_filename
+
     # Function for YOLO segmentation
     def yolov8_detect(self, detect_dir, save_dir, CH_Type):
         # Segmentate with each model in list
@@ -75,12 +119,18 @@ class CH_Segmentation(CH_SEG__init):
                     image_path = result.path    # image path
                     image = cv2.imread(image_path)  # Change image_path to image which is available for dealing
                     image_name = os.path.splitext(os.path.basename(image_path))[0]  # Get image's name
-                    detect_class = result.names[0]  # Get class
-                    if detect_class in ["Hand", "Eye"]:
-                        print("Yes:" + detect_class)
+                    names = result.names
+                    # Catch class IDs in boxes and turn into numpy
+                    class_ids = result.boxes.cls.cpu().numpy()
+                    # Exchange to corresponding class name
+                    detect_classes = [names[int(class_id)] for class_id in class_ids]
+                    print(detect_classes)
+                    detect_class = detect_classes[0] # Get class
+                    if detect_class in ["Hand", "Eye", "Shoe", "Leg"]:
                         for j, mask in enumerate(result.masks.xy):
                             mask_points = mask
-                            print(f"mask points {j} = {mask_points}")
+                            detect_class = detect_classes[j]
+                            print("Yes:" + detect_class)
                             inner_points = self.find_random_points_within_polygon(mask_points,5)    # Get Main points for coloring
                             # Check input images are CHD or CHS
                             if (CH_Type == "CHD"):
@@ -93,23 +143,25 @@ class CH_Segmentation(CH_SEG__init):
                                 if (class_store == False):
                                     self.class_list.append(detect_class)
                                     class_store = True      
+                                os.makedirs(output_image_dir, exist_ok=True)
                             else:
                                 # Set save dir
                                 output_image_dir = save_dir + "/" + f"{image_name}/images"
                                 output_annotation_dir = save_dir + "/" + f"{image_name}/annotations"
                                 # Create all black background
                                 masked_image = np.zeros_like(image)
-                            os.makedirs(output_image_dir, exist_ok=True)
-                            os.makedirs(output_annotation_dir, exist_ok=True)
-                            # Announce txt path
-                            txt_filename = os.path.join(output_annotation_dir + "/", f"{detect_class}_{j+1}.txt")
-                            
-                            with open(txt_filename, 'w') as file:
-                                file.write(f"Image_Name: {image_name}\n")
-                                file.write(f"Class: {detect_class}\n")
-                                file.write(f"Inner Main Points: {inner_points}\n")
-                                file.write(f"Mask Points:\n{mask_points}\n")
-                            print(f"Finish input data into {txt_filename}")
+                                os.makedirs(output_image_dir, exist_ok=True)
+                                os.makedirs(output_annotation_dir, exist_ok=True)
+                                # Announce txt path
+                                txt_filename = self.get_next_txt_name(output_annotation_dir, detect_class)
+                                # txt_filename = os.path.join(output_annotation_dir + "/", f"{detect_class}_{same_class_count}.txt")
+                                
+                                with open(txt_filename, 'w') as file:
+                                    file.write(f"Image_Name: {image_name}\n")
+                                    file.write(f"Class: {detect_class}\n")
+                                    file.write(f"Inner Main Points: {inner_points}\n")
+                                    file.write(f"Mask Points:\n{mask_points}\n")
+                                print(f"Finish input data into {txt_filename}")
 
                             # Get first mask data
                             mask_are = result.masks.data[j].cpu().numpy()
@@ -121,7 +173,8 @@ class CH_Segmentation(CH_SEG__init):
                             # Copy original image's mask to new image
                             masked_image[mask_bool] = image[mask_bool] 
                             # Save new image for show mask
-                            output_image_path = os.path.join(output_image_dir + "/", f"{detect_class}_{j+1}.png")
+                            output_image_path = self.get_next_image_name(output_image_dir, detect_class)
+                            # output_image_path = os.path.join(output_image_dir + "/", f"{detect_class}_{same_class_count}.png")
                             cv2.imwrite(output_image_path, masked_image)
                             print(f"Finish create a mask image {output_image_path}")
                     else:
@@ -138,23 +191,25 @@ class CH_Segmentation(CH_SEG__init):
                             if (class_store == False):
                                 self.class_list.append(detect_class)
                                 class_store = True      
+                            os.makedirs(output_image_dir, exist_ok=True)
                         else:
                             # Set save dir
                             output_image_dir = save_dir + "/" + f"{image_name}/images"
                             output_annotation_dir = save_dir + "/" + f"{image_name}/annotations"
                             # Create all black background
                             masked_image = np.zeros_like(image)
-                        os.makedirs(output_image_dir, exist_ok=True)
-                        os.makedirs(output_annotation_dir, exist_ok=True)
-                        # Announce txt path
-                        txt_filename = os.path.join(output_annotation_dir + "/", f"{detect_class}_{1}.txt")
-                        
-                        with open(txt_filename, 'w') as file:
-                            file.write(f"Image_Name: {image_name}\n")
-                            file.write(f"Class: {detect_class}\n")
-                            file.write(f"Inner Main Points: {inner_points}\n")
-                            file.write(f"Mask Points:\n{mask_points}\n")
-                        print(f"Finish input data into {txt_filename}")
+                            os.makedirs(output_image_dir, exist_ok=True)
+                            os.makedirs(output_annotation_dir, exist_ok=True)
+                            # Announce txt path
+                            txt_filename = self.get_next_txt_name(output_annotation_dir, detect_class)
+                            # txt_filename = os.path.join(output_annotation_dir + "/", f"{detect_class}_{1}.txt")
+                            
+                            with open(txt_filename, 'w') as file:
+                                file.write(f"Image_Name: {image_name}\n")
+                                file.write(f"Class: {detect_class}\n")
+                                file.write(f"Inner Main Points: {inner_points}\n")
+                                file.write(f"Mask Points:\n{mask_points}\n")
+                            print(f"Finish input data into {txt_filename}")
 
                         # Get first mask data
                         mask = result.masks.data[0].cpu().numpy()
@@ -166,7 +221,8 @@ class CH_Segmentation(CH_SEG__init):
                         # Copy original image's mask to new image
                         masked_image[mask_bool] = image[mask_bool] 
                         # Save new image for show mask
-                        output_image_path = os.path.join(output_image_dir + "/", f"{detect_class}_{1}.png")
+                        output_image_path = self.get_next_image_name(output_image_dir, detect_class)
+                        # output_image_path = os.path.join(output_image_dir + "/", f"{detect_class}_{1}.png")
                         cv2.imwrite(output_image_path, masked_image)
                         print(f"Finish create a mask image {output_image_path}")
     
