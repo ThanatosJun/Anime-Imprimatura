@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 //create schema
 const imageSchema = new mongoose.Schema({
     image_id:{
-        type: Number,
+        type: String,
         required: true
     },
     character: {

@@ -35,8 +35,12 @@ const uploadTrain = multer({ storage: storageTrain });
 
 // Train
 router.post('/uploadAndTrain', uploadTrain.fields([{ name: 'chd', maxCount: 3 }]), (req, res) => {
-  console.log('Received upload request');
+  console.log('req.body: ', req.body);
+  const userId = req.headers['user-id'];
+  console.log('user_id: ', userId);
 
+  // normal train
+  console.log('Received upload request');
   if (!req.files || !req.files.chd || req.files.chd.length === 0) {
     console.log('No files uploaded.');
     return res.status(400).send('No files were uploaded.');
@@ -67,6 +71,27 @@ router.post('/uploadAndTrain', uploadTrain.fields([{ name: 'chd', maxCount: 3 }]
   .then(response => response.json())
   .then(data => {
     console.log('(imageController.js) Train response:', data);
+    // save images to database
+    if (userId) { 
+      fetch('/api/saveToGallery_personal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          image_paths: uploadedFilePath
+        })
+      })
+      .then(saveResponse => saveResponse.json())
+      .then(saveData => {
+        console.log('Image saved to gallery:', saveData);
+      })
+      .catch(saveError => {
+        console.error('Error saving image to gallery:', saveError);
+      });
+    }
+
     // clear the data
     const uploadDir = path.join(__dirname, 'uploads', chdName);
     fs.rmdir(uploadDir, { recursive: true }, (err) => {

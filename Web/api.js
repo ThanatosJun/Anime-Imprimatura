@@ -75,8 +75,7 @@ router.post('/detect', (req, res) => {
 
 // personal gallery routes
 const galleryController = require('./controller/galleryController');
-router.get('/team_gallery_T', galleryController.getGalleryTeam);
-router.get('/gallery', galleryController.getGalleryPersonal);
+router.get('/saveToGallery_personal', galleryController.saveToGallery_personal);
 
 // create
 // (1)-user
@@ -524,17 +523,6 @@ router.post('/image/update', function (req, res) {
         }
     });
 });
-
-
-// collection
-// (1)-user
-// (2)-coloring_video
-// (3)-colored_chd
-// (4)-Gallery
-// (5)-team_user
-// (6)-team
-// (7)-chs
-// (8)-chd
 
 // export model
 module.exports = router;
