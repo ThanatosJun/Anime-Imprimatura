@@ -6,16 +6,16 @@ const { v4: uuidv4 } = require('uuid');
 //create schema
 const gallerySchema = new mongoose.Schema({
     gallery_id: {
-        type: Number,
+        type: String,
         required: true,
         default: uuidv4
     }, 
     user_id: {
-        type: Number,
+        type: String,
         required: true,
     },
     team_id: {
-        type: Number
+        type: String
     }
 });
 

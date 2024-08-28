@@ -73,14 +73,15 @@ router.post('/uploadAndTrain', uploadTrain.fields([{ name: 'chd', maxCount: 3 }]
     console.log('(imageController.js) Train response:', data);
     // save images to database
     if (userId) { 
-      fetch('/api/saveToGallery_personal', {
+      fetch('http://localhost:3000/saveToGallery_personal_chd', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           user_id: userId,
-          image_paths: uploadedFilePath
+          image_paths: uploadedFilePath,
+          character: chdName
         })
       })
       .then(saveResponse => saveResponse.json())
@@ -107,7 +108,6 @@ router.post('/uploadAndTrain', uploadTrain.fields([{ name: 'chd', maxCount: 3 }]
     console.error('Error during train process:', error);
     res.status(500).json({ error: 'An error occurred during the train process.' });
   });
-
 });
 
 // Multer for Detect

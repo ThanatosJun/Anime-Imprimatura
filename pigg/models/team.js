@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 //create schema
 const teamSchema = new mongoose.Schema({
     team_id: {
-        type: Number,
+        type: String,
         required: true,
     }, 
     team_name: {

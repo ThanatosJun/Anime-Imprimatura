@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 //create schema
 const colored_chdSchema = new mongoose.Schema({
     colored_chd_id: {
-        type: Number,
+        type: String,
         required: true
     }, 
     file_route: {
@@ -15,7 +15,7 @@ const colored_chdSchema = new mongoose.Schema({
         type: Number
     },
     gallery_id: {
-        type: Number,
+        type: String,
         required: true
     }
 });

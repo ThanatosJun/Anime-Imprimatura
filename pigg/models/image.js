@@ -4,14 +4,14 @@ const Schema = mongoose.Schema
 //create schema
 const imageSchema = new mongoose.Schema({
     chs_id: {
-        type: Number,
+        type: String,
         required: true,
     }, 
     chd_id: {
-        type: Number,
+        type: String,
     },
     upload_user_id: {
-        type: Number
+        type: String
     },
     character: {
         type: String,

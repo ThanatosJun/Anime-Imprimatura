@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 //create schema
 const userSchema = new mongoose.Schema({
     user_id: {
-        type: Number,
+        type: String,
         required: true,
     }, 
     gmail: {

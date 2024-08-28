@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 //create schema
 const chsSchema = new mongoose.Schema({
     chs_id: {
-        type: Number,
+        type: String,
         required: true,
     }, 
     file_route: {

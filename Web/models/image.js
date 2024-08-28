@@ -1,10 +1,12 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const { v4: uuidv4 } = require('uuid'); //automatically generate user_id
 
 //create schema
 const imageSchema = new mongoose.Schema({
     image_id:{
         type: String,
+        default: uuidv4,
         required: true
     },
     character: {
