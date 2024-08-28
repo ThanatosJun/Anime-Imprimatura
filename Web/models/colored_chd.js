@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 //create schema
 const colored_chdSchema = new mongoose.Schema({
     colored_chd_id: {
-        type: Number,
+        type: String,
         required: true,
         default: uuidv4
     }, 
@@ -18,7 +18,7 @@ const colored_chdSchema = new mongoose.Schema({
         type: Number
     },
     gallery_id: {
-        type: Number,
+        type: String,
         required: true
     }
 });
