@@ -161,6 +161,7 @@ app.post('/uploadAndTrain', imageController); // Handle CHD upload and initial p
 app.post('/uploadAndDetect', imageController); // Handle CHS upload and initial processing
 app.post('/uploadAndSegment', imageController);
 app.post('/saveToGallery_personal_chd', galleryController.saveToGallery_personal_chd);
+app.post('/saveToGallery_personal_chs', galleryController.saveToGallery_personal_chs);
 app.post('/saveToGallery_personal_final', galleryController.saveToGallery_personal_final);
 
 app.post('/upload', upload.single('upload-box'), (req, res) => {

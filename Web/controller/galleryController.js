@@ -3,11 +3,12 @@
 require("dotenv").config();
 const express = require('express');
 const router = express.Router();
-const Image = require('../models/image');
+const Chd = require('../models/chd');
+const Chs = require('../models/chs');
 const Colored_Chd = require('../models/colored_chd');
 const Gallery = require('../models/gallery');
 
-// save final image to personal gallery
+// save chd to personal gallery
 exports.saveToGallery_personal_chd = async (req, res) => {
   try {
     const { user_id, image_paths, character } = req.body;
@@ -25,18 +26,57 @@ exports.saveToGallery_personal_chd = async (req, res) => {
       console.log('Created a personal gallery: ', existingGallery);
     }
 
-    // save images to image
+    // save images to chd
     const savedImages = [];
     for (const fileRoute of image_paths) {
-      const newImage = new Image({
-        file_route: fileRoute,
+      const newChd = new Chd({
         gallery_id: existingGallery._id,
         user_id: user_id,
         character: character,
         path: fileRoute
       });
-      await newImage.save();
-      savedImages.push(newImage);
+      await newChd.save();
+      savedImages.push(newChd);
+    }
+    console.log('saved image to image: ', savedImages)
+
+    // success msg
+    res.status(200).json({message: 'Image saved successfully to personal gallery'});
+
+  } catch (error) {
+    console.error("saveToGallery_perosonal error: ", error);
+    res.status(500).json({ error: "An error occurred during saveToGallery_perosonal_chd. Please try again." });
+  }
+}
+
+// save chs to personal gallery
+exports.saveToGallery_personal_chs = async (req, res) => {
+  try {
+    const { user_id, image_paths } = req.body;
+    console.log('Saving request: ', req.body);
+
+    // check if the gallery exists
+    let existingGallery = await Gallery.findOne({ user_id });
+    // the gallery does not exist
+    if(!existingGallery){
+      // create a new gallery
+      existingGallery = new Gallery({
+        user_id
+      });
+      await existingGallery.save();
+      console.log('Created a personal gallery: ', existingGallery);
+    }
+
+    // save images to image
+    const savedImages = [];
+    for (const fileRoute of image_paths) {
+      const newChs = new Chs({
+        gallery_id: existingGallery._id,
+        user_id: user_id,
+        path: fileRoute
+      });
+      await newChs.save();
+      savedImages.push(newChs);
     }
     console.log('saved image to image: ', savedImages)
 

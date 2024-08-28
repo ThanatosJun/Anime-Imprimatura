@@ -138,6 +138,8 @@ const uploadDetect = multer({ storage: storageDetect });
 // Detect
 router.post('/uploadAndDetect', uploadDetect.fields([{ name: 'chs', maxCount: 10 }]), (req, res) => {
   console.log('Received Detect Data');
+  const userId = req.body.user_id;
+  console.log('user_id: ', userId);
   
   // Extract file paths from the uploaded files
   const options = req.body.options;
@@ -161,6 +163,27 @@ router.post('/uploadAndDetect', uploadDetect.fields([{ name: 'chs', maxCount: 10
   .then(response => response.json())
   .then(data => {
     console.log('Detect response:', data);
+    // save images to database
+    if (userId) { 
+      fetch('http://localhost:3000/saveToGallery_personal_chs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          image_paths: uploadedFilePath,
+        })
+      })
+      .then(saveResponse => saveResponse.json())
+      .then(saveData => {
+        console.log('Image saved to gallery:', saveData);
+      })
+      .catch(saveError => {
+        console.error('Error saving image to gallery:', saveError);
+      });
+    }
+
     // clear the data
     const uploadDir = path.join(__dirname, 'uploadDetect', options);
     fs.rmdir(uploadDir, { recursive: true }, (err) => {

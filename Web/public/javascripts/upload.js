@@ -122,6 +122,10 @@ async function submitFormCHS() {
   const form = document.getElementById(`uploadFormCHS`);
   const chsInput = document.getElementById('chs');
   const formData = new FormData(form);
+  const userId = window.user_id;
+  // Adding userId to formData
+  formData.append('user_id', userId);
+  
   const loadingMasks = document.getElementsByClassName('loading-mask');
 
   // Check if a file has been selected
