@@ -19,8 +19,9 @@ const Gallery = require('../models/gallery');
 //     }
 // };
 
-// save image to personal gallery
-exports.saveToGallery_personal = async (req, res) => {
+
+// save final image to personal gallery
+exports.saveToGallery_personal_final = async (req, res) => {
   try {
     const { user_id, image_paths } = req.body;
     console.log('Saving request: ', req.body);

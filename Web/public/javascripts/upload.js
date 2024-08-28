@@ -178,6 +178,9 @@ async function submitFormCHD() {
     const form = document.getElementById(`uploadFormCHD`);
     const characterName = document.getElementById(`character_name`).value;
     const formData = new FormData(form);
+    const userId = window.user_id;
+    // Adding userId to formData
+    formData.append('user_id', userId);
 
     const loadingMasks = document.getElementsByClassName('loading-mask');
 

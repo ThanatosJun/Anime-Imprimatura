@@ -36,7 +36,7 @@ const uploadTrain = multer({ storage: storageTrain });
 // Train
 router.post('/uploadAndTrain', uploadTrain.fields([{ name: 'chd', maxCount: 3 }]), (req, res) => {
   console.log('req.body: ', req.body);
-  const userId = req.headers['user-id'];
+  const userId = req.body.user_id;
   console.log('user_id: ', userId);
 
   // normal train
