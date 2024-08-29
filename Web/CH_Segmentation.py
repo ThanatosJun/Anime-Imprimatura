@@ -7,6 +7,7 @@ import numpy as np
 from shapely.geometry import Point, Polygon
 from sklearn.cluster import KMeans
 import shutil
+import random
 import sys
 
 """
@@ -106,6 +107,7 @@ class CH_Segmentation(CH_SEG__init):
 
     # Function for YOLO segmentation
     def yolov8_detect(self, detect_dir, save_dir, CH_Type):
+        self.clear_and_create_dir(save_dir)
         # Segmentate with each model in list
         for detect in self.detect_list:
             results = detect.predict(detect_dir, save = False)
@@ -120,42 +122,44 @@ class CH_Segmentation(CH_SEG__init):
                     image = cv2.imread(image_path)  # Change image_path to image which is available for dealing
                     image_name = os.path.splitext(os.path.basename(image_path))[0]  # Get image's name
                     names = result.names
+                    
+                    if (CH_Type == "CHS"):
+                        output_image_dir = save_dir + "/" + f"{image_name}/images"
+                        output_annotation_dir = save_dir + "/" + f"{image_name}/annotations"
+                        os.makedirs(output_image_dir, exist_ok = True)
+                        os.makedirs(output_annotation_dir, exist_ok = True)
+                    else:
+                        output_image_dir = save_dir + "/images"
+                        os.makedirs(output_image_dir, exist_ok = True)
+
                     # Catch class IDs in boxes and turn into numpy
                     class_ids = result.boxes.cls.cpu().numpy()
                     # Exchange to corresponding class name
                     detect_classes = [names[int(class_id)] for class_id in class_ids]
                     print(detect_classes)
                     detect_class = detect_classes[0] # Get class
+                    
                     if detect_class in ["Hand", "Eye", "Shoe", "Leg"]:
                         for j, mask in enumerate(result.masks.xy):
                             mask_points = mask
                             detect_class = detect_classes[j]
                             print("Yes:" + detect_class)
-                            inner_points = self.find_random_points_within_polygon(mask_points,5)    # Get Main points for coloring
+                            # inner_points = self.select_random_points_from_polygon_points(mask_points,5)
+                            inner_points = self.find_random_points_within_polygon(mask_points,5)
+                            
                             # Check input images are CHD or CHS
                             if (CH_Type == "CHD"):
-                                # Set save dir
-                                output_image_dir = save_dir + "/images"
-                                output_annotation_dir = save_dir + "/annotations"
                                 # Create all white background
                                 masked_image = np.ones_like(image) * 255
                                 # Check wheather is this class been saved
                                 if (class_store == False):
                                     self.class_list.append(detect_class)
                                     class_store = True      
-                                os.makedirs(output_image_dir, exist_ok=True)
                             else:
-                                # Set save dir
-                                output_image_dir = save_dir + "/" + f"{image_name}/images"
-                                output_annotation_dir = save_dir + "/" + f"{image_name}/annotations"
                                 # Create all black background
                                 masked_image = np.zeros_like(image)
-                                os.makedirs(output_image_dir, exist_ok=True)
-                                os.makedirs(output_annotation_dir, exist_ok=True)
                                 # Announce txt path
-                                txt_filename = self.get_next_txt_name(output_annotation_dir, detect_class)
-                                # txt_filename = os.path.join(output_annotation_dir + "/", f"{detect_class}_{same_class_count}.txt")
-                                
+                                txt_filename = self.get_next_txt_name(output_annotation_dir, detect_class)                                
                                 with open(txt_filename, 'w') as file:
                                     file.write(f"Image_Name: {image_name}\n")
                                     file.write(f"Class: {detect_class}\n")
@@ -169,7 +173,6 @@ class CH_Segmentation(CH_SEG__init):
                             mask_resized = cv2.resize(mask_are.squeeze(), (result.orig_shape[1], result.orig_shape[0]), interpolation=cv2.INTER_LINEAR)
                             mask_bool = mask_resized.astype(bool)  # Change into booling type
 
-
                             # Copy original image's mask to new image
                             masked_image[mask_bool] = image[mask_bool] 
                             # Save new image for show mask
@@ -179,31 +182,21 @@ class CH_Segmentation(CH_SEG__init):
                             print(f"Finish create a mask image {output_image_path}")
                     else:
                         mask_points = result.masks.xy[0]    # Get mask points
+                        # inner_points = self.select_random_points_from_polygon_points(mask_points,5)
                         inner_points = self.find_random_points_within_polygon(mask_points,5)    # Get Main points for coloring
                         # Check input images are CHD or CHS
                         if (CH_Type == "CHD"):
-                            # Set save dir
-                            output_image_dir = save_dir + "/images"
-                            output_annotation_dir = save_dir + "/annotations"
                             # Create all white background
                             masked_image = np.ones_like(image) * 255
                             # Check wheather is this class been saved
                             if (class_store == False):
                                 self.class_list.append(detect_class)
                                 class_store = True      
-                            os.makedirs(output_image_dir, exist_ok=True)
                         else:
-                            # Set save dir
-                            output_image_dir = save_dir + "/" + f"{image_name}/images"
-                            output_annotation_dir = save_dir + "/" + f"{image_name}/annotations"
                             # Create all black background
                             masked_image = np.zeros_like(image)
-                            os.makedirs(output_image_dir, exist_ok=True)
-                            os.makedirs(output_annotation_dir, exist_ok=True)
                             # Announce txt path
                             txt_filename = self.get_next_txt_name(output_annotation_dir, detect_class)
-                            # txt_filename = os.path.join(output_annotation_dir + "/", f"{detect_class}_{1}.txt")
-                            
                             with open(txt_filename, 'w') as file:
                                 file.write(f"Image_Name: {image_name}\n")
                                 file.write(f"Class: {detect_class}\n")
@@ -258,24 +251,48 @@ class CH_Segmentation(CH_SEG__init):
         random_points = []
         
         # Shrink the polygon by the specified amount (in pixels)
-        shrunken_polygon = polygon.buffer(-5)
+        shrunken_polygon = polygon.buffer(-15)
         
-        # Initialize random points list
-        random_points = []
-        
-        # Get n random points
-        while len(random_points) < num_points:
-            # Generate random point in the bounding box of the shrunken polygon
-            minx, miny, maxx, maxy = shrunken_polygon.bounds
-            for _ in range(num_points * 100):  # 增加尝试次数，以提高生成点的准确性
-                random_point = Point(np.random.uniform(minx, maxx), np.random.uniform(miny, maxy))
-                
-                # Check whether random point is in the shrunken polygon
-                if shrunken_polygon.contains(random_point):
-                    random_points.append((random_point.x, random_point.y))
-                    if len(random_points) == num_points:
-                        break
+        # 如果縮小的多邊形是空的，則使用原始多邊形
+        if shrunken_polygon.is_empty:
+            print("Shrunken polygon is empty. Using the minimum enclosing circle's center point.")
+            
+            # 找到內接圓的中心點
+            center = self.get_polygon_center_min_enclosing_circle(polygon_points)
+            if center:
+                random_points.append(center)
+        else:      
+            # Get n random points
+            while len(random_points) < num_points:
+                # Generate random point in the bounding box of the shrunken polygon
+                minx, miny, maxx, maxy = shrunken_polygon.bounds
+                print(f"minx: {minx}, maxx: {maxx}, miny: {miny}, maxy: {maxy}")
+                for _ in range(num_points * 50):  # 產生更多的嘗試以增加找到隨機點的機率
+                    random_point = Point(np.random.uniform(minx, maxx), np.random.uniform(miny, maxy))
+                    
+                    # Check whether random point is in the shrunken polygon
+                    if shrunken_polygon.contains(random_point):
+                        random_points.append((random_point.x, random_point.y))
+                        if len(random_points) == num_points:
+                            break
         return random_points
+    
+    def get_polygon_center_min_enclosing_circle(self, polygon_points):
+        """
+        計算多邊形的最小外接圓的中心點。
+        
+        Args:
+            polygon_points (list of tuples): 多邊形的點列表
+        
+        Returns:
+            tuple: 最小外接圓的中心點 (x, y)
+        """
+        # 將多邊形點轉換為 numpy array
+        polygon_np_points = np.array(polygon_points, dtype=np.float32)
+        
+        # 計算最小外接圓
+        (center_x, center_y), radius = cv2.minEnclosingCircle(polygon_np_points)
+        return (int(center_x), int(center_y))
 
 # Class for coloring
 """
@@ -376,13 +393,6 @@ class Coloring(CH_SEG__init):
 
         # Catch copy
         combined_image = cv2.bitwise_and(copy_img, copy_img, mask=cv2.bitwise_not(mask))
-
-        # cv2.imshow('Mask', mask)
-        # cv2.waitKey(0)
-        # cv2.imshow('Raw', copy_img)
-        # cv2.waitKey(0)
-        # cv2.imshow('After image', combined_image)
-        # cv2.waitKey(0)
         
         return combined_image
 
@@ -393,6 +403,7 @@ class Coloring(CH_SEG__init):
         mask = np.zeros([h+2, w+2], np.uint8)
         # Color CHS with color_dictionary and points
         for key, position_list in position_dictionary.items():
+            key = key.split("_")[0]
             if key in color_dictionary:
                 rgb = color_dictionary[key]
                 r, g, b = rgb
@@ -408,6 +419,14 @@ class Coloring(CH_SEG__init):
                         raise ValueError("Position should be either a string or a tuple")
                     # Color cv2's color is BGT not RGB
                     cv2.floodFill(copy_img, mask, (x, y), (int(b), int(g), int(r)), (100, 100, 100), (100, 100, 100), cv2.FLOODFILL_FIXED_RANGE)
+                marked_image = copy_img.copy()
+                for point in position_list:
+                    # 確保點的座標是整數
+                    x, y = int(point[0]), int(point[1])
+                    cv2.circle(marked_image, (x, y), radius=5, color=(0, 0, 255), thickness=-1)
+                print(f"key = {key}\nrgb = {rgb}\nposition = {position}")
+                cv2.imshow(f"body", marked_image)
+                cv2.waitKey(0)
         copy_img = self.overlay_black_lines_on_image(copy_img, sketch)
         return copy_img
 
@@ -453,10 +472,17 @@ class Coloring(CH_SEG__init):
             CHS_annotations_paths = self.get_files_path(CHS_annotations_dir)
             # Announce main points dictionary for coloring
             position_dictionary = {}
+            class_count = 1
+            old_cls = ""
             # Save all main points into position_dictionary
             for CHS_annotation_path in CHS_annotations_paths:
                 cls, points = self.extract_class_and_points(CHS_annotation_path)
-                position_dictionary[cls] = points
+                if (old_cls != cls):
+                    class_count = 1
+                    old_cls = cls
+                in_cls = old_cls + "_" + str(class_count)
+                position_dictionary[in_cls] = points
+                class_count += 1
             # Color and save image
             CHS_Finished = self.fill_color_demo(CHS_image, color_dictionary, position_dictionary)
             CHS_save_path = os.path.join(self.CHS_Finished_dir, f"{CHS_Name}_Fin.png")
@@ -478,9 +504,9 @@ def get_colored(CH_Name):
     return color_dictionary, CHS_Finished_dir          
 
 if __name__ == "__main__":
-    CH_Name = sys.argv[1]
+    # CH_Name = sys.argv[1]
     print("====1====")
-    # CH_Name = "Anime008"
+    CH_Name = "TestA005"
     main(CH_Name)
 
                 # def plot_polygon_and_points(polygon_points, points):

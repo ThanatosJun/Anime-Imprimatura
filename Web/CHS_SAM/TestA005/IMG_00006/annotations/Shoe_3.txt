@@ -1,0 +1,5 @@
+Image_Name: IMG_00006
+Class: Shoe
+Inner Main Points: [(0, 0)]
+Mask Points:
+[]
