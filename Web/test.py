@@ -27,15 +27,16 @@ def train_image():
     
     print('Now executing "Train". ')
     import PA_autoTraing_v7
+    CHD_modelpt = None
     try:
         print(f'Received train request with CHD_name: {CHD_name}, image_path: {image_path}')
-        PA_autoTraing_v7.main(CHD_name, image_path)
+        CHD_modelpt = PA_autoTraing_v7.main(CHD_name, image_path)
 
         output = "Train script executed successfully."
-        return jsonify({'status': 'success', 'output': output, 'CHD_name': CHD_name, 'image_path': image_path})
+        return jsonify({'status': 'success', 'output': output, 'CHD_name': CHD_name, 'image_path': image_path, 'CHD_modelpt': CHD_modelpt})
     except Exception as e:
         print(f'Error during training: {e}')
-        return jsonify({'status': 'error', 'error': str(e), 'CHD_name': CHD_name, 'image_path': image_path})
+        return jsonify({'status': 'error', 'error': str(e), 'CHD_name': CHD_name, 'image_path': image_path, 'CHD_modelpt': CHD_modelpt})
     
 # detect
 @app.route('/detect', methods=['POST'])

@@ -71,6 +71,8 @@ router.post('/uploadAndTrain', uploadTrain.fields([{ name: 'chd', maxCount: 3 }]
   .then(response => response.json())
   .then(data => {
     console.log('(imageController.js) Train response:', data);
+    // got CHD_modelpt
+    const CHD_modelpt = data.CHD_modelpt;
     // save images to database
     if (userId) { 
       fetch('http://localhost:3000/saveToGallery_personal_chd', {
@@ -81,7 +83,8 @@ router.post('/uploadAndTrain', uploadTrain.fields([{ name: 'chd', maxCount: 3 }]
         body: JSON.stringify({
           user_id: userId,
           image_paths: uploadedFilePath,
-          character: chdName
+          character: chdName, 
+          CHD_modelpt: CHD_modelpt
         })
       })
       .then(saveResponse => saveResponse.json())

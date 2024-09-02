@@ -25,6 +25,9 @@ const chdSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         dafault: Date.now
+    },
+    CHD_modelpt: {
+        type: String,
     }
 });
 

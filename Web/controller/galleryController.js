@@ -127,3 +127,25 @@ exports.saveToGallery_personal_final = async (req, res) => {
     res.status(500).json({ error: "An error occurred during saveToGallery_perosonal. Please try again." });
   }
 }
+
+// display gallery
+exports.getPersonalGallery = async (req, res) => {
+  try {
+    const gallery = await Gallery.findOne({ user_id: req.user.id }).populate('chds');
+    if (!gallery || gallery.chds.length === 0) {
+      return res.render('gallery', { images: [] });
+    }
+
+    const images = gallery.chds.map(chd => ({
+      path: chd.path,
+      character: chd.character,
+      // 你可以根據需要添加更多字段
+    }));
+
+    res.render('gallery', { images });
+    res.status(200).json({message: 'Image displayed successfully to personal gallery'});
+  } catch (error) {
+    console.error('Error retrieving gallery:', error);
+    res.status(500).send('Error retrieving gallery');
+  }
+};

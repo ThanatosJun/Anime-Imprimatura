@@ -102,47 +102,18 @@ app.get('/', async (req, res) => {
   }
 });
 
-// post CHD_name and image_path to PA_autoTraing_v5.py
-app.post('/train', (req, res) => {
-  // 設置 Flask 伺服器的基本 URL
-  const flaskUrl = 'http://localhost:5001';
-  // 要發送的 JSON 數據
-  const data = { image_path, CHD_name } = req.body;
-  
-  console.log('(app.js) Sending train request with data', data);
+// Route to render personal gallery
+app.get('/gallery/:user_id', async (req, res) => {
+  try {
+    const userId = req.params.user_id;
+    const images = await Chd.find({ user_id: userId });
 
-  // 發送 POST 請求到 Flask 伺服器的 /train 路由
-  axios.post(`${flaskUrl}/train`, data)
-    .then(response => {
-      console.log('(app.js) Flask Server Response: ', response.data);
-      res.send(response.data);
-    })
-    .catch(error => {
-      console.error('(app.js) Error Sending Requests: ', error);
-      res.status(500).send("Error training image. ");
-    });
-})
-
-// // post CHD_name and image_path to CHD_detect.py
-// app.get('/detect', (req, res) => {
-//   // 設置 Flask 伺服器的基本 URL
-//   const flaskUrl = 'http://localhost:5001';
-//   // 要發送的 JSON 數據
-//   const data = { CHD_name, image_path } = req.body;
-  
-//   console.log('(app.js) Sending detect request with data', data);
-
-//   // 發送 POST 請求到 Flask 伺服器的 /detect 路由
-//   axios.post(`${flaskUrl}/detect`, data)
-//     .then(response => {
-//       console.log('(app.js) Flask Server Response: ', response.data);
-//       res.send(response.data);
-//     })
-//     .catch(error => {
-//       console.error('(app.js) Error Sending Requests: ', error);
-//       res.status(500).send("Error detecting image. ");
-//     });
-// })
+    res.render('gallery', { images: images });
+  } catch (error) {
+    console.error('Error rendering gallery:', error);
+    res.status(500).send('Error loading gallery');
+  }
+});
 
 // Route to handle user editing
 app.post('/edituser', async (req, res) => {
@@ -163,6 +134,7 @@ app.post('/uploadAndSegment', imageController);
 app.post('/saveToGallery_personal_chd', galleryController.saveToGallery_personal_chd);
 app.post('/saveToGallery_personal_chs', galleryController.saveToGallery_personal_chs);
 app.post('/saveToGallery_personal_final', galleryController.saveToGallery_personal_final);
+app.post('/getPersonalGallery', galleryController.getPersonalGallery);
 
 app.post('/upload', upload.single('upload-box'), (req, res) => {
   if (!req.file) {

@@ -21,30 +21,9 @@ html(lang="en")
           button.gallery-btn Personal Gallery
           button.gallery-btn Team Gallery
         .gallery-grid
-          //- if image && images.length > 0
-          //-   each image in images
-          .gallery-item
-            .image
-            //- img(src=image.path, alt=image.description)
-            p Congue id ac mi
-          .gallery-item
-            .image
-            p Cursus accumsan
-          .gallery-item
-            .image
-            p Nisi massa aliquet
-          .gallery-item
-            .image
-            p Pretium congue ut
-          .gallery-item
-            .image
-            p Eleifend amet
-          .gallery-item
-            .image
-            p Fames viverra
-          .gallery-item
-            .image
-            p Duis ut et
-          .gallery-item
-            .image
-            p Bibendum eu
+          if images && images.length > 0
+            each image in images
+              .gallery-item
+                img(src=image.path, alt=image.character)
+          else
+            p No images found in your gallery.
