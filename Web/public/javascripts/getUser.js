@@ -35,4 +35,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     document.dispatchEvent(new Event('getUserCompleted'));
+    console.log('getUserCompleted event dispatched');
 });

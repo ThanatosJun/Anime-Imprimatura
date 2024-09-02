@@ -109,63 +109,71 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('CHS_Finished_dir not found in localStorage.'); // Log an error if CHS_Finished_dir is not found in localStorage
     }
 
-    // Add an event listener to the save button
-    saveButton.addEventListener('click', () => {
-        const handleGetUserCompleted = async () => {
-            if (window.user_id) {
-                if (CHS_Finished_dir) {
-                    // Fetch images from the server using the directory path
-                    try {
-                        const response = await fetch('/api/saveToGallery_personal_final', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                user_id: window.user_id,
-                                image_paths: CHS_Finished_dir
-                            })
-                        });
-    
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        } else {
-                            alert('Saved!');
-                            window.location.href = '/gallery';
-                        }
-    
-                    } catch (error) {
-                        console.error('Error fetching images:', error);
-                        alert('Failed to save images. Please try again later.');
+    // // Function to ensure user information is available
+    // function waitForUserCompletion() {
+    //     return new Promise((resolve) => {
+    //         if (window.user_id) {
+    //             console.log('getFinalResult.js: User ID already available:', window.user_id);
+    //             resolve();
+    //         } else {
+    //             console.log('getFinalResult.js: Waiting for getUserCompleted event');
+    //             document.addEventListener('getUserCompleted', () => {
+    //                 console.log('getFinalResult.js: getUserCompleted event detected');
+    //                 resolve();
+    //             }, { once: true });
+    //         }
+    //     });
+    // }
+
+    // Add click event listener to the save button
+    saveButton.addEventListener('click', async () => {
+        console.log('getFinalResult.js: Save button clicked');
+
+        // // Wait for user information to be available
+        // await waitForUserCompletion();
+
+        console.log('getFinalResult.js: Proceeding with save operation');
+
+        if (window.user_id) {
+            const CHS_Finished_dir = localStorage.getItem('CHS_Finished_dir');
+            if (CHS_Finished_dir) {
+                try {
+                    const response = await fetch('/api/saveToGallery_personal_final', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            user_id: window.user_id,
+                            image_paths: CHS_Finished_dir
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
                     }
-                } else {
-                    alert('CHS_Finished_dir not found in localStorage');
-                    console.error('CHS_Finished_dir not found in localStorage.');
+
+                    alert('Saved successfully!');
+                    window.location.href = '/gallery';
+                } catch (error) {
+                    console.error('getFinalResult.js: Error saving images:', error);
+                    alert('Failed to save images. Please try again later.');
                 }
             } else {
-                alert('Please login to save.');
-                window.location.href = '/login';
+                alert('No image directory found. Please try again.');
+                console.error('getFinalResult.js: CHS_Finished_dir not found in localStorage.');
             }
-        };
-
-        // Ensure the event listener is not added multiple times
-        document.removeEventListener('getUserCompleted', handleGetUserCompleted);
-        document.addEventListener('getUserCompleted', handleGetUserCompleted);
+        } else {
+            alert('Please log in to save your work.');
+            console.error('getFinalResult.js: User ID not available.');
+            window.location.href = '/login';
+        }
     });
 });
 
 // Clear the directory path from localStorage after leaving the page
 window.addEventListener('pagehide', () => {
-    const CHS_Finished_dir = path.resolve(__dirname, localStorage.getItem('CHS_Finished_dir')) ;
-
-    fs.rmdir(CHS_Finished_dir, { recursive: true }, (err) => {
-      if (err) {
-        console.error('Error while deleting directory:', err);
-      } else {
-        console.log('CHS_Finished_dir successfully deleted:', CHS_Finished_dir);
-      }
-    });
-
     localStorage.removeItem('color_dictionary');
     localStorage.removeItem('CHS_Finished_dir');
+    console.log('Local storage cleared.');
 });
