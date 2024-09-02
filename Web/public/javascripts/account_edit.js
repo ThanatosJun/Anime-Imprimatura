@@ -4,8 +4,10 @@ document.addEventListener('getUserCompleted', () => {
     var idInput = document.getElementById('id');
     var emailInput = document.getElementById('email');
 
-    idInput.value = window.user_id;
-    emailInput.value = window.user_email;
+    if(window.user_id) {
+        idInput.value = window.user_id;
+        emailInput.value = window.user_email;
+    }
 });
 
 // Toggle the readOnly state of an input field and focus it if editable

@@ -2,8 +2,8 @@
 
 document.addEventListener('DOMContentLoaded', async () => {
     // This function will be executed when the DOMContentLoaded event is triggered
-    window.user_id = "user-id";
-    window.user_email = "user-email";
+    window.user_id = null;
+    window.user_email = null;
     
     console.log('DOM fully loaded and parsed');
 
