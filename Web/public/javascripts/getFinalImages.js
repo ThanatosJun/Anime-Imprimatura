@@ -1,4 +1,4 @@
-// this file get the final data of generate process
+// this file get the final data of generate process and save them into db if the user logged in
 
 document.addEventListener('DOMContentLoaded', () => {
     // This function will be executed when the DOMContentLoaded event is triggered
@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultContainer = document.getElementById('detectResult');
     const colorContainer = document.getElementById('colorContainer');
     const coloredImageContainer = document.getElementById('finalImage');
+    const saveButton = document.getElementById('save-btn');
     // Retrieve the path to the directory containing images from localStorage
     const CHS_save_dir = localStorage.getItem('CHS_save_dir');
     const color_dictionary = JSON.parse(localStorage.getItem('color_dictionary'));
@@ -100,9 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     img.style.maxWidth = '100%';
                     coloredImageContainer.appendChild(img); // Add the image element to the container
                 });
-
-                // Clear the directory path from localStorage after displaying images
-                localStorage.removeItem('CHS_Finished_dir');
             })
             .catch(error => {
                 console.error('Error fetching images:', error); // Log any errors during the fetch process
@@ -110,4 +108,64 @@ document.addEventListener('DOMContentLoaded', () => {
     } else{
         console.error('CHS_Finished_dir not found in localStorage.'); // Log an error if CHS_Finished_dir is not found in localStorage
     }
+
+    // Add an event listener to the save button
+    saveButton.addEventListener('click', () => {
+        const handleGetUserCompleted = async () => {
+            if (window.user_id) {
+                if (CHS_Finished_dir) {
+                    // Fetch images from the server using the directory path
+                    try {
+                        const response = await fetch('/api/saveToGallery_personal_final', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                user_id: window.user_id,
+                                image_paths: CHS_Finished_dir
+                            })
+                        });
+    
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        } else {
+                            alert('Saved!');
+                            window.location.href = '/gallery';
+                        }
+    
+                    } catch (error) {
+                        console.error('Error fetching images:', error);
+                        alert('Failed to save images. Please try again later.');
+                    }
+                } else {
+                    alert('CHS_Finished_dir not found in localStorage');
+                    console.error('CHS_Finished_dir not found in localStorage.');
+                }
+            } else {
+                alert('Please login to save.');
+                window.location.href = '/login';
+            }
+        };
+
+        // Ensure the event listener is not added multiple times
+        document.removeEventListener('getUserCompleted', handleGetUserCompleted);
+        document.addEventListener('getUserCompleted', handleGetUserCompleted);
+    });
+});
+
+// Clear the directory path from localStorage after leaving the page
+window.addEventListener('pagehide', () => {
+    const CHS_Finished_dir = path.resolve(__dirname, localStorage.getItem('CHS_Finished_dir')) ;
+
+    fs.rmdir(CHS_Finished_dir, { recursive: true }, (err) => {
+      if (err) {
+        console.error('Error while deleting directory:', err);
+      } else {
+        console.log('CHS_Finished_dir successfully deleted:', CHS_Finished_dir);
+      }
+    });
+
+    localStorage.removeItem('color_dictionary');
+    localStorage.removeItem('CHS_Finished_dir');
 });
