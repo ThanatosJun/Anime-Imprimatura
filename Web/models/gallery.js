@@ -16,7 +16,11 @@ const gallerySchema = new mongoose.Schema({
     },
     team_id: {
         type: String
-    }
+    },
+    chds: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Chd'
+    }]
 });
 
 //define model

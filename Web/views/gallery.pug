@@ -24,6 +24,30 @@ html(lang="en")
           if images && images.length > 0
             each image in images
               .gallery-item
-                img(src=image.path, alt=image.character)
+                img(src=`/images/${image.path}`, alt=image.character)
+                p = image.character
           else
-            p No images found in your gallery.
+            .gallery-item
+            .image
+            p Congue id ac mi
+          .gallery-item
+            .image
+            p Cursus accumsan
+          .gallery-item
+            .image
+            p Nisi massa aliquet
+          .gallery-item
+            .image
+            p Pretium congue ut
+          .gallery-item
+            .image
+            p Eleifend amet
+          .gallery-item
+            .image
+            p Fames viverra
+          .gallery-item
+            .image
+            p Duis ut et
+          .gallery-item
+            .image
+            p Bibendum eu

@@ -453,9 +453,10 @@ def main(CHD_Name, file_paths):
     # PA_tra = PA_train(CHD_Name)
     # PA_pre.main()
     # CHD_modelpt = PA_tra.main()
-    print(f"======2======={file_paths}")
-    return file_paths
+    # print(f"======2======={file_paths}")
+    # return file_paths
     # return CHD_modelpt
+    return "Web/CHD_Model/Anime008.pt"
 
 
 

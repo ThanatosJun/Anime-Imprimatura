@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const dotenv = require('dotenv');
+const { GridFSBucket } = require('mongodb');
 
 // 加載環境變量
 dotenv.config();
@@ -24,8 +25,19 @@ var db = mongoose.connection;
 //Bind connection to error event (to get notification of connection errors)
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
+// setup of gfs
+let gridFSBucket;
+
+mongoose.connection.once('open', () => {
+  gridFSBucket = new GridFSBucket(mongoose.connection.db, {
+    bucketName: 'uploads'  // 你可以更改這個名字
+  });
+  console.log('GridFSBucket is initialized and ready');
+});
+
 module.exports = {
   db,
   mongoose,
-  bcrypt
+  bcrypt,
+  getGridFSBucket: () => gridFSBucket
 };

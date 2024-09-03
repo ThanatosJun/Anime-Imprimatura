@@ -1,6 +1,8 @@
 Hair
+Neck
 Face
-Shoes
+Hand
 Clothes
 Eye
+Leg
 Pants

@@ -34,66 +34,68 @@ const storageTrain = multer.diskStorage({
 const uploadTrain = multer({ storage: storageTrain });
 
 // Train
-router.post('/uploadAndTrain', uploadTrain.fields([{ name: 'chd', maxCount: 3 }]), (req, res) => {
-  console.log('req.body: ', req.body);
-  const userId = req.body.user_id;
-  console.log('user_id: ', userId);
+router.post('/uploadAndTrain', uploadTrain.fields([{ name: 'chd', maxCount: 3 }]), async (req, res) => {
+  try {
+    console.log('req.body: ', req.body);
+    const userId = req.body.user_id;
+    console.log('user_id: ', userId);
 
-  // normal train
-  console.log('Received upload request');
-  if (!req.files || !req.files.chd || req.files.chd.length === 0) {
-    console.log('No files uploaded.');
-    return res.status(400).send('No files were uploaded.');
-  } else {
-    console.log('Files uploaded successfully.');
-  }
-
-  const uploadedFilePath = [];
-  for(let i = 0; i < req.files.chd.length; i++) {
-    uploadedFilePath[i] = req.files.chd[i].path;
-  }
-
-  const chdName = req.body.character_name;
-  
-  console.log('Uploaded file path:', uploadedFilePath);
-  console.log('CHD Name:', chdName);
-
-  const generatedImagePath = uploadedFilePath;
-  console.log('Generated image path:', generatedImagePath);
-
-  fetch('http://localhost:5001/train', {
-    method: 'POST',
-    body: JSON.stringify({ image_path: generatedImagePath, CHD_name: chdName }),
-    headers: {
-      'Content-Type': 'application/json'
+    console.log('Received upload request');
+    if (!req.files || !req.files.chd || req.files.chd.length === 0) {
+      console.log('No files uploaded.');
+      return res.status(400).send('No files were uploaded.');
+    } else {
+      console.log('Files uploaded successfully.');
     }
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log('(imageController.js) Train response:', data);
-    // got CHD_modelpt
-    const CHD_modelpt = data.CHD_modelpt;
-    // save images to database
+
+    const uploadedFilePath = [];
+    for (let i = 0; i < req.files.chd.length; i++) {
+      uploadedFilePath[i] = req.files.chd[i].path;
+    }
+
+    const chdName = req.body.character_name;
+    console.log('Uploaded file path:', uploadedFilePath);
+    console.log('CHD Name:', chdName);
+
+    const generatedImagePath = uploadedFilePath;
+    console.log('Generated image path:', generatedImagePath);
+
+    // post to test.py
+    const trainResponse = await fetch('http://localhost:5001/train', {
+      method: 'POST',
+      body: JSON.stringify({ image_path: generatedImagePath, CHD_name: chdName }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const trainData = await trainResponse.json();
+    console.log('(imageController.js) Train response:', trainData);
+
+    // get CHD_modelpt
+    const CHD_modelpt = trainData.CHD_modelpt;
+
+    // save chd if logged in
     if (userId) { 
-      fetch('http://localhost:3000/saveToGallery_personal_chd', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: userId,
-          image_paths: uploadedFilePath,
-          character: chdName, 
-          CHD_modelpt: CHD_modelpt
-        })
-      })
-      .then(saveResponse => saveResponse.json())
-      .then(saveData => {
+      try {
+        const saveResponse = await fetch('http://localhost:3000/saveToGallery_personal_chd', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            image_paths: uploadedFilePath,
+            character: chdName, 
+            CHD_modelpt: CHD_modelpt
+          })
+        });
+
+        const saveData = await saveResponse.json();
         console.log('Image saved to gallery:', saveData);
-      })
-      .catch(saveError => {
+      } catch (saveError) {
         console.error('Error saving image to gallery:', saveError);
-      });
+      }
     }
 
     // clear the data
@@ -105,12 +107,12 @@ router.post('/uploadAndTrain', uploadTrain.fields([{ name: 'chd', maxCount: 3 }]
         console.log('Upload directory successfully deleted:', uploadDir);
       }
     });
-    res.status(200).json(data);
-  })
-  .catch(error => {
-    console.error('Error during train process:', error);
-    res.status(500).json({ error: 'An error occurred during the train process.' });
-  });
+
+    res.status(200).json(trainData);
+  } catch (error) {
+    console.error('Error during upload and train process:', error);
+    res.status(500).json({ error: 'An error occurred during the upload and train process.' });
+  }
 });
 
 // Multer for Detect

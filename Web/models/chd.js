@@ -28,6 +28,11 @@ const chdSchema = new mongoose.Schema({
     },
     CHD_modelpt: {
         type: String,
+    },
+    gallery_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Gallery',
+        required: true
     }
 });
 

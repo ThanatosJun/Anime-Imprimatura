@@ -419,14 +419,14 @@ class Coloring(CH_SEG__init):
                         raise ValueError("Position should be either a string or a tuple")
                     # Color cv2's color is BGT not RGB
                     cv2.floodFill(copy_img, mask, (x, y), (int(b), int(g), int(r)), (100, 100, 100), (100, 100, 100), cv2.FLOODFILL_FIXED_RANGE)
-                marked_image = copy_img.copy()
-                for point in position_list:
-                    # 確保點的座標是整數
-                    x, y = int(point[0]), int(point[1])
-                    cv2.circle(marked_image, (x, y), radius=5, color=(0, 0, 255), thickness=-1)
-                print(f"key = {key}\nrgb = {rgb}\nposition = {position}")
-                cv2.imshow(f"body", marked_image)
-                cv2.waitKey(0)
+                # marked_image = copy_img.copy()
+                # for point in position_list:
+                #     # 確保點的座標是整數
+                #     x, y = int(point[0]), int(point[1])
+                #     cv2.circle(marked_image, (x, y), radius=5, color=(0, 0, 255), thickness=-1)
+                # print(f"key = {key}\nrgb = {rgb}\nposition = {position}")
+                # cv2.imshow(f"body", marked_image)
+                # cv2.waitKey(0)
         copy_img = self.overlay_black_lines_on_image(copy_img, sketch)
         return copy_img
 
