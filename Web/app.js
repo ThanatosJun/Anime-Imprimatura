@@ -103,15 +103,20 @@ app.get('/', async (req, res) => {
 });
 
 // Route to render personal gallery
-app.get('/gallery/:user_id', async (req, res) => {
+app.get('/images/:id', async (req, res) => {
   try {
-    const userId = req.params.user_id;
-    const images = await Chd.find({ user_id: userId });
+    const fileId = mongoose.Types.ObjectId(req.params.id);
+    const downloadStream = gridFSBucket.openDownloadStream(fileId);
 
-    res.render('gallery', { images: images });
+    downloadStream.on('error', (err) => {
+      console.error('Error downloading image:', err);
+      res.status(404).send('Image not found');
+    });
+
+    downloadStream.pipe(res);
   } catch (error) {
-    console.error('Error rendering gallery:', error);
-    res.status(500).send('Error loading gallery');
+    console.error('Error retrieving image:', error);
+    res.status(500).send('Error retrieving image');
   }
 });
 

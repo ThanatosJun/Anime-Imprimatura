@@ -5,6 +5,7 @@ html(lang="en")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     title Gallery
     link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='/javascripts/getGalleryImages.js')
   body.gallery
     script(src='/javascripts/getUser.js')
     header.navigation-bar
@@ -21,33 +22,6 @@ html(lang="en")
           button.gallery-btn Personal Gallery
           button.gallery-btn Team Gallery
         .gallery-grid
-          if images && images.length > 0
-            each image in images
-              .gallery-item
-                img(src=`/images/${image.path}`, alt=image.character)
-                p = image.character
-          else
-            .gallery-item
-            .image
-            p Congue id ac mi
-          .gallery-item
-            .image
-            p Cursus accumsan
-          .gallery-item
-            .image
-            p Nisi massa aliquet
-          .gallery-item
-            .image
-            p Pretium congue ut
-          .gallery-item
-            .image
-            p Eleifend amet
-          .gallery-item
-            .image
-            p Fames viverra
-          .gallery-item
-            .image
-            p Duis ut et
-          .gallery-item
-            .image
-            p Bibendum eu
+          // 這裡會填充圖片
+          #chd-gallery.gallery-grid
+          #chs-gallery.gallery-grid
