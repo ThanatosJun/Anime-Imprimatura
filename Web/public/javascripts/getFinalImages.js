@@ -109,28 +109,9 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('CHS_Finished_dir not found in localStorage.'); // Log an error if CHS_Finished_dir is not found in localStorage
     }
 
-    // // Function to ensure user information is available
-    // function waitForUserCompletion() {
-    //     return new Promise((resolve) => {
-    //         if (window.user_id) {
-    //             console.log('getFinalResult.js: User ID already available:', window.user_id);
-    //             resolve();
-    //         } else {
-    //             console.log('getFinalResult.js: Waiting for getUserCompleted event');
-    //             document.addEventListener('getUserCompleted', () => {
-    //                 console.log('getFinalResult.js: getUserCompleted event detected');
-    //                 resolve();
-    //             }, { once: true });
-    //         }
-    //     });
-    // }
-
     // Add click event listener to the save button
     saveButton.addEventListener('click', async () => {
         console.log('getFinalResult.js: Save button clicked');
-
-        // // Wait for user information to be available
-        // await waitForUserCompletion();
 
         console.log('getFinalResult.js: Proceeding with save operation');
 
@@ -139,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (CHS_Finished_dir) {
                 try {
                     const response = await fetch('/api/saveToGallery_personal_final', {
-                        method: 'POST',
+                        method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
                         },
