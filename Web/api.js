@@ -77,7 +77,7 @@ router.post('/detect', (req, res) => {
 const galleryController = require('./controller/galleryController');
 router.get('/saveToGallery_personal_chd', galleryController.saveToGallery_personal_chd);
 router.get('/saveToGallery_personal_chs', galleryController.saveToGallery_personal_chs);
-router.post('/saveToGallery_personal_final', userController.authenticateToken, galleryController.saveToGallery_personal_final);
+router.post('/saveToGallery_personal_final', galleryController.saveToGallery_personal_final);
 router.post('/getPersonalGallery', galleryController.getPersonalGallery);
 
 // create
