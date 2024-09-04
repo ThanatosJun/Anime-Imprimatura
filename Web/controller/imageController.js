@@ -141,52 +141,54 @@ const storageDetect = multer.diskStorage({
 const uploadDetect = multer({ storage: storageDetect });
 
 // Detect
-router.post('/uploadAndDetect', uploadDetect.fields([{ name: 'chs', maxCount: 10 }]), (req, res) => {
-  console.log('Received Detect Data');
-  const userId = req.body.user_id;
-  console.log('user_id: ', userId);
-  
-  // Extract file paths from the uploaded files
-  const options = req.body.options;
-  const uploadedFilePath = [];
+router.post('/uploadAndDetect', uploadDetect.fields([{ name: 'chs', maxCount: 10 }]), async (req, res) => {
+  try {
+    console.log('Received Detect Data');
+    const userId = req.body.user_id;
+    console.log('user_id: ', userId);
 
-  for(let i = 0; i < req.files.chs.length; i++){
-    uploadedFilePath[i] = req.files.chs[i].path;
-  }
+    // Extract file paths from the uploaded files
+    const options = req.body.options;
+    const uploadedFilePath = [];
 
-  console.log('chd_name: ', options);
-  console.log('image_path: ', uploadedFilePath);
-
-  // Send a POST request to the detect service
-  fetch('http://localhost:5001/detect', {
-    method: 'POST',
-    body: JSON.stringify({ CHD_name: options, image_path: uploadedFilePath}),
-    headers: {
-      'Content-Type': 'application/json'
+    for(let i = 0; i < req.files.chs.length; i++){
+      uploadedFilePath[i] = req.files.chs[i].path;
     }
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log('Detect response:', data);
-    // save images to database
+
+    console.log('chd_name: ', options);
+    console.log('image_path: ', uploadedFilePath);
+
+    // post to test.py
+    const detectResponse = await fetch('http://localhost:5001/detect', {
+      method: 'POST',
+      body: JSON.stringify({ CHD_name: options, image_path: uploadedFilePath }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const detectData = await detectResponse.json();
+    console.log('(imageController.js) Detect response:', detectData);
+
+    // save chs if logged in
     if (userId) { 
-      fetch('http://localhost:3000/saveToGallery_personal_chs', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: userId,
-          image_paths: uploadedFilePath,
-        })
-      })
-      .then(saveResponse => saveResponse.json())
-      .then(saveData => {
+      try {
+        const saveResponse = await fetch('http://localhost:3000/saveToGallery_personal_chs', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            image_paths: uploadedFilePath
+          })
+        });
+
+        const saveData = await saveResponse.json();
         console.log('Image saved to gallery:', saveData);
-      })
-      .catch(saveError => {
+      } catch (saveError) {
         console.error('Error saving image to gallery:', saveError);
-      });
+      }
     }
 
     // clear the data
@@ -198,12 +200,12 @@ router.post('/uploadAndDetect', uploadDetect.fields([{ name: 'chs', maxCount: 10
         console.log('Upload directory successfully deleted:', uploadDir);
       }
     });
-    res.status(200).json(data);
-  })
-  .catch(error => {
-    console.error('Error during detect process:', error);
-    res.status(500).json({ error: 'An error occurred during the detect process.' });
-  });
+
+    res.status(200).json(detectData);
+  } catch (error) {
+    console.error('Error during upload and detect process:', error);
+    res.status(500).json({ error: 'An error occurred during the upload and detect process.' });
+  }
 });
 
 // Segment

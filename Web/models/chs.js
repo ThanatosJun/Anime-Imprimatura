@@ -21,6 +21,11 @@ const chsSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         dafault: Date.now
+    },
+    gallery_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Gallery',
+        required: true
     }
 });
 
