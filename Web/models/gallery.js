@@ -20,6 +20,10 @@ const gallerySchema = new mongoose.Schema({
     chds: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Chd'
+    }],
+    chss: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Chs'
     }]
 });
 
