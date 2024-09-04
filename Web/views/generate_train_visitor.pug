@@ -5,6 +5,7 @@ html(lang="en")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     title Generate Visitor
     link(rel='stylesheet', href='/stylesheets/style.css')
+    //- script(src='/javascripts/getModel.js')
     script(src='/javascripts/getUser.js')
   body.generate-visitor
     script(src='/javascripts/loading.js')
@@ -35,5 +36,7 @@ html(lang="en")
             span Upload CHD
             .upload-box#uploadBoxCHD
               input(type="file" name="chd" accept="image/*" multiple onchange="handleFiles(this.files, 'uploadBoxCHD')")
-        button.generate-btn(type="button" onclick="submitFormCHD()") ⚡ Train
+        .btn-container#btn-container
+          button.generate-btn(type="button" onclick="submitFormCHD()") ⚡ Train
+    script(src='/javascripts/skipBtn.js')
     script(src='/javascripts/upload.js')
