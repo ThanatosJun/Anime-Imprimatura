@@ -13,24 +13,32 @@ document.addEventListener('DOMContentLoaded', () => {
       if (response.ok) {
         const data = await response.json();
 
+        const galleryContainer = document.querySelector('.gallery-grid'); // 修改为 .gallery-grid
+        galleryContainer.innerHTML = ''; // 清空容器
+
         if (data.images.length === 0) {
-          document.querySelector('.gallery-grid').innerHTML = '<p>No images found.</p>';
+          galleryContainer.innerHTML = '<p>No images found.</p>';
         } else {
-          const galleryContainer = document.querySelector('.gallery-grid');
           data.images.forEach(image => {
+            const galleryItem = document.createElement('div');
+            galleryItem.className = 'gallery-item'; // 添加 gallery-item 类
+
             const img = document.createElement('img');
+            img.className = 'image'; // 添加 image 类
             img.src = `http://localhost:3000/images/${image._id}`; // 使用返回的 _id 生成图片的 URL
             img.alt = image.filename;
-            galleryContainer.appendChild(img);
+
+            galleryItem.appendChild(img);
+            galleryContainer.appendChild(galleryItem);
           });
         }
       } else {
         console.error('Failed to fetch gallery:', response.status, response.statusText);
-        document.querySelector('.gallery-grid').innerHTML = '<p>Failed to load gallery.</p>';
+        document.querySelector('.gallery-grid').innerHTML = '<p>Failed to load gallery.</p>'; // 修改为 .gallery-grid
       }
     } catch (error) {
       console.error('Error fetching gallery:', error);
-      document.querySelector('.gallery-grid').innerHTML = '<p>Error fetching gallery.</p>';
+      document.querySelector('.gallery-grid').innerHTML = '<p>Error fetching gallery.</p>'; // 修改为 .gallery-grid
     }
   });
 });

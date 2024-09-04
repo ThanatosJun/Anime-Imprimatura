@@ -133,6 +133,16 @@ app.get('/images/:file_id', (req, res) => {
   }
 });
 
+app.get('/gallery', async (req, res) => {
+  try {
+    const images = await fetchImagesFromDatabase(); // 获取图片数据的函数
+    res.render('gallery', { images }); // 将 images 传递给 Pug 模板
+  } catch (error) {
+    console.error('Error fetching images:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 // Route to handle user editing
 app.post('/edituser', async (req, res) => {
   try {
