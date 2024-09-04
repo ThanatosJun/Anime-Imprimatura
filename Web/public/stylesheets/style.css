@@ -124,19 +124,27 @@ body {
   background-color: #666;
 }
 
+.btn-container {
+  display: flex;
+  text-align: center;
+  gap: 10px;
+  justify-content: center;
+}
+
 .generate-btn {
-  display: block;
+  display: inline-block;
+  white-space: nowrap;
   margin: 50px auto;
   background: #E6FFFDB5;
   color: #000;
   border: 1px solid #E6FFFDBF;
-  padding: 15px 40px;
+  padding: 15px 30px;
   cursor: pointer;
   gap: 10px;
   border-radius: 42px;
   font-size: 15px;
   text-align: center;
-  width: 171px;
+  text-decoration: none;
 }
 
 footer {
@@ -343,7 +351,6 @@ footer {
   gap: 100px;
   justify-content: space-around;
   width: 100%;
-  margin-bottom: 20px;
   flex-direction: column;
 }
 

@@ -1,12 +1,9 @@
 // this file get the logined user's id & mail
 
-document.addEventListener('DOMContentLoaded', async () => {
-    // This function will be executed when the DOMContentLoaded event is triggered
-    window.user_id = null;
-    window.user_email = null;
-    
-    console.log('DOM fully loaded and parsed');
+window.user_id = null;
+window.user_email = null;
 
+async function fetchUserData() {
     if (localStorage.getItem('token')) {
         try {
             const response = await fetch('/api/content', {
@@ -36,4 +33,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     document.dispatchEvent(new Event('getUserCompleted'));
     console.log('getUserCompleted event dispatched');
-});
+}
+
+fetchUserData();
