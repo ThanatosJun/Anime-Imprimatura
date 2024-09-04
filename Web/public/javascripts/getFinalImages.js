@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (CHS_Finished_dir) {
                 try {
                     const response = await fetch('/api/saveToGallery_personal_final', {
-                        method: 'GET',
+                        method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
