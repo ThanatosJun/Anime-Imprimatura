@@ -1,42 +1,36 @@
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('getUserCompleted', async () => {
+    console.log('User ID in getGalleryImages:', window.user_id); // 验证 user_id 是否有值
+
     try {
+      const user_id = window.user_id;
       const response = await fetch('http://localhost:3000/getPersonalGallery', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: window.user_id }) // Ensure user_id is set correctly
+        body: JSON.stringify({ user_id }) // 确保 user_id 已经设置好
       });
-  
+
       if (response.ok) {
         const data = await response.json();
-  
-        if (data.message) {
-          // Display a message if no images are found
-          document.getElementById('gallery').innerHTML = `<p>${data.message}</p>`;
+
+        if (data.images.length === 0) {
+          document.querySelector('.gallery-grid').innerHTML = '<p>No images found.</p>';
         } else {
-          // Display CHD images
-          const chdContainer = document.getElementById('chd-images');
-          data.chdImages.forEach(image => {
+          const galleryContainer = document.querySelector('.gallery-grid');
+          data.images.forEach(image => {
             const img = document.createElement('img');
-            img.src = image.path;
-            img.alt = image.character;
-            chdContainer.appendChild(img);
-          });
-  
-          // Display CHS images
-          const chsContainer = document.getElementById('chs-images');
-          data.chsImages.forEach(image => {
-            const img = document.createElement('img');
-            img.src = image.path;
-            img.alt = image.character;
-            chsContainer.appendChild(img);
+            img.src = `http://localhost:3000/images/${image._id}`; // 使用返回的 _id 生成图片的 URL
+            img.alt = image.filename;
+            galleryContainer.appendChild(img);
           });
         }
       } else {
         console.error('Failed to fetch gallery:', response.status, response.statusText);
-        document.getElementById('gallery').innerHTML = '<p>Failed to load gallery.</p>';
+        document.querySelector('.gallery-grid').innerHTML = '<p>Failed to load gallery.</p>';
       }
     } catch (error) {
       console.error('Error fetching gallery:', error);
-      document.getElementById('gallery').innerHTML = '<p>Error fetching gallery.</p>';
+      document.querySelector('.gallery-grid').innerHTML = '<p>Error fetching gallery.</p>';
     }
   });
+});

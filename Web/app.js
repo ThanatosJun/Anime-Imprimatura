@@ -12,9 +12,10 @@ let { PythonShell } = require('python-shell'); // For running Python scripts
 const axios = require('axios');
 
 // Import modules
-const connectMongoDB = require('./database'); // Import the database connection module
+const mongoose = require('mongoose'); // Import the database connection module
 const userModel = require('./models/user'); // Import the user model
 const apiRouter = require('./api');
+const { getGridFSBucket } = require('./database');
 
 // Import route controllers
 const imageController = require('./controller/imageController');
@@ -103,20 +104,32 @@ app.get('/', async (req, res) => {
 });
 
 // Route to render personal gallery
-app.get('/images/:id', async (req, res) => {
+app.get('/images/:file_id', (req, res) => {
   try {
-    const fileId = mongoose.Types.ObjectId(req.params.id);
+    // 确保 file_id 是合法的 ObjectId
+    if (!mongoose.Types.ObjectId.isValid(req.params.file_id)) {
+      return res.status(400).json({ error: 'Invalid file ID format' });
+    }
+
+    const fileId = new mongoose.Types.ObjectId(req.params.file_id); 
+    console.log('fileId: ', fileId);
+
+    const gridFSBucket = getGridFSBucket(); // 假设你有一个函数来获取 GridFSBucket
     const downloadStream = gridFSBucket.openDownloadStream(fileId);
 
     downloadStream.on('error', (err) => {
-      console.error('Error downloading image:', err);
-      res.status(404).send('Image not found');
+      console.error('Error during file download:', err);  // 打印错误信息
+      res.status(404).json({ error: 'Image not found' });
+    });
+
+    downloadStream.on('file', () => {
+      res.setHeader('Content-Type', 'image/jpeg');  // 设置正确的Content-Type
     });
 
     downloadStream.pipe(res);
   } catch (error) {
-    console.error('Error retrieving image:', error);
-    res.status(500).send('Error retrieving image');
+    console.error('Error retrieving image:', error);  // 打印错误信息
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

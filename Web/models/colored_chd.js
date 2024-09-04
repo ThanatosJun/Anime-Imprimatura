@@ -18,7 +18,8 @@ const colored_chdSchema = new mongoose.Schema({
         type: Number
     },
     gallery_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Gallery',
         required: true
     }
 });

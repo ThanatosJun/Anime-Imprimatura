@@ -24,6 +24,10 @@ const gallerySchema = new mongoose.Schema({
     chss: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Chs'
+    }],
+    colored_chds:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Colored_Chd'
     }]
 });
 

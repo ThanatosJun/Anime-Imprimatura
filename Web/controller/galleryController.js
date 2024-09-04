@@ -1,6 +1,6 @@
 // this file is to display images of one users' in the gallery
 
-require("dotenv").config();
+const dotenv = require("dotenv").config();
 const express = require('express');
 const mongoose = require('mongoose');
 const { getGridFSBucket } = require('../database');
@@ -10,6 +10,7 @@ const Chd = require('../models/chd');
 const Chs = require('../models/chs');
 const Colored_Chd = require('../models/colored_chd');
 const Gallery = require('../models/gallery');
+const g = require("gridfs-stream");
 
 // save chd to personal gallery
 exports.saveToGallery_personal_chd = async (req, res) => {
@@ -215,31 +216,30 @@ exports.saveToGallery_personal_final = async (req, res) => {
 }
 
 // display gallery
+// galleryController.js
 exports.getPersonalGallery = async (req, res) => {
   try {
-    const gridFSBucket = getGridFSBucket();
+    const gridFSBucket = getGridFSBucket(); // 假设你有一个函数来获取 GridFSBucket
     const { user_id } = req.body;
-    const gallery = await Gallery.findOne({ user_id }).populate('chds').populate('chss');
 
-    if (!gallery || (gallery.chds.length === 0 && gallery.chss.length === 0)) {
-      return res.json({ message: 'No images found', chdImages: [], chsImages: [] });
-    }
+    // 在 GridFS 中找到与该 user_id 相关的所有文件
+    const cursor = gridFSBucket.find({ "metadata.user_id": user_id });
 
-    const chdImages = await Promise.all(
-      gallery.chds.map(async chd => {
-        const files = await gridFSBucket.find({ filename: chd.path }).toArray();
-        return files.length > 0 ? { path: `/images/${files[0]._id}`, character: chd.character } : null;
-      })
-    ).then(results => results.filter(image => image));
+    // 用于存储图片信息的数组
+    const images = [];
 
-    const chsImages = await Promise.all(
-      gallery.chss.map(async chs => {
-        const files = await gridFSBucket.find({ filename: chs.path }).toArray();
-        return files.length > 0 ? { path: `/images/${files[0]._id}`, character: chs.character } : null;
-      })
-    ).then(results => results.filter(image => image));
+    // 遍历 cursor，并将每个文件的信息加入数组中
+    await cursor.forEach(file => {
+      images.push({
+        _id: file._id, // 确保返回图片的 _id
+        filename: file.filename,
+        contentType: file.contentType,
+        uploadDate: file.uploadDate,
+      });
+    });
 
-    res.json({ chdImages, chsImages });
+    // 将图片数组作为响应返回
+    res.status(200).json({ images });
   } catch (error) {
     console.error('Error retrieving gallery:', error);
     res.status(500).json({ message: 'Error retrieving gallery' });
