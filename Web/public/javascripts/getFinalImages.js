@@ -1,5 +1,4 @@
 // this file get the final data of generate process and save them into db if the user logged in
-
 document.addEventListener('DOMContentLoaded', () => {
     // This function will be executed when the DOMContentLoaded event is triggered
 
@@ -7,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const colorContainer = document.getElementById('colorContainer');
     const coloredImageContainer = document.getElementById('finalImage');
     const saveButton = document.getElementById('save-btn');
+    const downloadBtn = document.getElementById('download-btn');
     // Retrieve the path to the directory containing images from localStorage
     const CHS_save_dir = localStorage.getItem('CHS_save_dir');
     const color_dictionary = JSON.parse(localStorage.getItem('color_dictionary'));
@@ -123,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
                         },
                         body: JSON.stringify({
                             user_id: window.user_id,
@@ -150,6 +151,15 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = '/login';
         }
     });
+
+    downloadBtn.addEventListener('click', () => {
+        if(CHS_Finished_dir) {
+            downloadFinalResult(CHS_Finished_dir);
+        } else {
+            alert('No image directory found. Please try again.');
+            console.error('getFinalResult.js: CHS_Finished_dir not found in localStorage.');
+        }
+    })
 });
 
 // Clear the directory path from localStorage after leaving the page
@@ -158,3 +168,21 @@ window.addEventListener('pagehide', () => {
     localStorage.removeItem('CHS_Finished_dir');
     console.log('Local storage cleared.');
 });
+
+function downloadFinalResult(dir) {
+    // Create a hidden <a> tag for downloading the file
+    const link = document.createElement('a');
+    
+    // Set the download URL with the directory as a query parameter sent to the backend
+    link.href = `/download-result?dir=${encodeURIComponent(dir)}`;
+    
+    // Set the download attribute to name the downloaded file 'result.zip'
+    link.setAttribute('download', 'result.zip');
+    
+    // Append the <a> tag to the document and trigger a click event to start the download
+    document.body.appendChild(link);
+    link.click();
+    
+    // Remove the <a> tag from the document after the download is triggered
+    document.body.removeChild(link);
+}

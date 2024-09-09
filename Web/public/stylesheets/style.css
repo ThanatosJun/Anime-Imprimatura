@@ -517,7 +517,7 @@ footer {
   margin-top: 20px;
 }
 
-.generated-visitor .edit-btn, .generated-visitor .save-btn {
+.generated-visitor .edit-btn, .generated-visitor .save-btn, .generated-visitor .download-btn {
   display: flex;
   background-color: #E6FFFDB5;
   border: none;
