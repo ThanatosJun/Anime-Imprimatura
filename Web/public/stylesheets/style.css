@@ -85,14 +85,83 @@ body {
   border-radius: 50%;
   display: flex;
 }
-
-/* Home Page Styles */
-.hero {
-  display: grid;
-  place-items: center;
-  height: 100vh;
+main{
+  padding-top: 100px;
 }
 
+/* Home Page Styles */
+/* Hero Section Carousel */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.carousel-container {
+  position: relative;
+  width: 80%;
+  overflow: hidden;
+}
+.carousel-track-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  list-style: none;
+}
+.carousel-slide {
+  min-width: 100%;
+  transition: transform 0.5s ease;
+  display: flex;
+  justify-content: center;
+}
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.carousel-track-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 500px; /* 調整圖片容器高度 */
+  overflow: visible; /* 確保側邊的圖片部分可見 */
+}
+
+/* 圖片大小設定 */
+.carousel-slide:nth-child(2) img {
+  width: 120%; /* 中間圖片大一點 */
+  z-index: 1;  /* 中間圖片放在最上層 */
+  transform: scale(1.2);
+}
+.carousel-slide:first-child img, .carousel-slide:last-child img {
+  width: 80%; /* 側邊圖片小一點 */
+  opacity: 0.8; /* 側邊圖片透明度 */
+}
+.carousel-slide:nth-child(1) img {
+  transform: translateX(-20%);
+}
+.carousel-slide:nth-child(3) img {
+  transform: translateX(20%);
+}
+section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+section h2{
+  padding-bottom: 20px;
+}
 .more-btn {
   width: Fixed (214px)px;
   height: Fixed (83px)px;
@@ -122,6 +191,7 @@ body {
   width: 200px;
   height: 150px;
   background-color: #666;
+  border-radius: 24px;
 }
 
 .btn-container {

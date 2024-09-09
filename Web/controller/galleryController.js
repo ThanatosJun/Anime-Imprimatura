@@ -216,7 +216,6 @@ exports.saveToGallery_personal_final = async (req, res) => {
 }
 
 // display gallery
-// galleryController.js
 exports.getPersonalGallery = async (req, res) => {
   try {
     const gridFSBucket = getGridFSBucket(); // 假设你有一个函数来获取 GridFSBucket
