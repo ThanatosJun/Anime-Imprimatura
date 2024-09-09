@@ -1,6 +1,7 @@
 require('dotenv').config();
 const createError = require('http-errors');
 const express = require('express');
+const archiver = require('archiver');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -141,6 +142,57 @@ app.get('/gallery', async (req, res) => {
     console.error('Error fetching images:', error);
     res.status(500).send('Internal Server Error');
   }
+});
+
+app.get('/download-result', (req, res) => {
+  const dir = req.query.dir;
+  const directoryPath = path.join(__dirname, dir);
+
+  // Set the path for the temporary ZIP file
+  const zipPath = path.join(__dirname, 'directory.zip');
+  
+  const output = fs.createWriteStream(zipPath); // Create a write stream for the ZIP file
+
+  // Name of the ZIP file to be sent to the client
+  const zipName = 'result.zip';
+
+  // Set the response headers to indicate a file download
+  res.setHeader('Content-Disposition', `attachment; filename="${zipName}"`);
+
+  // Create the ZIP archive
+  const archive = archiver('zip', { zlib: { level: 9 } });
+
+  // Handle errors during the archiving process
+  archive.on('error', (err) => {
+      console.error('Error while compressing directory: ', err);
+      res.status(500).send('Error while compressing directory.');
+  });
+
+  // Pipe the archive data to the output stream
+  archive.pipe(output);
+
+  // Add the directory to the archive
+  archive.directory(directoryPath, false);
+
+  // Finalize the archive
+  archive.finalize();
+
+  // When the ZIP file is fully generated
+  output.on('close', () => {
+      // Send the ZIP file as a response to the client
+      res.download(zipPath, zipName, (err) => {
+          if (err) {
+              console.error('Error sending zip file:', err);
+              res.status(500).send('Error while sending ZIP file.');
+          } else {
+              // After the file is sent, delete the temporary ZIP file
+              fs.unlink(zipPath, (err) => {
+                  if (err) console.error('Error deleting zip file:', err);
+                  else console.log('Zip file deleted successfully');
+              });
+          }
+      });
+  });
 });
 
 // Route to handle user editing
