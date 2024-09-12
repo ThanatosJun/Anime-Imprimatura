@@ -1,4 +1,5 @@
 /* Global Styles */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 * {
   margin: 0;
   padding: 0;
@@ -7,7 +8,6 @@
 body {
   font-family: Arial, sans-serif;
   background: linear-gradient(to bottom right, #000000, #3f3f3f);
-  /* background: url('https://via.placeholder.com/800x600') no-repeat center center fixed; */
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -16,20 +16,77 @@ body {
   min-height: 100vh;
   padding-top: 80px; /* Add padding to avoid content overlapping with the nav bar */
 }
-.navigation-bar {
+.bouncing-blob {
+  width: 32vw;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  will-change: transform;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  transform-origin: left top;
+}
+.bouncing-blob--blue {
+  background: #4783c7;
+}
+.bouncing-blob--black {
+  background: #000000;
+  z-index: 2;
+  width: 15vw;
+}
+.bouncing-blob--purple {
+  background: #8c8ff1;
+}
+.bouncing-blob--pink {
+  background: #e289cd50;
+}
+.bouncing-blobs-container {
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
+}
+.bouncing-blobs-glass {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(140px);
+  -webkit-backdrop-filter: blur(140px);
+  pointer-events: none;
+}
+.bouncing-blobs {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.navigation-bar {
+  width: 70%;
   padding: 10px 20px; /* Adjust padding for better spacing */
-  background-color: #252222CC;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: fixed; /* Make the nav bar fixed */
-  top: 0; /* Position it at the top */
+  top: 20px; /* Position it at the top */
   z-index: 1000; /* Ensure it stays above other content */
+  border-radius: 24px;
+  background: rgba( 24, 23, 23, 0.45 );
+  box-shadow: 0 8px 32px 0 rgba( 19, 19, 19, 0.45 );
+  backdrop-filter: blur( 6.5px );
+  -webkit-backdrop-filter: blur( 6.5px );
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
 }
 .logo-placeholder {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   background-color: #D9D9D9;
   border-radius: 50%;
   display: flex;
@@ -48,23 +105,28 @@ body {
 .nav a {
   color: #fff;
   text-decoration: none;
+  font-family: roboto;
+  font-weight: 400;
+  letter-spacing: .1rem;
 }
 .nav a:hover {
-  text-decoration: underline;
+  font-weight: 800;
 }
 .login-btn {
-  background: #D9D9D9;
-  color: #333;
-  border: none;
+  color: #FFFFFF;
+  background: rgba( 24, 23, 23, 0.45 );
+  border: 0.5px solid rgba( 255, 255, 255, 0.18 );
   padding: 10px 20px;
   border-radius: 42px;
   cursor: pointer;
   gap: 10px;
   opacity: 0px;
+  font-family: roboto;
   font-size: 15px;
   text-decoration: none;
 }
 .login-btn:hover {
+  color: #000000;
   background-color: #bbb;
 }
 .content {
@@ -88,6 +150,9 @@ body {
 main{
   padding-top: 100px;
 }
+.section-padding {
+  padding: 100vh 0;
+}
 
 /* Home Page Styles */
 /* Hero Section Carousel */
@@ -100,58 +165,6 @@ main{
   align-items: center;
   overflow: hidden;
 }
-.carousel-container {
-  position: relative;
-  width: 80%;
-  overflow: hidden;
-}
-.carousel-track-container {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.carousel-track {
-  display: flex;
-  transition: transform 0.5s ease-in-out;
-  list-style: none;
-}
-.carousel-slide {
-  min-width: 100%;
-  transition: transform 0.5s ease;
-  display: flex;
-  justify-content: center;
-}
-.carousel-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.carousel-track-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  height: 500px; /* 調整圖片容器高度 */
-  overflow: visible; /* 確保側邊的圖片部分可見 */
-}
-
-/* 圖片大小設定 */
-.carousel-slide:nth-child(2) img {
-  width: 120%; /* 中間圖片大一點 */
-  z-index: 1;  /* 中間圖片放在最上層 */
-  transform: scale(1.2);
-}
-.carousel-slide:first-child img, .carousel-slide:last-child img {
-  width: 80%; /* 側邊圖片小一點 */
-  opacity: 0.8; /* 側邊圖片透明度 */
-}
-.carousel-slide:nth-child(1) img {
-  transform: translateX(-20%);
-}
-.carousel-slide:nth-child(3) img {
-  transform: translateX(20%);
-}
 section {
   min-height: 100vh;
   display: flex;
@@ -162,17 +175,35 @@ section {
 section h2{
   padding-bottom: 20px;
 }
+.img-container{
+  width: 100vh;
+  height: 60vh;
+  background: rgba(188, 184, 184, 0.26);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border: 1px solid rgba(188, 184, 184, 0.59);
+}
 .more-btn {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
   width: Fixed (214px)px;
   height: Fixed (83px)px;
   top: 713px;
   left: 649px;
-  padding: 15px 40px 15px 40px;
+  padding: 15px 30px;
   gap: 10px;
   border-radius: 42px;
   opacity: 0px;
   cursor: pointer;
   margin-top: 20px; 
+  background: rgba( 220, 220, 220, 0.45 );
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  backdrop-filter: blur( 20px );
+  -webkit-backdrop-filter: blur( 20px );
+  border: 2px solid rgba( 255, 255, 255, 0.18 );
 }
 
 .how-to-use, .about-us {
@@ -183,17 +214,52 @@ section h2{
 .cards {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
+  gap: 30px;
+  flex-wrap: nowrap;
 }
-
 .card, .about-card {
-  width: 200px;
-  height: 150px;
-  background-color: #666;
+  background: rgba( 198, 198, 198, 0.45 );
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  backdrop-filter: blur( 7px );
+  -webkit-backdrop-filter: blur( 7px );
   border-radius: 24px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+.card {
+  padding: 15px 30px;
+  width: 300px;
+  height: 400px;
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-end;
+  -webkit-align-items: flex-end;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  cursor: pointer;
+}
+.card.active {
+  width: 500px;
+  box-shadow: 12px 40px 40px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 12px 40px 40px rgba(0, 0, 0, 0.25);
+}
+.card-content {
+  padding: 0 24px 12px;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  transform: translateY(calc(100% - 54px));
+  -webkit-transform: translateY(calc(100% - 54px));
+  transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
 }
 
+.about-card {
+  width: 40em;
+  height: 20em;
+}
 .btn-container {
   display: flex;
   text-align: center;
@@ -356,57 +422,111 @@ footer {
   flex-direction: column;
   align-items: center;
 }
-.account-section{
+.container {
+  display: -webkit-box;
   display: flex;
+  flex-wrap: wrap;
+  -webkit-box-pack: center;
   justify-content: center;
-  align-items: center;
 }
-.account-card {
+.cardWrap {
+  -webkit-transform: perspective(800px);
+  transform: perspective(800px);
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.cardWrap:hover .account_card {
+  -webkit-transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.cardWrap:hover .account_card:after {
+  -webkit-transition: 5s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: 5s cubic-bezier(0.23, 1, 0.32, 1);
+  opacity: 1;
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
+}
+
+.cardWrap:hover account_card {
+  -webkit-transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 2s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 2s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: rgba(255, 255, 255, 0.2) 0 0 40px 5px, white 0 0 0 1px,
+    rgba(0, 0, 0, 0.66) 0 30px 60px 0, inset #333 0 0 0 5px,
+    inset white 0 0 0 6px;
+}
+
+.account_card {
   background-color: #555;
-  padding: 20px;
-  border-radius: 10px;
-  width: 300px;
+  padding: 30px 0;
+  border-radius: 24px;
+  width: auto;
   text-align: left;
+  background: rgba( 220, 220, 220, 0.15 );
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  backdrop-filter: blur( 20px );
+  -webkit-backdrop-filter: blur( 20px );
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  display: flex;
+  flex-direction: column;
 }
-.account-card .profile-pic {
+.account_card .profile-pic {
   width: 100px;
   height: 100px;
   background-color: #888;
   border-radius: 50%;
   margin: 0 auto;
 }
-.account-card .avatar {
+.account_card .avatar {
   width: 100px;
   height: 100px;
   background-color: #bbb;
   border-radius: 50%;
   margin: 0 auto 20px;
 }
-.account-card p {
+div.inputs{
+  padding: 20px 0;
+}
+.account_card p {
   margin: 10px 0;
 }
-.account-card input[type="text"], .account-card input[type="email"], .account-card input[type="password"] {
+.account_card input[type="text"], .account_card input[type="email"], .account_card input[type="password"] {
   width: auto;
   flex: 2;
-  padding: 5px;
+  padding: 6px 8px;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #555;
+  border-radius: 8px;
+  background-color: rgba(220, 220, 220, 0);
   color: white;
-  margin: 5px;
 }
-.account-card button {
-  background-color: white;
+.account_card .input-section {
+  margin: 18px 80px;
+}
+span.edit-icon {
+  margin-left: 8px;
+}
+div.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+.account_card button {
+  color: rgba(213, 213, 210);
+  font-size: 16px;
+  font-weight: 450;
+  background-color: rgba(135, 188, 83, 0.5);
   border: 1px solid #ccc;
-  border-radius: 15px;
-  padding: 5px;
+  border-radius: 16px;
+  padding: 6px 18px;
   cursor: pointer;
-  margin-top: 10px;
-  margin-right: 5px;
 }
 
-.account-card .logout-btn {
-  background-color: #E6FFFDB5;
+.account_card .logout-btn {
+  background-color: rgba(210, 40, 64, 0.5);
 }
 
 /* Generate Visitor Detect Page Styles */
@@ -587,7 +707,7 @@ footer {
   margin-top: 20px;
 }
 
-.generated-visitor .edit-btn, .generated-visitor .save-btn, .generated-visitor .download-btn {
+.generated-visitor .edit-btn, .generated-visitor .save-btn {
   display: flex;
   background-color: #E6FFFDB5;
   border: none;

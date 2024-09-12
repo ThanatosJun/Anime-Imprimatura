@@ -6,6 +6,16 @@ html(lang="en")
     title Home
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    .bouncing-blobs-container
+      .bouncing-blobs-glass
+      .bouncing-blobs
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--blue
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--purple
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--purple
+        .bouncing-blob.bouncing-blob--pink
     header.navigation-bar
       a.logo-placeholder(href="/")
       .nav
@@ -16,24 +26,21 @@ html(lang="en")
       a.login-btn(href="login") Log In
     main
       section.hero
-        .carousel-container
-          .carousel-track-container
-            ul.carousel-track
-              li.carousel-slide
-                img(src='https://i.pinimg.com/564x/6b/c8/23/6bc8238dab59630987db19b184c90310.jpg', alt='image1')
-              li.carousel-slide
-                img(src='https://i.pinimg.com/564x/cb/53/bd/cb53bddd7235703eab3d952e8fcad95e.jpg', alt='image1')
-              li.carousel-slide
-                img(src='https://i.pinimg.com/564x/f8/56/fd/f856fd0bb9ea7735a521995155861754.jpg', alt='image1')
-        button.more-btn More
+        .img-container
+          img(src='https://i.pinimg.com/564x/6b/c8/23/6bc8238dab59630987db19b184c90310.jpg', alt='image1')
+        .btn-container
+          .more-btn More
       section#how-to-use
         h2 How to Use
         .cards
-          .card
-          .card
-          .card
-          .card
-          .card
+          .card.active(style="background-image: url(https://i.pinimg.com/564x/6b/c8/23/6bc8238dab59630987db19b184c90310.jpg);")
+            .card-content
+              h1 upload your chs
+              p loremipsum jiefhwifhw
+          .card(style="background-image: url(https://i.pinimg.com/564x/f8/56/fd/f856fd0bb9ea7735a521995155861754.jpg);")
+            .card-content
+              h1 choose the pt
+              p loremipsum ioewhfuwjghewoufhjwogjhr
       section#about-us
         h2 About Us
         .about-card
@@ -43,4 +50,4 @@ html(lang="en")
       .footer-links
         a(href="#") Support
         a(href="#") Contact
-    script(src="/javascripts/carousel.js")
+    script(src="/javascripts/anm_background.js")

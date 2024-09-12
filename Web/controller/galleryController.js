@@ -98,7 +98,7 @@ exports.saveToGallery_personal_chd = async (req, res) => {
 exports.saveToGallery_personal_chs = async (req, res) => {
   try {
     console.log('---start saving chs---');
-    const { user_id, image_paths } = req.body;
+    const { user_id, CHS_save_dir } = req.body;
     console.log('Saving request: ', req.body);
 
     // check if the gallery exists
@@ -114,7 +114,7 @@ exports.saveToGallery_personal_chs = async (req, res) => {
     const savedImages = [];
 
     // loading multiple chd with for loop
-    for (const fileRoute of image_paths) {
+    for (const fileRoute of CHS_save_dir) {
       if (fs.existsSync(fileRoute)) {
         try {
           const gridFSBucket = getGridFSBucket();

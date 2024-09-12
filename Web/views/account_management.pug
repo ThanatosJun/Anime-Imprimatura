@@ -7,6 +7,16 @@ html
     title Account Setting
   body.account-management
     script(src='/javascripts/getUser.js')
+    .bouncing-blobs-container
+      .bouncing-blobs-glass
+      .bouncing-blobs
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--blue
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--purple
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--purple
+        .bouncing-blob.bouncing-blob--pink
     header.navigation-bar
       a.logo-placeholder(href="/")
       .nav
@@ -15,22 +25,29 @@ html
         a(href="/#about-us") About Us
         a(href="/gallery") Gallery
       .profile-icon
-    .content
-      .account-card
-        .avatar
-        .input-section
-          p user id
-          input#id(type="text", value="user id", readonly)
-          span.edit-icon(onclick="enableEdit('id')") ✎
-        .input-section
-          p email
-          input#email(type="email", value="user email", readonly)
-          span.edit-icon(onclick="enableEdit('email')") ✎
-        .input-section
-          p password
-          input(type="password", placeholder="password", id="password", value="user password", readonly)
-          span.edit-icon(onclick="enableEdit('password')") ✎
-        button(type="submit") Save Changes
-        button.logout-btn#logout-btn Log out
+    main
+      .container
+        .cardWrap
+          .account_card
+            div.profile-pic
+              .avatar
+            div.inputs
+              .input-section
+                p user id
+                input#id(type="text", value="user id", readonly)
+                span.edit-icon(onclick="enableEdit('id')") ✎
+              .input-section
+                p email
+                input#email(type="email", value="user email", readonly)
+                span.edit-icon(onclick="enableEdit('email')") ✎
+              .input-section
+                p password
+                input(type="password", placeholder="password", id="password", value="user password", readonly)
+                span.edit-icon(onclick="enableEdit('password')") ✎
+            div.buttons
+              button(type="submit") Save Changes
+              button.logout-btn#logout-btn Log out
     script(src='/javascripts/logout.js')
     script(src='/javascripts/account_edit.js')
+    script(src="/javascripts/anm_background.js")
+    script(src="/javascripts/anm_hologram.js")

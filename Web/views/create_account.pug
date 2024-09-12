@@ -6,6 +6,16 @@ html(lang="en")
     title Create Account
     link(rel='stylesheet', href='/stylesheets/style.css')
   body.create-account
+    .bouncing-blobs-container
+      .bouncing-blobs-glass
+      .bouncing-blobs
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--blue
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--purple
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--purple
+        .bouncing-blob.bouncing-blob--pink
     header.navigation-bar
       a.logo-placeholder(href="/")
     main.content
@@ -17,3 +27,4 @@ html(lang="en")
           button(type="submit") Join us
           p Already a member? 
             a(href="login") Log in
+    script(src="/javascripts/anm_background.js")

@@ -6,8 +6,19 @@ html(lang="en")
     title Generate Visitor
     link(rel='stylesheet', href='/stylesheets/style.css')
     script(src='/javascripts/getUser.js')
+    script(src="/javascripts/anm_background.js")
   body.generate-visitor
     script(src='/javascripts/loading.js')
+    .bouncing-blobs-container
+      .bouncing-blobs-glass
+      .bouncing-blobs
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--blue
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--purple
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--purple
+        .bouncing-blob.bouncing-blob--pink
     header.navigation-bar
       a.logo-placeholder(href="/")
       .nav

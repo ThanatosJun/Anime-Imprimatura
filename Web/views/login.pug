@@ -5,9 +5,23 @@ html(lang="en")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     title Log In
     link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src="/javascripts/anm_background.js")
   body.login
+    .bouncing-blobs-container
+      .bouncing-blobs-glass
+      .bouncing-blobs
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--blue
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--purple
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--purple
+        .bouncing-blob.bouncing-blob--pink
     header.navigation-bar
       a.logo-placeholder(href="/")
+      .nav
+        a(href="/") Home
+      a
     main.content
       .login-container
         .login-box

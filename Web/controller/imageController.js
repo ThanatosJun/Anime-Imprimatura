@@ -170,6 +170,7 @@ router.post('/uploadAndDetect', uploadDetect.fields([{ name: 'chs', maxCount: 10
     const detectData = await detectResponse.json();
     console.log('(imageController.js) Detect response:', detectData);
 
+    const CHS_save_dir = detectData.CHS_save_dir;
     // save chs if logged in
     if (userId) { 
       try {
@@ -180,7 +181,7 @@ router.post('/uploadAndDetect', uploadDetect.fields([{ name: 'chs', maxCount: 10
           },
           body: JSON.stringify({
             user_id: userId,
-            image_paths: uploadedFilePath
+            CHS_save_dir: CHS_save_dir
           })
         });
 
