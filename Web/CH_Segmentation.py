@@ -139,51 +139,14 @@ class CH_Segmentation(CH_SEG__init):
                     print(detect_classes)
                     detect_class = detect_classes[0] # Get class
                     
-                    if detect_class in ["Hand", "Eye", "Shoe", "Leg"]:
-                        for j, mask in enumerate(result.masks.xy):
-                            mask_points = mask
-                            detect_class = detect_classes[j]
-                            print("Yes:" + detect_class)
-                            # inner_points = self.select_random_points_from_polygon_points(mask_points,5)
-                            inner_points = self.find_random_points_within_polygon(mask_points,5)
-                            
-                            # Check input images are CHD or CHS
-                            if (CH_Type == "CHD"):
-                                # Create all white background
-                                masked_image = np.ones_like(image) * 255
-                                # Check wheather is this class been saved
-                                if (class_store == False):
-                                    self.class_list.append(detect_class)
-                                    class_store = True      
-                            else:
-                                # Create all black background
-                                masked_image = np.zeros_like(image)
-                                # Announce txt path
-                                txt_filename = self.get_next_txt_name(output_annotation_dir, detect_class)                                
-                                with open(txt_filename, 'w') as file:
-                                    file.write(f"Image_Name: {image_name}\n")
-                                    file.write(f"Class: {detect_class}\n")
-                                    file.write(f"Inner Main Points: {inner_points}\n")
-                                    file.write(f"Mask Points:\n{mask_points}\n")
-                                print(f"Finish input data into {txt_filename}")
-
-                            # Get first mask data
-                            mask_are = result.masks.data[j].cpu().numpy()
-                            # Resize mask image size
-                            mask_resized = cv2.resize(mask_are.squeeze(), (result.orig_shape[1], result.orig_shape[0]), interpolation=cv2.INTER_LINEAR)
-                            mask_bool = mask_resized.astype(bool)  # Change into booling type
-
-                            # Copy original image's mask to new image
-                            masked_image[mask_bool] = image[mask_bool] 
-                            # Save new image for show mask
-                            output_image_path = self.get_next_image_name(output_image_dir, detect_class)
-                            # output_image_path = os.path.join(output_image_dir + "/", f"{detect_class}_{same_class_count}.png")
-                            cv2.imwrite(output_image_path, masked_image)
-                            print(f"Finish create a mask image {output_image_path}")
-                    else:
-                        mask_points = result.masks.xy[0]    # Get mask points
+                    # if detect_class in ["Hand", "Eye", "Shoe", "Leg"]:
+                    for j, mask in enumerate(result.masks.xy):
+                        mask_points = mask
+                        detect_class = detect_classes[j]
+                        print("Yes:" + detect_class)
                         # inner_points = self.select_random_points_from_polygon_points(mask_points,5)
-                        inner_points = self.find_random_points_within_polygon(mask_points,5)    # Get Main points for coloring
+                        inner_points = self.find_random_points_within_polygon(mask_points,5)
+                        
                         # Check input images are CHD or CHS
                         if (CH_Type == "CHD"):
                             # Create all white background
@@ -196,28 +159,63 @@ class CH_Segmentation(CH_SEG__init):
                             # Create all black background
                             masked_image = np.zeros_like(image)
                             # Announce txt path
-                            txt_filename = self.get_next_txt_name(output_annotation_dir, detect_class)
+                            txt_filename = self.get_next_txt_name(output_annotation_dir, detect_class)                                
                             with open(txt_filename, 'w') as file:
                                 file.write(f"Image_Name: {image_name}\n")
                                 file.write(f"Class: {detect_class}\n")
                                 file.write(f"Inner Main Points: {inner_points}\n")
                                 file.write(f"Mask Points:\n{mask_points}\n")
                             print(f"Finish input data into {txt_filename}")
-
                         # Get first mask data
-                        mask = result.masks.data[0].cpu().numpy()
+                        mask_are = result.masks.data[j].cpu().numpy()
                         # Resize mask image size
-                        mask_resized = cv2.resize(mask.squeeze(), (result.orig_shape[1], result.orig_shape[0]), interpolation=cv2.INTER_LINEAR)
+                        mask_resized = cv2.resize(mask_are.squeeze(), (result.orig_shape[1], result.orig_shape[0]), interpolation=cv2.INTER_LINEAR)
                         mask_bool = mask_resized.astype(bool)  # Change into booling type
-
-
                         # Copy original image's mask to new image
                         masked_image[mask_bool] = image[mask_bool] 
                         # Save new image for show mask
                         output_image_path = self.get_next_image_name(output_image_dir, detect_class)
-                        # output_image_path = os.path.join(output_image_dir + "/", f"{detect_class}_{1}.png")
+                        # output_image_path = os.path.join(output_image_dir + "/", f"{detect_class}_{same_class_count}.png")
                         cv2.imwrite(output_image_path, masked_image)
                         print(f"Finish create a mask image {output_image_path}")
+                    # else:
+                    #     mask_points = result.masks.xy[0]    # Get mask points
+                    #     # inner_points = self.select_random_points_from_polygon_points(mask_points,5)
+                    #     inner_points = self.find_random_points_within_polygon(mask_points,5)    # Get Main points for coloring
+                    #     # Check input images are CHD or CHS
+                    #     if (CH_Type == "CHD"):
+                    #         # Create all white background
+                    #         masked_image = np.ones_like(image) * 255
+                    #         # Check wheather is this class been saved
+                    #         if (class_store == False):
+                    #             self.class_list.append(detect_class)
+                    #             class_store = True      
+                    #     else:
+                    #         # Create all black background
+                    #         masked_image = np.zeros_like(image)
+                    #         # Announce txt path
+                    #         txt_filename = self.get_next_txt_name(output_annotation_dir, detect_class)
+                    #         with open(txt_filename, 'w') as file:
+                    #             file.write(f"Image_Name: {image_name}\n")
+                    #             file.write(f"Class: {detect_class}\n")
+                    #             file.write(f"Inner Main Points: {inner_points}\n")
+                    #             file.write(f"Mask Points:\n{mask_points}\n")
+                    #         print(f"Finish input data into {txt_filename}")
+
+                    #     # Get first mask data
+                    #     mask = result.masks.data[0].cpu().numpy()
+                    #     # Resize mask image size
+                    #     mask_resized = cv2.resize(mask.squeeze(), (result.orig_shape[1], result.orig_shape[0]), interpolation=cv2.INTER_LINEAR)
+                    #     mask_bool = mask_resized.astype(bool)  # Change into booling type
+
+
+                    #     # Copy original image's mask to new image
+                    #     masked_image[mask_bool] = image[mask_bool] 
+                    #     # Save new image for show mask
+                    #     output_image_path = self.get_next_image_name(output_image_dir, detect_class)
+                    #     # output_image_path = os.path.join(output_image_dir + "/", f"{detect_class}_{1}.png")
+                    #     cv2.imwrite(output_image_path, masked_image)
+                    #     print(f"Finish create a mask image {output_image_path}")
     
     # Function for CHD segementation            
     def CHD_SEG(self):
@@ -251,7 +249,7 @@ class CH_Segmentation(CH_SEG__init):
         random_points = []
         
         # Shrink the polygon by the specified amount (in pixels)
-        shrunken_polygon = polygon.buffer(-15)
+        shrunken_polygon = polygon.buffer(-10)
         
         # 如果縮小的多邊形是空的，則使用原始多邊形
         if shrunken_polygon.is_empty:
@@ -261,7 +259,9 @@ class CH_Segmentation(CH_SEG__init):
             center = self.get_polygon_center_min_enclosing_circle(polygon_points)
             if center:
                 random_points.append(center)
-        else:      
+        else:     
+            # center = self.get_polygon_center_min_enclosing_circle(polygon_points)
+            # random_points.append(center) 
             # Get n random points
             while len(random_points) < num_points:
                 # Generate random point in the bounding box of the shrunken polygon
@@ -384,16 +384,12 @@ class Coloring(CH_SEG__init):
     def overlay_black_lines_on_image(self, copy_img, sketch):
         # Make sure size is the same
         sketch = cv2.resize(sketch, (copy_img.shape[1], copy_img.shape[0]))
-
         # Change sketch into gray
         gray_sketch = cv2.cvtColor(sketch, cv2.COLOR_BGR2GRAY)
-
         # Mask for black sketch
-        _, mask = cv2.threshold(gray_sketch, 50, 255, cv2.THRESH_BINARY_INV)
-
+        _, mask = cv2.threshold(gray_sketch, 200, 255, cv2.THRESH_BINARY)
         # Catch copy
-        combined_image = cv2.bitwise_and(copy_img, copy_img, mask=cv2.bitwise_not(mask))
-        
+        combined_image = cv2.bitwise_and(copy_img, copy_img, mask=mask)
         return combined_image
 
     # Function for fill color in CHS
@@ -418,16 +414,27 @@ class Coloring(CH_SEG__init):
                     else:
                         raise ValueError("Position should be either a string or a tuple")
                     # Color cv2's color is BGT not RGB
-                    cv2.floodFill(copy_img, mask, (x, y), (int(b), int(g), int(r)), (100, 100, 100), (100, 100, 100), cv2.FLOODFILL_FIXED_RANGE)
-                # marked_image = copy_img.copy()
-                # for point in position_list:
-                #     # 確保點的座標是整數
-                #     x, y = int(point[0]), int(point[1])
-                #     cv2.circle(marked_image, (x, y), radius=5, color=(0, 0, 255), thickness=-1)
-                # print(f"key = {key}\nrgb = {rgb}\nposition = {position}")
-                # cv2.imshow(f"body", marked_image)
-                # cv2.waitKey(0)
+                    # mask.fill(0)
+                    cv2.floodFill(copy_img, mask, (x, y), (int(b), int(g), int(r)), (50, 50, 50), (100, 100, 100), cv2.FLOODFILL_FIXED_RANGE)
+                    copy_img = self.overlay_black_lines_on_image(copy_img, sketch)
+                marked_image = copy_img.copy()
+                for point in position_list:
+                    # 確保點的座標是整數
+                    x, y = int(point[0]), int(point[1])
+                    cv2.circle(marked_image, (x, y), radius=5, color=(0, 0, 255), thickness=-1)
+                print(f"key = {key}\nrgb = {rgb}\nposition = {position}")
+                cv2.namedWindow("Image", cv2.WINDOW_AUTOSIZE)
+                cv2.imshow(f"Image", marked_image)
+                cv2.waitKey(0) 
         copy_img = self.overlay_black_lines_on_image(copy_img, sketch)
+        height, width, _ = copy_img.shape
+        clear_points = [(0,0), (width-1,0), (width-1, height-1), (0,height-1)]
+        for point in clear_points:
+            mask.fill(0)
+            cv2.floodFill(copy_img, None, point, (int(255), int(255), int(255)), (50, 50, 50), (50, 50, 50), cv2.FLOODFILL_FIXED_RANGE)
+        cv2.namedWindow("Block", cv2.WINDOW_AUTOSIZE)
+        cv2.imshow(f"Block", copy_img)
+        cv2.waitKey(0)
         return copy_img
 
     # Function for pick color in CHD and make a color dictionary
@@ -506,6 +513,7 @@ def get_colored(CH_Name):
 if __name__ == "__main__":
     # CH_Name = sys.argv[1]
     print("====1====")
+    # CH_Name = "FamilyYO"
     CH_Name = "TestA005"
     main(CH_Name)
 
