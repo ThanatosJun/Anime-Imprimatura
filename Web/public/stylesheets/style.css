@@ -510,11 +510,12 @@ span.edit-icon {
   margin-left: 8px;
 }
 div.buttons {
+  margin-top: 6vh;
   display: flex;
   justify-content: center;
   gap: 20px;
 }
-.account_card button {
+.buttons button {
   color: rgba(213, 213, 210);
   font-size: 16px;
   font-weight: 450;
@@ -525,7 +526,7 @@ div.buttons {
   cursor: pointer;
 }
 
-.account_card .logout-btn {
+button.logout-btn {
   background-color: rgba(210, 40, 64, 0.5);
 }
 

@@ -18,9 +18,12 @@ html(lang="en")
         .bouncing-blob.bouncing-blob--pink
     header.navigation-bar
       a.logo-placeholder(href="/")
+      .nav
+        a(href="/") Home
+      a
     main.content
       .form-container
-        form(method="POST" action="/api/signin")
+        form#signinForm(method="POST" action="/api/signin" onsubmit="signin(event)")
           input(type="text" placeholder="Username" name="user_name" required)
           input(type="text" placeholder="Gmail" name="gmail" required)
           input(type="password" placeholder="Password" name="password" required)
@@ -28,3 +31,4 @@ html(lang="en")
           p Already a member? 
             a(href="login") Log in
     script(src="/javascripts/anm_background.js")
+    script(src='/javascripts/signin.js')

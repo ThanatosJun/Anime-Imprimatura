@@ -162,6 +162,7 @@ exports.signin = async (req, res) => {
             token
         });
 
+        // Redirect to "final" page after "detect"
 
     } catch (error) {
         console.error("Signin error:", error);

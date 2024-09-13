@@ -171,6 +171,35 @@ router.post('/uploadAndDetect', uploadDetect.fields([{ name: 'chs', maxCount: 10
     console.log('(imageController.js) Detect response:', detectData);
 
     const CHS_save_dir = detectData.CHS_save_dir;
+    let imagePaths = [];
+
+    // 定義一個函數來遍歷資料夾並獲取圖片路徑
+    function getImagePaths(dir) {
+      return new Promise((resolve, reject) => {
+        fs.readdir(dir, (err, files) => {
+          if (err) {
+            return reject('Error reading directory: ' + err);
+          }
+
+          // 建立圖片路徑的陣列
+          let imagePaths = [];
+
+          // 將每個文件的完整路徑存入陣列
+          files.forEach(file => {
+            const filePath = path.join(dir, file);
+            imagePaths.push(filePath);
+          });
+
+          // 返回圖片路徑陣列
+          resolve(imagePaths);
+        });
+      });
+    }
+
+    // 遍歷 CHS_save_dir 資料夾並獲取所有圖片路徑
+    imagePaths = await getImagePaths(CHS_save_dir);
+    console.log('Image paths:', imagePaths);
+    
     // save chs if logged in
     if (userId) { 
       try {
@@ -181,7 +210,7 @@ router.post('/uploadAndDetect', uploadDetect.fields([{ name: 'chs', maxCount: 10
           },
           body: JSON.stringify({
             user_id: userId,
-            CHS_save_dir: CHS_save_dir
+            CHS_save_dir: imagePaths
           })
         });
 
