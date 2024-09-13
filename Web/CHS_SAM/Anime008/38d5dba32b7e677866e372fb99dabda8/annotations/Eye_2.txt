@@ -1,0 +1,8 @@
+Image_Name: 38d5dba32b7e677866e372fb99dabda8
+Class: Eye
+Inner Main Points: [(109, 278)]
+Mask Points:
+[[     99.125      267.38]
+ [     99.125      288.94]
+ [     120.69      288.94]
+ [     120.69      267.38]]
