@@ -7,6 +7,7 @@ exports.getModel = async (req, res) => {
     try {
         const { user_id } = req.body; 
         console.log('Received user_id:', user_id);
+        console.log('req.body: ', req.body);
 
         const chdData = await Chd.find({ user_id }).select('CHD_modelpt -_id');
 

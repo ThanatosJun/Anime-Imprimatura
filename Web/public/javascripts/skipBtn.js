@@ -5,7 +5,7 @@ const skipBtn = () => {
         newButton.textContent = 'Skip ->';
         newButton.className = 'generate-btn';
         newButton.addEventListener('click', function() {
-            window.location.href = '/generate_detect';
+            window.location.href = '/generate/detect';
         });
         document.getElementById('btn-container').appendChild(newButton);
         console.log('added skip-btn');
