@@ -1,5 +1,6 @@
 /* Global Styles */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css');
 * {
   margin: 0;
   padding: 0;
@@ -143,7 +144,7 @@ body {
 .profile-icon{
   width: 50px;
   height: 50px;
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
   border-radius: 50%;
   display: flex;
 }
@@ -213,9 +214,14 @@ section h2{
 
 .cards {
   display: flex;
-  justify-content: center;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
   gap: 30px;
-  flex-wrap: nowrap;
+  padding: 0 20px;
+}
+.cards::-webkit-scrollbar{
+  display: none;
 }
 .card, .about-card {
   background: rgba( 198, 198, 198, 0.45 );
@@ -226,23 +232,24 @@ section h2{
   border: 1px solid rgba( 255, 255, 255, 0.18 );
 }
 .card {
+  flex: 0 0 300px;
   padding: 15px 30px;
-  width: 300px;
+  margin-right: 20px;
   height: 400px;
   display: flex;
-  display: -webkit-flex;
   align-items: flex-end;
-  -webkit-align-items: flex-end;
   overflow: hidden;
   position: relative;
   transition: all 0.4s ease-in-out;
-  -webkit-transition: all 0.4s ease-in-out;
+  scroll-snap-align: start;
   cursor: pointer;
 }
+.card:last-child {
+  margin-right: 0;
+}
 .card.active {
-  width: 500px;
+  flex: 0 0 500px;
   box-shadow: 12px 40px 40px rgba(0, 0, 0, 0.25);
-  -webkit-box-shadow: 12px 40px 40px rgba(0, 0, 0, 0.25);
 }
 .card-content {
   padding: 0 24px 12px;
@@ -251,9 +258,7 @@ section h2{
   z-index: 1;
   overflow: hidden;
   transform: translateY(calc(100% - 54px));
-  -webkit-transform: translateY(calc(100% - 54px));
   transition: all 0.4s ease-in-out;
-  -webkit-transition: all 0.4s ease-in-out;
 }
 
 .about-card {
@@ -820,6 +825,7 @@ button.logout-btn {
 .login a:hover {
   text-decoration: underline;
 }
+.login
 
 /* Create Account Page Styles */
 .create-account .content {
