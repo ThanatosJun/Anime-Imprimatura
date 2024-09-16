@@ -422,7 +422,7 @@ footer {
   flex-direction: column;
   align-items: center;
 }
-.container {
+.acc-container {
   display: -webkit-box;
   display: flex;
   flex-wrap: wrap;

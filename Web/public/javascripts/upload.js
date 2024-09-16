@@ -159,7 +159,7 @@ async function submitFormCHD() {
       console.log('Train response:', trainData);
 
       // Redirect to the "detect" page with the processed data
-      window.location.href = `/generate_detect`;
+      window.location.href = `/generate/detect`;
 
   } catch (error) {
       console.error(`Error:`, error.message);
