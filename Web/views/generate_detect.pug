@@ -18,9 +18,7 @@ block content
       .upload-section
         .upload
           label(for="model-select") choose the model you would like to use for detecting
-          select.model-select(name="options")
-            each option in options
-              option(value=option.value) #{option.text}
+          select.model-select#model-select(name="options")
         .upload
           span Upload CHS
           .upload-box#uploadBoxCHS

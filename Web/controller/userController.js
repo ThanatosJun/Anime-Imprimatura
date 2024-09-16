@@ -74,12 +74,6 @@ exports.login = async (req, res)=>{
                 message: 'Login successful',
                 token: token
             });
-            
-            // // 设置 user_id 到 cookie
-            // res.cookie('user_id', user._id.toString(), { httpOnly: true });
-
-            //redirect to "account_management" page
-            //res.redirect('/account_management');
         }
         
     } catch(error) {

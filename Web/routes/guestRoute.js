@@ -11,12 +11,12 @@ router.get('/login', function(req, res, next) {
     res.render('login', { title: 'Log In' });
 });
 
-/* GET register page */
-router.get('/register', function(req, res, next) {
-    res.render('account_management', { title: 'Account Management' });
+/* GET create_account page */
+router.get('/create_account', function(req, res, next) {
+    res.render('create_account', { title: 'Create Account' });
 });
 
-/* GET generate_detect_visitor page. */
+/* GET generate_detect page. */
 router.get('/generate_detect', function(req, res, next) {
     const characterName = decodeURIComponent(req.query.character_name);
   
@@ -24,9 +24,9 @@ router.get('/generate_detect', function(req, res, next) {
       options = [
         { value: characterName, text: characterName }
       ]
-      res.render('generate_detect_visitor', { options });
+      res.render('generate_detect', { options });
     } else {
-      res.render('generate_detect_visitor')
+      res.render('generate_detect')
     }
     
 });

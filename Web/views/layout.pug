@@ -17,12 +17,13 @@ html(lang="en")
         .bouncing-blob.bouncing-blob--black
         .bouncing-blob.bouncing-blob--purple
         .bouncing-blob.bouncing-blob--pink
-    header.navigation-bar
-      a.logo-placeholder(href="/")
-      .nav
-        a(href="/") Home
-        a(href="/#how-to-use") How to Use
-        a(href="/#about-us") About Us
-        a(href="/gallery") Gallery
-      a.login-btn#auth-btn(href='/login') Log In
+    block header
+      header.navigation-bar
+        a.logo-placeholder(href="/")
+        .nav
+          a(href="/") Home
+          a(href="/#how-to-use") How to Use
+          a(href="/#about-us") About Us
+          a(href="/gallery") Gallery
+        a.login-btn#auth-btn(href='/login') Log In
     block content
