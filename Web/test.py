@@ -22,6 +22,7 @@ def process_string():
 @app.route('/train', methods=['POST'])
 def train_image():
     data = request.get_json()
+    user_id = data.get('user_id')
     CHD_name = data.get('CHD_name')
     image_path = data.get('image_path')
     
@@ -30,7 +31,7 @@ def train_image():
     CHD_modelpt = None
     try:
         print(f'Received train request with CHD_name: {CHD_name}, image_path: {image_path}')
-        CHD_modelpt = PA_autoTraing_v7.main(CHD_name, image_path)
+        CHD_modelpt = PA_autoTraing_v7.main(CHD_name, image_path, user_id)
 
         output = "Train script executed successfully."
         return jsonify({'status': 'success', 'output': output, 'CHD_name': CHD_name, 'image_path': image_path, 'CHD_modelpt': CHD_modelpt})
@@ -42,6 +43,7 @@ def train_image():
 @app.route('/detect', methods=['POST'])
 def detect_image():
     data = request.get_json()  # 获取POST请求的JSON数据
+    user_id = data.get('user_id')
     CHD_name = data.get('CHD_name')
     image_path = data.get('image_path')
 
@@ -50,7 +52,7 @@ def detect_image():
     CHS_save_dir = None
     try:
         print(f'Received detect request with CHD_name: {CHD_name}, image_path: {image_path}')
-        CHS_save_dir = CHD_detect_v2.main(CHD_name, image_path)
+        CHS_save_dir = CHD_detect_v2.main(CHD_name, image_path, user_id)
         print(CHS_save_dir)            
         
         output = "Detect script executed successfully."
