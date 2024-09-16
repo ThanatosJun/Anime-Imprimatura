@@ -402,9 +402,14 @@ footer {
   gap: 20px;
 }
 
+.gallery .download-link {
+
+}
+
 .gallery .gallery-item {
   width: 200px;
   text-align: center;
+  
 }
 
 .gallery .image {

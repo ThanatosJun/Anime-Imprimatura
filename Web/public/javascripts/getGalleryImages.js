@@ -1,3 +1,10 @@
+function downloadImage(){
+  // Create a hidden <a> tag for downloading the file
+  const link = document.createElement('a');
+  
+  
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('getUserCompleted', async () => {
     console.log('User ID in getGalleryImages:', window.user_id); // 验证 user_id 是否有值
@@ -28,8 +35,17 @@ document.addEventListener('DOMContentLoaded', () => {
             img.src = `http://localhost:3000/images/${image._id}`; // 使用返回的 _id 生成图片的 URL
             img.alt = image.filename;
 
+            // Create a hidden <a> tag for downloading the file
+            const link = document.createElement('a');
+            link.textContent = 'download';
+            link.href = img.src;
+
+            // Set the download attribute to name the downloaded file 'result.zip'
+            link.setAttribute('download', image.filename);
+
             galleryItem.appendChild(img);
             galleryContainer.appendChild(galleryItem);
+            galleryItem.appendChild(link);
           });
         }
       } else {
