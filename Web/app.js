@@ -63,26 +63,21 @@ app.use((req, res, next) => {
 const data = [];
 
 // Import route handlers
-var indexRouter = require('./routes/index');
+var guestRouter = require('./routes/guestRoute');
 var usersRouter = require('./routes/users');
 var accountManagementRouter = require('./routes/account_management');
-var createAccountRouter = require('./routes/create_account');
 var galleryRouter = require('./routes/galleryRoute');
 var generateRouter = require('./routes/generateRoute');
-var loginRouter = require('./routes/login');
 var teamGalleryFRouter = require('./routes/team_gallery_f');
 var teamGalleryTRouter = require('./routes/team_gallery_t');
-var guestRouter = require('./routes/guestRoute');
 var testRouter = require('./routes/testRoute');
 
 // Use the imported routes
 app.use('/', guestRouter);
 app.use('/users', usersRouter);
 app.use('/account_management', accountManagementRouter);
-app.use('/create_account', createAccountRouter);
 app.use('/gallery', galleryRouter);
 app.use('/generate', generateRouter);
-app.use('/login', loginRouter);
 app.use('/team_gallery_f', teamGalleryFRouter);
 app.use('/team_gallery_t', teamGalleryTRouter);
 app.use('/test', testRouter);
