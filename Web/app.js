@@ -68,13 +68,15 @@ var usersRouter = require('./routes/users');
 var accountManagementRouter = require('./routes/account_management');
 var createAccountRouter = require('./routes/create_account');
 var galleryRouter = require('./routes/gallery');
-var generateDetectVisitorRouter = require('./routes/generate_detect_visitor');
-var generateTrainVisitorRouter = require('./routes/generate_train_visitor');
-var generateVisitorRouter = require('./routes/generate_visitor');
-var generatedVisitorRouter = require('./routes/generated_visitor');
+var generateDetectRouter = require('./routes/generate_detect');
+var generateTrainRouter = require('./routes/generate_train');
+var generateRouter = require('./routes/generate');
+var generatedRouter = require('./routes/generated');
 var loginRouter = require('./routes/login');
 var teamGalleryFRouter = require('./routes/team_gallery_f');
 var teamGalleryTRouter = require('./routes/team_gallery_t');
+var guestRouter = require('./routes/guestRoute');
+var testRouter = require('./routes/testRoute');
 
 // Use the imported routes
 app.use('/', indexRouter);
@@ -82,13 +84,14 @@ app.use('/users', usersRouter);
 app.use('/account_management', accountManagementRouter);
 app.use('/create_account', createAccountRouter);
 app.use('/gallery', galleryRouter);
-app.use('/generate_detect_visitor', generateDetectVisitorRouter);
-app.use('/generate_train_visitor', generateTrainVisitorRouter);
-app.use('/generate_visitor', generateVisitorRouter);
-app.use('/generated_visitor', generatedVisitorRouter);
+app.use('/generate_detect', generateDetectRouter);
+app.use('/generate_train', generateTrainRouter);
+app.use('/generate', generateRouter);
+app.use('/generated', generatedRouter);
 app.use('/login', loginRouter);
 app.use('/team_gallery_f', teamGalleryFRouter);
 app.use('/team_gallery_t', teamGalleryTRouter);
+app.use('/test', testRouter);
 
 // API route handler
 app.use('/api', apiRouter); // Prefix API routes with '/api'

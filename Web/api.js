@@ -24,6 +24,10 @@ router.post('/login', (req, res, next) => {
 
 router.get('/content', userController.authenticateToken, userController.content);
 
+// pt routes
+const ptController = require('./controller/ptController');
+router.post('/getmodel', userController.authenticateToken, ptController.getModel);
+
 // Image routes
 const imageController = require('./controller/imageController');
 router.post('/uploadAndGenerate', (req, res, next) => {

@@ -47,7 +47,7 @@ async function login(event) {
             console.error('Login failed: ', errorData);
         }
 
-        // Redirect to "final" page after "detect"
+        // Redirect to "account management" page
         window.location.href = '/account_management';
         
     } catch (error) {

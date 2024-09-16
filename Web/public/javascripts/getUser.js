@@ -14,7 +14,7 @@ async function fetchUserData() {
             });
 
             if (!response.ok) {
-                throw new Error('Network response was not ok'); // Handle HTTP errors
+                throw new Error('(getUser.js) Network response was not ok'); // Handle HTTP errors
             }
 
             const data = await response.json(); // Wait for JSON parsing
@@ -23,16 +23,21 @@ async function fetchUserData() {
             window.user_id = data.user.id;
             window.user_email = data.user.gmail;
 
-            console.log('id:', window.user_id);
+            console.log('(getUser.js) id:', window.user_id);
+
+            btn = document.getElementById('auth-btn');
+            btn.href = '/account_management';
+            btn.textContent = 'Profile';
+
         } catch (error) {
-            console.error('Error fetching content:', error); // Handle other errors
+            console.error('(getUser.js) Error fetching content:', error); // Handle other errors
         }
     } else {
-        console.log('No token found in localStorage');
+        console.log('(getUser.js) No token found in localStorage');
     }
 
     document.dispatchEvent(new Event('getUserCompleted'));
-    console.log('getUserCompleted event dispatched');
+    console.log('(getUser.js) getUserCompleted event dispatched');
 }
 
 fetchUserData();

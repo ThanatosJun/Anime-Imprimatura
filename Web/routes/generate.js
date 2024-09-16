@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET generate_train_visitor page. */
 router.get('/', function(req, res, next) {
-  res.render('generate_train_visitor', { title: 'Generate Train Visitor' });
+  res.render('generate', { title: 'Generate' });
 });
 
 module.exports = router;

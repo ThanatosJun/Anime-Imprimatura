@@ -1,0 +1,27 @@
+extends layout
+
+block body
+  - var bodyClass = 'generate'
+
+block content
+  .content
+    .loading-mask
+      .loading
+        span(data-text="L") L
+        span(data-text="O") O
+        span(data-text="A") A
+        span(data-text="D") D
+        span(data-text="I") I
+        span(data-text="N") N
+        span(data-text="G") G
+    .container
+      .content-box
+        .image-title Your CHS
+        .image-container#chsContainer
+      .content-box
+        .image-title Detect result
+        .image-container#detectResult
+    button.generate-btn(type="button" onclick="submitFormSegment()") ⚡ Generate
+  script(src='/javascripts/loading.js')
+  script(src='/javascripts/upload.js')
+  script(src='/javascripts/detectResult.js')

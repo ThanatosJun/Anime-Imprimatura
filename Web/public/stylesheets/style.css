@@ -530,8 +530,8 @@ button.logout-btn {
   background-color: rgba(210, 40, 64, 0.5);
 }
 
-/* Generate Visitor Detect Page Styles */
-.generate-visitor .content {
+/* Generate Page Styles */
+.generate .content {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -539,7 +539,7 @@ button.logout-btn {
   padding: 20px;
 }
 
-.generate-visitor .upload-section {
+.generate .upload-section {
   display: flex;
   gap: 100px;
   justify-content: space-around;
@@ -547,14 +547,14 @@ button.logout-btn {
   flex-direction: column;
 }
 
-.generate-visitor .upload {
+.generate .upload {
   display: flex;
   flex-direction: column;
   align-items: left;
   gap: 10px;
 }
 
-.generate-visitor .upload input {
+.generate .upload input {
   padding: 10px;
   opacity: 0.7;
   border-radius: 40px;
@@ -562,7 +562,7 @@ button.logout-btn {
   width: auto;
 }
 
-.generate-visitor .upload-box {
+.generate .upload-box {
   width: 424px;
   height: 301px;
   background-color: #ccc;
@@ -576,7 +576,7 @@ button.logout-btn {
   overflow: hidden;
 }
 
-.generate-visitor .upload-box input[type="file"] {
+.generate .upload-box input[type="file"] {
   width: 100%;
   height: 100%;
   opacity: 0;
@@ -586,18 +586,18 @@ button.logout-btn {
   cursor: pointer;
 }
 
-.generate-visitor .upload span {
+.generate .upload span {
   z-index: 1;
 }
 
-.generate-visitor .preview {
+.generate .preview {
   width: 108px;
   height: 100px;
   object-fit: cover;
   margin: 5px;
 }
 
-.generate-visitor .image-container {
+.generate .image-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -613,13 +613,13 @@ button.logout-btn {
   max-width: 100%;
 }
 
-.generate-visitor .content-box {
+.generate .content-box {
   display: flex;
   justify-content: center;
   flex-direction: column;
 }
 
-.generate-visitor .container {
+.generate .container {
   display: flex;
   width: 100%;
   max-width: 1200px;
@@ -631,44 +631,44 @@ button.logout-btn {
   object-fit: contain; /* Ensure the image fits well inside the container */
 }
 
-/* Generated Visitor Page Styles */
-.generated-visitor {
+/* Generated Page Styles */
+.generated {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.generated-visitor .content {
+.generated .content {
   gap: 10px;
   padding: auto;
 }
 
-.generated-visitor .title {
+.generated .title {
   text-align: center;
   margin: 0;
   font-size: 24px;
   margin-bottom: 40px;
 }
 
-.generated-visitor .container {
+.generated .container {
   display: flex;
   width: 90%;
   max-width: 1200px;
 }
 
-.generated-visitor .content-box {
+.generated .content-box {
   display: flex;
   justify-content: center;
   flex-direction: column;
 }
 
-.generated-visitor .image-title {
+.generated .image-title {
   text-align: center;
   margin: 0;
   font-size: 18px;
 }
 
-.generated-visitor .image-container {
+.generated .image-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -684,7 +684,7 @@ button.logout-btn {
   max-width: 100%;
 }
 
-.generated-visitor .image-container img {
+.generated .image-container img {
   flex: 0 1 150px;
   object-fit: cover;
   height: 200px;
@@ -692,23 +692,23 @@ button.logout-btn {
   display: block;
 }
 
-.generated-visitor .chs {
+.generated .chs {
   margin-right: 50px;
 }
 
-.generated-visitor .final {
+.generated .final {
   display: flex;
   flex-direction: column;
 }
 
-.generated-visitor .buttons {
+.generated .buttons {
   display: flex;
   justify-content: center;
   gap: 20px;
   margin-top: 20px;
 }
 
-.generated-visitor .edit-btn, .generated-visitor .save-btn {
+.generated .edit-btn, .generated .save-btn {
   display: flex;
   background-color: #E6FFFDB5;
   border: none;
@@ -719,26 +719,26 @@ button.logout-btn {
   color: #000;
 }
 
-.generated-visitor .save-btn {
+.generated .save-btn {
   background-color: #B7A0CAB5;
 }
 
-.generated-visitor button:hover {
+.generated button:hover {
   background-color: #0056b3;
 }
 
-.generated-visitor .color-container {
+.generated .color-container {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   padding: auto;
 }
 
-.generated-visitor .color-title {
+.generated .color-title {
   padding: 5px;
 }
 
-.generated-visitor .color-box {
+.generated .color-box {
   height: 10px;
   width: 10px;
   padding: 10px;
