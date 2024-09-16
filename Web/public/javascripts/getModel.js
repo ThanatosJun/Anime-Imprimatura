@@ -10,9 +10,9 @@ const getModel = async () => {
                 headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
-                body: {
+                body: JSON.stringify({
                     user_id: window.user_id
-                }
+                })
             })
 
             const data = await response.json(); // Wait for JSON parsing
