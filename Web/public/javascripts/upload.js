@@ -3,7 +3,7 @@
 /**
  * Converts files to Base64 images and stores them in localStorage 
  */ 
-function fileToImage(files, uploadBoxId) {
+function fileToImage(files, localStorageId) {
   // Array to store Base64 images
   const base64Images = [];
 
@@ -42,7 +42,7 @@ function fileToImage(files, uploadBoxId) {
   Promise.all(promises)
     .then(() => {
       // Store Base64 images in localStorage
-      localStorage.setItem('chs', JSON.stringify(base64Images));
+      localStorage.setItem(localStorageId, JSON.stringify(base64Images));
     })
     .catch(error => {
       console.error('Error processing files:', error);
@@ -116,15 +116,69 @@ function handleFiles(files, containerId) {
 }
 
 /**
+ * Handles the form submission for training page images.
+ */
+async function submitFormCHD() {
+  const form = document.getElementById(`uploadFormCHD`);
+  const characterName = document.getElementById(`character_name`).value;
+  const formData = new FormData(form);
+  const userId = window.user_id;
+  // Adding userId to formData
+  formData.append('user_id', userId);
+
+  const loadingMasks = document.getElementsByClassName('loading-mask');
+
+  if (loadingMasks.length === 0) {
+    console.error('Loading mask elements are missing');
+    return;
+  }
+
+  var loadingMask = loadingMasks[0];
+
+  // Display the loading mask
+  loadingMask.style.display = 'block';
+  loadingMask.style.opacity = 1;
+
+  // Save character_name in localStorage
+  localStorage.setItem('character_name', characterName);
+  
+  try {
+      // Upload the file and process it
+      const uploadResponse = await fetch(`/uploadAndTrain`, {
+          method: 'POST',
+          body: formData
+      });
+
+      if (!uploadResponse.ok) {
+          const errorText = await uploadResponse.text();
+          throw new Error(`Upload failed: ${errorText}`);
+      }
+
+      // Parse the train response JSON data
+      const trainData = await uploadResponse.json();
+      console.log('Train response:', trainData);
+
+      // Redirect to the "detect" page with the processed data
+      window.location.href = `/generate/detect`;
+
+  } catch (error) {
+      console.error(`Error:`, error.message);
+      alert(`An error occurred: ${error.message}`);
+  }
+}
+
+/**
  * Handles the form submission for detecting page images.
  */
 async function submitFormCHS() {
   const form = document.getElementById(`uploadFormCHS`);
   const chsInput = document.getElementById('chs');
+  const model = document.getElementById('model-select').value;
   const formData = new FormData(form);
   const userId = window.user_id;
   // Adding userId to formData
   formData.append('user_id', userId);
+  localStorage.setItem('selected-model', model);
   
   const loadingMasks = document.getElementsByClassName('loading-mask');
 
@@ -145,7 +199,8 @@ async function submitFormCHS() {
   loadingMask.style.display = 'block';
   loadingMask.style.opacity = 1;
 
-  fileToImage(chsInput.files, 'chs');
+  // Converts files to Base64 images and stores them in localStorage for showing on the next page
+  fileToImage(chsInput.files, 'chs'); 
 
   try {
       // Upload the file and process it
@@ -167,7 +222,7 @@ async function submitFormCHS() {
       localStorage.setItem('CHS_save_dir', uploadData.CHS_save_dir);
 
       // Redirect to "final" page after "detect"
-      window.location.href = '/generate_visitor';
+      window.location.href = '/generate';
 
   } catch (error) {
       console.error(`Error:`, error.message);
@@ -178,71 +233,19 @@ async function submitFormCHS() {
 /**
  * Handles the form submission for training page images.
  */
-async function submitFormCHD() {
-    const form = document.getElementById(`uploadFormCHD`);
-    const characterName = document.getElementById(`character_name`).value;
-    const formData = new FormData(form);
-    const userId = window.user_id;
-    // Adding userId to formData
-    formData.append('user_id', userId);
-
-    const loadingMasks = document.getElementsByClassName('loading-mask');
-
-    if (loadingMasks.length === 0) {
-      console.error('Loading mask elements are missing');
-      return;
-    }
-
-    var loadingMask = loadingMasks[0];
-
-    // Display the loading mask
-    loadingMask.style.display = 'block';
-    loadingMask.style.opacity = 1;
-
-    // Save character_name in localStorage
-    localStorage.setItem('character_name', characterName);
-    
-    try {
-        // Upload the file and process it
-        const uploadResponse = await fetch(`/uploadAndTrain`, {
-            method: 'POST',
-            body: formData
-        });
-
-        if (!uploadResponse.ok) {
-            const errorText = await uploadResponse.text();
-            throw new Error(`Upload failed: ${errorText}`);
-        }
-
-        // Parse the train response JSON data
-        const trainData = await uploadResponse.json();
-        console.log('Train response:', trainData);
-
-        // Redirect to the "detect" page with the processed data
-        window.location.href = `/generate_detect_visitor?character_name=${encodeURIComponent(characterName)}`;
-
-    } catch (error) {
-        console.error(`Error:`, error.message);
-        alert(`An error occurred: ${error.message}`);
-    }
-}
-
-/**
- * Handles the form submission for training page images.
- */
 async function submitFormSegment() {
-  const characterName = localStorage.getItem('character_name');
+  const model = localStorage.getItem('selected-model');
   const loadingMasks = document.getElementsByClassName('loading-mask');
 
-  if (!characterName) {
-      console.error('characterName not found in localStorage');
+  if (!model) {
+      console.error('(upload.js) selected-model not found in localStorage');
       return;
   } else {
-      console.log(`characterName: ${characterName}`);
+      console.log(`(upload.js) selected-model: ${model}`);
   }
 
   if (loadingMasks.length === 0) {
-      console.error('Loading mask elements are missing');
+      console.error('(upload.js) Loading mask elements are missing');
       return;
     }
 
@@ -258,30 +261,30 @@ async function submitFormSegment() {
           headers: {
           'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ options: characterName })
+          body: JSON.stringify({ options: model })
       });
 
       if (!segmentResponse.ok) {
           const errorText = await segmentResponse.text();
-          throw new Error(`Segment failed: ${errorText}`);
+          throw new Error(`(upload.js) Segment failed: ${errorText}`);
       }
 
       // Parse the response JSON data
       const segmentData = await segmentResponse.json();
-      console.log(`Segment response:`, segmentData);
+      console.log(`(upload.js) Segment response:`, segmentData);
 
       // Clear the data in localStorage
-      localStorage.removeItem('character_name');
+      localStorage.removeItem('selected-model');
 
       // Save color_dictionary in localStorage
       localStorage.setItem('color_dictionary', JSON.stringify(segmentData.color_dictionary));
       localStorage.setItem('CHS_Finished_dir', segmentData.CHS_Finished_dir);
 
       // Redirect to "final" page after "generate"
-      window.location.href = '/generated_visitor';
+      window.location.href = '/generated';
 
   } catch (error) {
-      console.error(`Error:`, error.message);
+      console.error(`(upload.js) Error:`, error.message);
       alert(`An error occurred: ${error.message}`);
   } finally {
       // Hide the loading mask regardless of success or failure

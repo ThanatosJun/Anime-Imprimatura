@@ -1,38 +1,27 @@
-doctype html
-html(lang="en")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    title Log In
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    script(src="/javascripts/anm_background.js")
-  body.login
-    .bouncing-blobs-container
-      .bouncing-blobs-glass
-      .bouncing-blobs
-        .bouncing-blob.bouncing-blob--black
-        .bouncing-blob.bouncing-blob--blue
-        .bouncing-blob.bouncing-blob--black
-        .bouncing-blob.bouncing-blob--purple
-        .bouncing-blob.bouncing-blob--black
-        .bouncing-blob.bouncing-blob--purple
-        .bouncing-blob.bouncing-blob--pink
-    header.navigation-bar
-      a.logo-placeholder(href="/")
-      .nav
-        a(href="/") Home
-      a
-    main.content
-      .login-container
-        .login-box
-          form#loginForm(method="POST" action="/api/login" onsubmit="login(event)")
-            .input-group
-              input#gmail(type="email" name="gmail" placeholder="Email" required)
-              input#password(type="password" name="password" placeholder="Password" required)
-            .remember-me
-              input(type="checkbox" id="remember" name="remember")
-              label(for="remember") Remember me
-            button(type="submit") Log in
-          p Not a member? 
-            a(href="create_account") Create an account
-    script(src='/javascripts/login.js')
+extends layout
+
+block body
+  - var bodyClass = 'login'
+
+block header
+  header.navigation-bar
+    a.logo-placeholder(href="/")
+    .nav
+      a(href="/") Home
+    a
+
+block content
+  main.content
+    .login-container
+      .login-box
+        form#loginForm(method="POST" action="/api/login" onsubmit="login(event)")
+          .input-group
+            input#gmail(type="email" name="gmail" placeholder="Email" required)
+            input#password(type="password" name="password" placeholder="Password" required)
+          .remember-me
+            input(type="checkbox" id="remember" name="remember")
+            label(for="remember") Remember me
+          button(type="submit") Log in
+        p Not a member? 
+          a(href="create_account") Create an account
+  script(src='/javascripts/login.js')

@@ -1,24 +1,14 @@
-doctype html
-html(lang="en")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    title Team Gallery F
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body.team-gallery-f
-    header.navigation-bar
-      a.logo-placeholder(href="/")
-      .nav
-        a(href="/") Home
-        a(href="/#how-to-use") How to Use
-        a(href="/#about-us") About Us
-        a(href="/gallery") Gallery
-      .profile-icon profile-icon
-    main
-      section.gallery
-        .gallery-buttons
-          button.gallery-btn Personal Gallery
-          button.gallery-btn Team Gallery
-        .content
-          button.action-button Create a Team
-          button.action-button Join a Team
+extends layout
+
+block body
+  - var bodyClass = 'team-gallery-f'
+
+block content
+  main
+    section.gallery
+      .gallery-buttons
+        button.gallery-btn Personal Gallery
+        button.gallery-btn Team Gallery
+      .content
+        button.action-button Create a Team
+        button.action-button Join a Team
