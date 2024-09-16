@@ -41,7 +41,7 @@ class CustomYOLO(YOLO):
 
 class PA_init():
     # Function for initialize variables and datas
-    def __init__(self, CHD_Name):
+    def __init__(self, CHD_Name, User_ID):
         # image dir
         self.image_dir = "CHD_Images/" + CHD_Name + "_Images" # Image dir for store CHD ,CHD_SK and mutiple CHD
         self.image_augmentation_outputdir = "CHD_Images/" + CHD_Name + "_AugImages" # Image after augmentated
@@ -62,7 +62,7 @@ class PA_init():
         self.valid_ratio = 0.1 # 10% images for valid
         
         # model dir
-        self.CHD_modeldir = "CHD_Model" # trained model for detect maincharacter
+        self.CHD_modeldir = "CHD_Model" + "/" + User_ID # trained model for detect maincharacter
         self.CHD_modelpt =  self.CHD_modeldir + "/" + CHD_Name + ".pt"
         # model for labeling
         self.label_fullbody = "model_CHD/CHD_fullbody.pt"  # predict model for predicting fullbody
@@ -110,8 +110,8 @@ class PA_init():
 
 class PA_preprocess(PA_init):
     # init
-    def __init__(self, CHD_Name):    
-        super().__init__(CHD_Name)
+    def __init__(self, CHD_Name, User_ID):    
+        super().__init__(CHD_Name, User_ID)
         # change dataset path in .yaml
         change_yaml_path(self.data_yaml, CHD_Name)
 
@@ -297,8 +297,8 @@ class PA_preprocess(PA_init):
 
 class PA_train(PA_init):
     # init
-    def __init__(self, CHD_Name):    
-        super().__init__(CHD_Name)
+    def __init__(self, CHD_Name, User_ID):    
+        super().__init__(CHD_Name, User_ID)
 
     # Function for move all files in one folder to another
     def move_noCHFiles(self, sorce_dir, destination_dir):
@@ -395,11 +395,12 @@ class PA_train(PA_init):
             CHD_modelpt = self.get_new_file_path(CHD_modelpt)
         os.rename(CHD_model_path, CHD_modelpt)
         print("Successful Model:" + CHD_modelpt)
-        return CHD_modelpt 
+        model_name = os.path.basename(CHD_model_path)  # 提取最後的檔案名稱
+        return model_name
 
 class Upload_images(PA_init):
-    def __init__(self, CHD_Name):
-        super().__init__(CHD_Name)
+    def __init__(self, CHD_Name, User_ID):
+        super().__init__(CHD_Name, User_ID)
         # create dir
         os.makedirs(self.CHD_modeldir, exist_ok=True)
         self.clear_and_create_dir(self.image_dir)
@@ -416,6 +417,7 @@ class Upload_images(PA_init):
         # input a CHD image preparing for segmentation
         CHD_side_model = YOLO("model_CHD/CHD_Side.pt")
         classify_results = CHD_side_model.predict(file_paths)
+        front_get = False
         # Check which image is frontside
         for result in classify_results:
             if result.probs.top1 == 1:
@@ -423,7 +425,13 @@ class Upload_images(PA_init):
                 image_basename = os.path.basename(result.path)
                 new_image_path = os.path.join(self.CHD_Detect, image_basename)
                 shutil.copy(result.path, new_image_path)
+                front_get = True
                 break
+        if(front_get == False):
+            print(f"=======front CHD not find, instead with first CHD=======")
+            image_basename = os.path.basename(classify_results[0].path)
+            new_image_path = os.path.join(self.CHD_Detect, image_basename)
+
 
 
         
@@ -446,17 +454,16 @@ def change_yaml_path(data_yaml, newpath):
     print("YAML file updated successfully.")
 
 # Function for main process
-def main(CHD_Name, file_paths):
-    # Up_img = Upload_images(CHD_Name)
+def main(CHD_Name, file_paths, User_ID):
+    # Up_img = Upload_images(CHD_Name, User_ID)
     # Up_img.receive_images(file_paths)
-    # PA_pre = PA_preprocess(CHD_Name)
-    # PA_tra = PA_train(CHD_Name)
+    # PA_pre = PA_preprocess(CHD_Name, User_ID)
+    # PA_tra = PA_train(CHD_Name, User_ID)
     # PA_pre.main()
     # CHD_modelpt = PA_tra.main()
-    # print(f"======2======={file_paths}")
-    # return file_paths
+    print(f"======2======={file_paths}")
+    return file_paths
     # return CHD_modelpt
-    return "Web/CHD_Model/Anime008.pt"
 
 
 
@@ -468,6 +475,7 @@ if __name__ == "__main__":
         sys.exit(1)
     CHD_name = sys.argv[1]
     image_path = sys.argv[2]
+    User_ID = sys.argv[3]
     print(f"======1======={image_path}")
-    main(CHD_name, image_path)
+    main(CHD_name, image_path, User_ID)
     # 'til here
