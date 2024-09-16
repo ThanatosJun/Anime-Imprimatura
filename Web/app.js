@@ -67,8 +67,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var accountManagementRouter = require('./routes/account_management');
 var createAccountRouter = require('./routes/create_account');
-var galleryRouter = require('./routes/gallery');
-var generateRouter = require('./routes/generate');
+var galleryRouter = require('./routes/galleryRoute');
+var generateRouter = require('./routes/generateRoute');
 var loginRouter = require('./routes/login');
 var teamGalleryFRouter = require('./routes/team_gallery_f');
 var teamGalleryTRouter = require('./routes/team_gallery_t');
@@ -76,7 +76,7 @@ var guestRouter = require('./routes/guestRoute');
 var testRouter = require('./routes/testRoute');
 
 // Use the imported routes
-app.use('/', indexRouter);
+app.use('/', guestRouter);
 app.use('/users', usersRouter);
 app.use('/account_management', accountManagementRouter);
 app.use('/create_account', createAccountRouter);
