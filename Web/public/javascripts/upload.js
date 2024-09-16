@@ -1,5 +1,7 @@
 // this file handle the img preview and the generating process's submition
 
+const { model } = require("mongoose");
+
 /**
  * Converts files to Base64 images and stores them in localStorage 
  */ 
@@ -143,27 +145,46 @@ async function submitFormCHD() {
   localStorage.setItem('character_name', characterName);
   
   try {
-      // Upload the file and process it
-      const uploadResponse = await fetch(`/uploadAndTrain`, {
-          method: 'POST',
-          body: formData
+
+    if(window.user_id){
+
+      const isDuplicate = await fetch('/api/checkmodelduplicate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          model_name: characterName })
       });
 
-      if (!uploadResponse.ok) {
-          const errorText = await uploadResponse.text();
-          throw new Error(`Upload failed: ${errorText}`);
-      }
+      if (!isDuplicate.ok) {
+        alert('The character name is repeated. Please choose another name.');
+        return;
+      } 
+    }
 
-      // Parse the train response JSON data
-      const trainData = await uploadResponse.json();
-      console.log('Train response:', trainData);
+    // Upload the file and process it
+    const uploadResponse = await fetch(`/uploadAndTrain`, {
+      method: 'POST',
+      body: formData
+    });
 
-      // Redirect to the "detect" page with the processed data
-      window.location.href = `/generate/detect`;
+    if (!uploadResponse.ok) {
+      const errorText = await uploadResponse.text();
+      throw new Error(`Upload failed: ${errorText}`);
+    }
+
+    // Parse the train response JSON data
+    const trainData = await uploadResponse.json();
+    console.log('Train response:', trainData);
+
+    // Redirect to the "detect" page with the processed data
+    window.location.href = `/generate/detect`;
 
   } catch (error) {
-      console.error(`Error:`, error.message);
-      alert(`An error occurred: ${error.message}`);
+    console.error(`Error:`, error.message);
+    alert(`An error occurred: ${error.message}`);
   }
 }
 

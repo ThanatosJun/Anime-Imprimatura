@@ -23,3 +23,18 @@ exports.getModel = async (req, res) => {
         res.status(500).json({ message: 'Error fetching data' });
     }
 }
+
+exports.checkModelDuplicate = async (req, res) => {
+    try {
+        const existingDoc = await Chd.findOne({ CHD_modelpt: req.body.model_name });
+
+        if (existingDoc) {
+            return res.status(409).json({ message: 'Duplicate data' });
+        } else {
+            return res.status(200).json({ message: 'No duplicate' });
+        }
+    } catch (error) {
+        console.error('(checkModelDuplicate) Error fetching data:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+}
