@@ -5,14 +5,15 @@ const getModel = async () => {
 
     if(window.user_id){
         try {
+            const userId = window.user_id;
+            console.log('(getModel.js) user_id: ', userId);
             const response = await fetch('/api/getmodel', {
                 method: 'POST',
                 headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`, 
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    user_id: window.user_id
-                })
+                body: JSON.stringify({ user_id: userId })
             })
 
             const data = await response.json(); // Wait for JSON parsing
