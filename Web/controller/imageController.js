@@ -63,7 +63,7 @@ router.post('/uploadAndTrain', uploadTrain.fields([{ name: 'chd', maxCount: 3 }]
     // post to test.py
     const trainResponse = await fetch('http://localhost:5001/train', {
       method: 'POST',
-      body: JSON.stringify({ image_path: generatedImagePath, CHD_name: chdName }),
+      body: JSON.stringify({ user_id: userId, image_path: generatedImagePath, CHD_name: chdName }),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -161,7 +161,7 @@ router.post('/uploadAndDetect', uploadDetect.fields([{ name: 'chs', maxCount: 10
     // post to test.py
     const detectResponse = await fetch('http://localhost:5001/detect', {
       method: 'POST',
-      body: JSON.stringify({ CHD_name: options, image_path: uploadedFilePath }),
+      body: JSON.stringify({ user_id: userId, CHD_name: options, image_path: uploadedFilePath }),
       headers: {
         'Content-Type': 'application/json'
       }
