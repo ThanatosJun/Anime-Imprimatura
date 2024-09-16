@@ -175,7 +175,8 @@ async function submitFormCHS() {
   const chsInput = document.getElementById('chs');
   const model = document.getElementById('model-select').value;
   const formData = new FormData(form);
-  const userId = window.user_id;
+  const userId = window.user_id ? window.user_id : 'visitor';
+
   // Adding userId to formData
   formData.append('user_id', userId);
   localStorage.setItem('selected-model', model);
@@ -236,6 +237,7 @@ async function submitFormCHS() {
 async function submitFormSegment() {
   const model = localStorage.getItem('selected-model');
   const loadingMasks = document.getElementsByClassName('loading-mask');
+  const userId = window.user_id ? window.user_id : 'visitor';
 
   if (!model) {
       console.error('(upload.js) selected-model not found in localStorage');
@@ -247,7 +249,7 @@ async function submitFormSegment() {
   if (loadingMasks.length === 0) {
       console.error('(upload.js) Loading mask elements are missing');
       return;
-    }
+  }
 
   var loadingMask = loadingMasks[0];
 
@@ -261,7 +263,10 @@ async function submitFormSegment() {
           headers: {
           'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ options: model })
+          body: JSON.stringify({ 
+            options: model, 
+            user_id: userId 
+          })
       });
 
       if (!segmentResponse.ok) {
