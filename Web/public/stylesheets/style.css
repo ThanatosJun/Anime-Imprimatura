@@ -406,9 +406,22 @@ footer {
   justify-content: center;
   gap: 20px;
 }
+.gallery .fileName{
+  margin-top: 10px;
+  text-align: center;
+  word-wrap: break-word;
+  margin-bottom: 10px;
+}
 
 .gallery .download-link {
-
+  padding: 5px 15px;
+  width: fit-content;
+  background: rgba(255, 255, 255, 0.31);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(9.4px);
+  -webkit-backdrop-filter: blur(9.4px);
+  border: 1px solid rgba(255, 255, 255, 0.31);
 }
 
 .gallery .gallery-item {
