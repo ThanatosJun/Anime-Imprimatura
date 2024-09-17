@@ -197,43 +197,67 @@ exports.saveToGallery_personal_chs = async (req, res) => {
       // save images to image
       const savedImages = [];
   
-      // loading multiple chd with for loop
-      for (const fileRoute of image_paths) {
-        if (fs.existsSync(fileRoute)) {
+      // Check if the image_paths is a directory and get all image files inside
+      const getFilesInDirectory = (dir) => {
+        return fs.readdirSync(dir)
+          .filter(file => {
+            // Only include files with image extensions (e.g., .jpg, .png)
+            const ext = path.extname(file).toLowerCase();
+            return ['.jpg', '.jpeg', '.png', '.gif'].includes(ext);
+          })
+          .map(file => path.join(dir, file));
+      };
+
+      let filesToUpload = [];
+
+      // Check if image_paths is a directory
+      if (fs.lstatSync(image_paths).isDirectory()) {
+        // If it's a directory, get all image files inside
+        filesToUpload = getFilesInDirectory(image_paths);
+      } else {
+        // If it's not a directory, assume it's a single file path
+        filesToUpload = [image_paths];
+      }
+
+      // Loop through each file and upload
+      for (const fileRoute of filesToUpload) {
+        if (fs.existsSync(fileRoute) && fs.lstatSync(fileRoute).isFile()) {
           try {
             const gridFSBucket = getGridFSBucket();
-  
+
             if (!gridFSBucket) {
               throw new Error('GridFSBucket is not initialized');
             }
-  
+
             const fileStream = fs.createReadStream(fileRoute);
             const uploadStream = gridFSBucket.openUploadStream(path.basename(fileRoute), {
               metadata: { user_id },
             });
-  
+
+            // Handle file upload
             await new Promise((resolve, reject) => {
               fileStream.pipe(uploadStream);
-  
+
               uploadStream.on('error', (err) => {
                 console.error(`Error in upload stream for file ${fileRoute}:`, err);
                 reject(err);
               });
-  
+
               uploadStream.on('finish', async (file) => {
                 try {
                   if (!file) {
                     console.error(`File object is undefined for ${fileRoute}`);
                     return reject(new Error(`File object is undefined for ${fileRoute}`));
                   }
-  
+
                   console.log('File upload finished. File object:', file);
-  
+
                   const newColored_Chd = new Colored_Chd({
                     gallery_id: existingGallery._id,
                     user_id: user_id,
-                    path: fileRoute
+                    path: file.filename // Save the GridFS filename or ID
                   });
+
                   await newColored_Chd.save();
                   savedImages.push(newColored_Chd);
                   console.log('Saved image to database: ', newColored_Chd);
