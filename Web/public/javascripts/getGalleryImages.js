@@ -35,6 +35,11 @@ document.addEventListener('DOMContentLoaded', () => {
             img.src = `http://localhost:3000/images/${image._id}`; // 使用返回的 _id 生成图片的 URL
             img.alt = image.filename;
 
+            // display file name
+            const filename = document.createElement('p');
+            filename.className = 'fileName';
+            filename.textContent = `${image.filename}`;
+
             // Create a hidden <a> tag for downloading the file
             const link = document.createElement('a');
             link.textContent = 'download';
@@ -44,8 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
             link.setAttribute('download', image.filename);
 
             galleryItem.appendChild(img);
-            galleryContainer.appendChild(galleryItem);
+            galleryItem.appendChild(filename);
             galleryItem.appendChild(link);
+            galleryContainer.appendChild(galleryItem);
           });
         }
       } else {

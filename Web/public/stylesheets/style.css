@@ -425,6 +425,11 @@ footer {
   border-radius: 20%;
   background-color: #919191;
 }
+.gallery .fileName{
+  margin-top: 10px;
+  text-align: center;
+  word-wrap: break-word;
+}
 
 /* Account Management Page Styles */
 .account-management {
