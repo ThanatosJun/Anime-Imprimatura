@@ -58,6 +58,7 @@ def get_image_path(dataset_train_path):
 
 # Function for main process
 def main(CHD_Name, image_path, User_ID):
+    CHD_Name = os.path.splitext(CHD_Name)[0]
     CHS_dir = "CHS/" + CHD_Name
     clear_and_create_dir(CHS_dir)
     CHS_save_dir = "CHS_Detect/" + CHD_Name
@@ -86,7 +87,7 @@ if __name__ == "__main__":
     if len(sys.argv) != 3:
         print("Usage: python CHD_detect.py <CHD_name> <image_path>")
         sys.exit(1)
-    
+    print("====1====")
     CHD_name = sys.argv[1]
     image_path = sys.argv[2]
     User_ID = sys.argv[3]
