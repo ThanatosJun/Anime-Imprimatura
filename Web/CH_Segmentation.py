@@ -249,7 +249,7 @@ class CH_Segmentation(CH_SEG__init):
         random_points = []
         
         # Shrink the polygon by the specified amount (in pixels)
-        shrunken_polygon = polygon.buffer(-10)
+        shrunken_polygon = polygon.buffer(-15)
         
         # 如果縮小的多邊形是空的，則使用原始多邊形
         if shrunken_polygon.is_empty:
@@ -497,11 +497,13 @@ class Coloring(CH_SEG__init):
         return self.CHS_Finished_dir
     
 def main(CH_Name):
+    CH_Name = os.path.splitext(CH_Name)[0]
     color_dictionary , CHS_Finished_dir = get_colored(CH_Name)
     print("====2====")
     return color_dictionary , CHS_Finished_dir
 
 def get_colored(CH_Name):
+    CH_Name = os.path.splitext(CH_Name)[0]
     CH_Seg = CH_Segmentation(CH_Name)
     CH_Seg.CHD_SEG()
     CH_Seg.CHS_SEG()
@@ -514,7 +516,7 @@ if __name__ == "__main__":
     # CH_Name = sys.argv[1]
     print("====1====")
     # CH_Name = "FamilyYO"
-    CH_Name = "TestA005"
+    CH_Name = "TestA005.pt"
     main(CH_Name)
 
                 # def plot_polygon_and_points(polygon_points, points):
