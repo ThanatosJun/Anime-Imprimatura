@@ -422,10 +422,10 @@ class Coloring(CH_SEG__init):
                     # 確保點的座標是整數
                     x, y = int(point[0]), int(point[1])
                     cv2.circle(marked_image, (x, y), radius=5, color=(0, 0, 255), thickness=-1)
-                print(f"key = {key}\nrgb = {rgb}\nposition = {position}")
-                cv2.namedWindow("Image", cv2.WINDOW_AUTOSIZE)
-                cv2.imshow(f"Image", marked_image)
-                cv2.waitKey(0) 
+                # print(f"key = {key}\nrgb = {rgb}\nposition = {position}")
+                # cv2.namedWindow("Image", cv2.WINDOW_AUTOSIZE)
+                # cv2.imshow(f"Image", marked_image)
+                # cv2.waitKey(0) 
         copy_img = self.overlay_black_lines_on_image(copy_img, sketch)
         height, width, _ = copy_img.shape
         clear_points = [(0,0), (width-1,0), (width-1, height-1), (0,height-1)]
