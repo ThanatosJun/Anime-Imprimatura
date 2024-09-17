@@ -417,24 +417,24 @@ class Coloring(CH_SEG__init):
                     # mask.fill(0)
                     cv2.floodFill(copy_img, mask, (x, y), (int(b), int(g), int(r)), (50, 50, 50), (100, 100, 100), cv2.FLOODFILL_FIXED_RANGE)
                     copy_img = self.overlay_black_lines_on_image(copy_img, sketch)
-                marked_image = copy_img.copy()
-                for point in position_list:
-                    # 確保點的座標是整數
-                    x, y = int(point[0]), int(point[1])
-                    cv2.circle(marked_image, (x, y), radius=5, color=(0, 0, 255), thickness=-1)
-                print(f"key = {key}\nrgb = {rgb}\nposition = {position}")
-                cv2.namedWindow("Image", cv2.WINDOW_AUTOSIZE)
-                cv2.imshow(f"Image", marked_image)
-                cv2.waitKey(0) 
+                # marked_image = copy_img.copy()
+                # for point in position_list:
+                #     # 確保點的座標是整數
+                #     x, y = int(point[0]), int(point[1])
+                #     cv2.circle(marked_image, (x, y), radius=5, color=(0, 0, 255), thickness=-1)
+                # print(f"key = {key}\nrgb = {rgb}\nposition = {position}")
+                # cv2.namedWindow("Image", cv2.WINDOW_AUTOSIZE)
+                # cv2.imshow(f"Image", marked_image)
+                # cv2.waitKey(0) 
         copy_img = self.overlay_black_lines_on_image(copy_img, sketch)
         height, width, _ = copy_img.shape
         clear_points = [(0,0), (width-1,0), (width-1, height-1), (0,height-1)]
         for point in clear_points:
             mask.fill(0)
             cv2.floodFill(copy_img, None, point, (int(255), int(255), int(255)), (50, 50, 50), (50, 50, 50), cv2.FLOODFILL_FIXED_RANGE)
-        cv2.namedWindow("Block", cv2.WINDOW_AUTOSIZE)
-        cv2.imshow(f"Block", copy_img)
-        cv2.waitKey(0)
+        # cv2.namedWindow("Block", cv2.WINDOW_AUTOSIZE)
+        # cv2.imshow(f"Block", copy_img)
+        # cv2.waitKey(0)
         return copy_img
 
     # Function for pick color in CHD and make a color dictionary
