@@ -244,7 +244,7 @@ section h2{
   flex: 0 0 300px;
   padding: 15px 30px;
   margin-right: 20px;
-  height: 400px;
+  height: 800px;
   display: flex;
   align-items: flex-end;
   overflow: hidden;
@@ -273,6 +273,10 @@ section h2{
 .about-card {
   width: 40em;
   height: 20em;
+}
+.about-card p {
+  text-align: center;
+  margin-top: 20px;
 }
 .btn-container {
   display: flex;
