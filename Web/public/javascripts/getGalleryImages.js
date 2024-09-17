@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Create a hidden <a> tag for downloading the file
             const link = document.createElement('a');
+            link.className = 'download-link';
             link.textContent = 'download';
             link.href = img.src;
 
