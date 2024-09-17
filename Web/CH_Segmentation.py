@@ -513,10 +513,10 @@ def get_colored(CH_Name):
     return color_dictionary, CHS_Finished_dir          
 
 if __name__ == "__main__":
-    # CH_Name = sys.argv[1]
+    CH_Name = sys.argv[1]
     print("====1====")
     # CH_Name = "FamilyYO"
-    CH_Name = "TestA005.pt"
+    # CH_Name = "TestA005.pt"
     main(CH_Name)
 
                 # def plot_polygon_and_points(polygon_points, points):
