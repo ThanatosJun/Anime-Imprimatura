@@ -57,8 +57,8 @@ class PA_init():
         self.dataset_train_noCH_test = self.dataset_train_noCH_dir + "/test"
         self.dataset_train_noCH_valid = self.dataset_train_noCH_dir + "/valid"
         # split image into datasets percent
-        self.train_ratio = 0.8 # 80% images for training
-        self.test_ratio = 0.1 # 10% images for testing
+        self.train_ratio = 0.9 # 80% images for training
+        self.test_ratio = 0 # 10% images for testing
         self.valid_ratio = 0.1 # 10% images for valid
         
         # model dir
@@ -478,4 +478,5 @@ if __name__ == "__main__":
     User_ID = sys.argv[3]
     print(f"======1======={image_path}")
     main(CHD_name, image_path, User_ID)
+    print(image_path)
     # 'til here

@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     alert('Saved successfully!');
-                    window.location.href = '/gallery';
+                    window.location.href = '/gallery/personal';
                 } catch (error) {
                     console.error('getFinalResult.js: Error saving images:', error);
                     alert('Failed to save images. Please try again later.');

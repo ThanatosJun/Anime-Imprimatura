@@ -179,12 +179,21 @@ section h2{
 .img-container{
   width: 100vh;
   height: 60vh;
-  background: rgba(188, 184, 184, 0.26);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
   border: 1px solid rgba(188, 184, 184, 0.59);
+  margin-bottom: 10px;
+}
+.image-container img{
+  width: 100px;
+  height: 60px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid rgba(188, 184, 184, 0.59);
+  border-radius: 16px;
 }
 .more-btn {
   font-size: 15px;
@@ -217,7 +226,7 @@ section h2{
   overflow-x: scroll;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  gap: 30px;
+  gap: 15px;
   padding: 0 20px;
 }
 .cards::-webkit-scrollbar{
@@ -406,9 +415,22 @@ footer {
   justify-content: center;
   gap: 20px;
 }
+.gallery .fileName{
+  margin-top: 10px;
+  text-align: center;
+  word-wrap: break-word;
+  margin-bottom: 10px;
+}
 
 .gallery .download-link {
-
+  padding: 5px 15px;
+  width: fit-content;
+  background: rgba(255, 255, 255, 0.31);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(9.4px);
+  -webkit-backdrop-filter: blur(9.4px);
+  border: 1px solid rgba(255, 255, 255, 0.31);
 }
 
 .gallery .gallery-item {

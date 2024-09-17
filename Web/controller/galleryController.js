@@ -60,13 +60,15 @@ exports.saveToGallery_personal_chd = async (req, res) => {
 
                 console.log('File upload finished. File object:', file);
 
+                const chdModelptString = CHD_modelpt.join(',');
+
                 const newChd = new Chd({
                   gallery_id: existingGallery._id,
                   user_id: user_id,
                   character: character,
                   path: file.filename || path.basename(fileRoute),
                   createdAt: new Date(),
-                  CHD_modelpt: CHD_modelpt, 
+                  CHD_modelpt: chdModelptString, 
                 });
 
                 await newChd.save();
@@ -145,6 +147,7 @@ exports.saveToGallery_personal_chs = async (req, res) => {
 
                 console.log('File upload finished. File object:', file);
 
+                const fileRoute = CHS_save_dir.join(',');
                 const newChs = new Chs({
                   gallery_id: existingGallery._id,
                   user_id: user_id,
@@ -177,43 +180,110 @@ exports.saveToGallery_personal_chs = async (req, res) => {
 }
 
 // save final image to personal gallery
-exports.saveToGallery_personal_final = async (req, res) => {
-  try {
-    const { user_id, image_paths } = req.body;
-    console.log('Saving request: ', req.body);
+  exports.saveToGallery_personal_final = async (req, res) => {
+    try {
+      console.log('---start saving final_img---');
+      const { user_id, image_paths } = req.body;
+      console.log('Saving request: ', req.body);
+  
+      // check if the gallery exists
+      let existingGallery = await Gallery.findOne({ user_id });
+      if (!existingGallery) {
+        // create a new gallery
+        existingGallery = new Gallery({ user_id });
+        await existingGallery.save();
+        console.log('Created a personal gallery: ', existingGallery);
+      }
+  
+      // save images to image
+      const savedImages = [];
+  
+      // Check if the image_paths is a directory and get all image files inside
+      const getFilesInDirectory = (dir) => {
+        return fs.readdirSync(dir)
+          .filter(file => {
+            // Only include files with image extensions (e.g., .jpg, .png)
+            const ext = path.extname(file).toLowerCase();
+            return ['.jpg', '.jpeg', '.png', '.gif'].includes(ext);
+          })
+          .map(file => path.join(dir, file));
+      };
 
-    // check if the gallery exists
-    const existingGallery = await Gallery.findOne({ user_id });
-    // the gallery does not exist
-    if(!existingGallery){
-      // create a new gallery
-      existingGallery = new Gallery({
-        user_id
-      });
-      await existingGallery.save();
-      console.log('Created a personal gallery: ', existingGallery);
+      let filesToUpload = [];
+
+      // Check if image_paths is a directory
+      if (fs.lstatSync(image_paths).isDirectory()) {
+        // If it's a directory, get all image files inside
+        filesToUpload = getFilesInDirectory(image_paths);
+      } else {
+        // If it's not a directory, assume it's a single file path
+        filesToUpload = [image_paths];
+      }
+
+      // Loop through each file and upload
+      for (const fileRoute of filesToUpload) {
+        if (fs.existsSync(fileRoute) && fs.lstatSync(fileRoute).isFile()) {
+          try {
+            const gridFSBucket = getGridFSBucket();
+
+            if (!gridFSBucket) {
+              throw new Error('GridFSBucket is not initialized');
+            }
+
+            const fileStream = fs.createReadStream(fileRoute);
+            const uploadStream = gridFSBucket.openUploadStream(path.basename(fileRoute), {
+              metadata: { user_id },
+            });
+
+            // Handle file upload
+            await new Promise((resolve, reject) => {
+              fileStream.pipe(uploadStream);
+
+              uploadStream.on('error', (err) => {
+                console.error(`Error in upload stream for file ${fileRoute}:`, err);
+                reject(err);
+              });
+
+              uploadStream.on('finish', async (file) => {
+                try {
+                  if (!file) {
+                    console.error(`File object is undefined for ${fileRoute}`);
+                    return reject(new Error(`File object is undefined for ${fileRoute}`));
+                  }
+
+                  console.log('File upload finished. File object:', file);
+
+                  const newColored_Chd = new Colored_Chd({
+                    gallery_id: existingGallery._id,
+                    user_id: user_id,
+                    path: file.filename // Save the GridFS filename or ID
+                  });
+
+                  await newColored_Chd.save();
+                  savedImages.push(newColored_Chd);
+                  console.log('Saved image to database: ', newColored_Chd);
+                  resolve();
+                } catch (err) {
+                  console.error(`Error saving CHD for file ${fileRoute}:`, err);
+                  reject(err);
+                }
+              });
+            });
+          } catch (err) {
+            console.error(`Error processing file ${fileRoute}:`, err);
+          }
+        } else {
+          console.error(`File not found: ${fileRoute}`);
+        }
+      }
+  
+      // success msg
+      res.status(200).json({message: 'Image saved successfully to personal gallery'});
+    } catch (error) {
+      console.error("saveToGallery_perosonal_final error: ", error);
+      res.status(500).json({ error: "An error occurred during saveToGallery_perosonal_final. Please try again." });
     }
-
-    // save images to colored_chd
-    const savedImages = [];
-    for (const fileRoute of image_paths) {
-      const newColoredChd = new Colored_Chd({
-        file_route: fileRoute,
-        gallery_id: existingGallery._id
-      });
-      await newColoredChd.save();
-      savedImages.push(newColoredChd);
-    }
-    console.log('saved image to colored_chd: ', savedImages)
-
-    // success msg
-    res.status(200).json({message: 'Image saved successfully to personal gallery'});
-
-  } catch (error) {
-    console.error("saveToGallery_perosonal error: ", error);
-    res.status(500).json({ error: "An error occurred during saveToGallery_perosonal. Please try again." });
   }
-}
 
 // display gallery
 exports.getPersonalGallery = async (req, res) => {

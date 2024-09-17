@@ -307,7 +307,7 @@ async function submitFormSegment() {
       localStorage.setItem('CHS_Finished_dir', segmentData.CHS_Finished_dir);
 
       // Redirect to "final" page after "generate"
-      window.location.href = '/generated';
+      window.location.href = '/generate/generated';
 
   } catch (error) {
       console.error(`(upload.js) Error:`, error.message);
