@@ -60,13 +60,15 @@ exports.saveToGallery_personal_chd = async (req, res) => {
 
                 console.log('File upload finished. File object:', file);
 
+                const chdModelptString = CHD_modelpt.join(',');
+
                 const newChd = new Chd({
                   gallery_id: existingGallery._id,
                   user_id: user_id,
                   character: character,
                   path: file.filename || path.basename(fileRoute),
                   createdAt: new Date(),
-                  CHD_modelpt: CHD_modelpt, 
+                  CHD_modelpt: chdModelptString, 
                 });
 
                 await newChd.save();
@@ -179,7 +181,7 @@ exports.saveToGallery_personal_chs = async (req, res) => {
 // save final image to personal gallery
   exports.saveToGallery_personal_final = async (req, res) => {
     try {
-      console.log('---start saving chs---');
+      console.log('---start saving final_img---');
       const { user_id, image_paths } = req.body;
       console.log('Saving request: ', req.body);
   

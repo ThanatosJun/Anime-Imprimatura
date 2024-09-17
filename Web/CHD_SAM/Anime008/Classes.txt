@@ -1,8 +1,1 @@
-Hair
-Neck
-Face
-Hand
-Clothes
-Eye
-Leg
-Pants
+Upper_clothes
