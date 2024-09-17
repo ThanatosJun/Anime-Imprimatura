@@ -147,6 +147,7 @@ exports.saveToGallery_personal_chs = async (req, res) => {
 
                 console.log('File upload finished. File object:', file);
 
+                const fileRoute = CHS_save_dir.join(',');
                 const newChs = new Chs({
                   gallery_id: existingGallery._id,
                   user_id: user_id,
