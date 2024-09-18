@@ -50,6 +50,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(bodyParser.json()); // Parse JSON bodies
 app.use(cookieParser()); // Parse cookies
 app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from 'public'
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use('/path/to/images', express.static(path.join(__dirname)));
 app.use(express.json());
 
@@ -85,14 +86,19 @@ app.use('/test', testRouter);
 // API route handler
 app.use('/api', apiRouter); // Prefix API routes with '/api'
 
-// Route to render account settings
+// Route to render account setting
 app.get('/', async (req, res) => {
   try {
-    const user = await userModel.findOne({}); // Fetch user data from MongoDB
-    res.render('account_setting', { user }); // Render 'account_setting' view with user data
+    const LOGO_01 = 'LOGO_01'; // 不包括文件擴展名
+    const image_1 = 'chd'
+    const image_2 = 'choose_pt'
+    const image_3 = 'chs';
+    const image_4 = 'seg'
+
+    res.render('index', { LOGO_01, image_1, image_2, image_3, image_4 });
   } catch (err) {
     console.error('Error:', err);
-    res.send('Error loading user settings');
+    res.send('Error loading main page');
   }
 });
 

@@ -27,6 +27,7 @@ router.get('/content', userController.authenticateToken, userController.content)
 // pt routes
 const ptController = require('./controller/ptController');
 router.post('/getmodel', userController.authenticateToken, ptController.getModel);
+router.post('/checkmodelduplicate', ptController.checkModelDuplicate);
 
 // Image routes
 const imageController = require('./controller/imageController');
