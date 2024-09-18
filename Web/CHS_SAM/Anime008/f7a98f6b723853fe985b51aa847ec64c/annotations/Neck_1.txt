@@ -1,4 +1,4 @@
-Image_Name: c2baf9bc114719f663f3a9a59b5b3243
+Image_Name: f7a98f6b723853fe985b51aa847ec64c
 Class: Neck
 Inner Main Points: [(210, 342)]
 Mask Points:

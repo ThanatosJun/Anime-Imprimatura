@@ -286,19 +286,30 @@ section h2{
 }
 
 .generate-btn {
-  display: inline-block;
-  white-space: nowrap;
+  padding: 10px 20px;
   margin: 50px auto;
-  background: #E6FFFDB5;
-  color: #000;
-  border: 1px solid #E6FFFDBF;
-  padding: 15px 30px;
-  cursor: pointer;
   gap: 10px;
+  text-transform: uppercase;
   border-radius: 42px;
   font-size: 15px;
-  text-align: center;
+  font-weight: 500;
+  color: #ffffff80;
+  text-shadow: none;
+  background: transparent;
+  cursor: pointer;
+  box-shadow: transparent;
+  border: 1px solid #ffffff80;
+  transition: 0.5s ease;
+  user-select: none;
   text-decoration: none;
+}
+.generate-btn:hover{
+  color: #ffffff;
+  background: #008cff;
+  border: 1px solid #008cff;
+  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;
+  box-shadow: 0 0 5px #008cff, 0 0 20px #008cff, 0 0 50px #008cff,
+    0 0 100px #008cff;
 }
 
 footer {
@@ -591,11 +602,19 @@ button.logout-btn {
 }
 
 .generate .upload input {
-  padding: 10px;
-  opacity: 0.7;
-  border-radius: 40px;
-  height: 40px;
-  width: auto;
+  border: none;
+  outline: none;
+  border-radius: 15px;
+  padding: 1em;
+  background-color: #ccc;
+  box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
+  transition: 300ms ease-in-out;
+}
+.generate .upload input:focus{
+  background-color: white;
+  transform: scale(1.05);
+  box-shadow: 13px 13px 100px #969696,
+             -13px -13px 100px #ffffff;
 }
 
 .generate .upload-box {
