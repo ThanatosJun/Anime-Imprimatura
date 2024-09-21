@@ -91,7 +91,7 @@ body {
   background-color: #D9D9D9;
   border-radius: 50%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
 }
 .user-icon {
   width: 40px;
@@ -489,7 +489,6 @@ footer {
 .gallery .gallery-item {
   width: 200px;
   text-align: center;
-  
 }
 
 .gallery .image {
