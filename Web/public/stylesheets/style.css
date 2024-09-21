@@ -91,7 +91,7 @@ body {
   background-color: #D9D9D9;
   border-radius: 50%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
 }
 .user-icon {
   width: 40px;
@@ -177,23 +177,28 @@ section h2{
   padding-bottom: 20px;
 }
 .img-container{
-  width: 100vh;
-  height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 868px;
+  height: 565px;
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
   border: 1px solid rgba(188, 184, 184, 0.59);
   margin-bottom: 10px;
+  overflow: hidden;
 }
-.image-container img{
-  width: 100px;
-  height: 60px;
+#hero-img{
+  max-width: 100%;
+  height: auto;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  border: 1px solid rgba(188, 184, 184, 0.59);
+  justify-self: center;
   border-radius: 16px;
+  object-fit: cover;
 }
 .more-btn {
   font-size: 15px;
@@ -269,6 +274,9 @@ section h2{
   transform: translateY(calc(100% - 54px));
   transition: all 0.4s ease-in-out;
 }
+.card-content h1 {
+  -webkit-text-stroke: 0.5px black;
+}
 
 .about-card {
   width: 40em;
@@ -286,19 +294,30 @@ section h2{
 }
 
 .generate-btn {
-  display: inline-block;
-  white-space: nowrap;
+  padding: 10px 20px;
   margin: 50px auto;
-  background: #E6FFFDB5;
-  color: #000;
-  border: 1px solid #E6FFFDBF;
-  padding: 15px 30px;
-  cursor: pointer;
   gap: 10px;
+  text-transform: uppercase;
   border-radius: 42px;
   font-size: 15px;
-  text-align: center;
+  font-weight: 500;
+  color: #ffffff80;
+  text-shadow: none;
+  background: transparent;
+  cursor: pointer;
+  box-shadow: transparent;
+  border: 1px solid #ffffff80;
+  transition: 0.5s ease;
+  user-select: none;
   text-decoration: none;
+}
+.generate-btn:hover{
+  color: #ffffff;
+  background: #008cff;
+  border: 1px solid #008cff;
+  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;
+  box-shadow: 0 0 5px #008cff, 0 0 20px #008cff, 0 0 50px #008cff,
+    0 0 100px #008cff;
 }
 
 footer {
@@ -392,6 +411,7 @@ footer {
   text-align: center;
   display: flex;
   flex-wrap: wrap;
+  flex-direction: column;
   gap: 20px;
 }
 
@@ -426,6 +446,14 @@ footer {
   margin-bottom: 10px;
 }
 
+.gallery .img-btn-holder {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
 .gallery .download-link {
   padding: 5px 15px;
   width: fit-content;
@@ -435,12 +463,32 @@ footer {
   backdrop-filter: blur(9.4px);
   -webkit-backdrop-filter: blur(9.4px);
   border: 1px solid rgba(255, 255, 255, 0.31);
+  text-decoration: none;
+  font-size: 12px;
+  color: rgb(255, 255, 255);
+}
+
+.gallery .delete-btn {
+  background-color: #e74d3cac;
+  width: fit-content;
+  padding: 5px 15px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.31);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 12px;
+  color: rgb(255, 255, 255);
+  backdrop-filter: blur(9.4px);
+  -webkit-backdrop-filter: blur(9.4px);
+  gap: 3px;
 }
 
 .gallery .gallery-item {
   width: 200px;
   text-align: center;
-  
 }
 
 .gallery .image {
@@ -591,11 +639,19 @@ button.logout-btn {
 }
 
 .generate .upload input {
-  padding: 10px;
-  opacity: 0.7;
-  border-radius: 40px;
-  height: 40px;
-  width: auto;
+  border: none;
+  outline: none;
+  border-radius: 15px;
+  padding: 1em;
+  background-color: #ccc;
+  box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
+  transition: 300ms ease-in-out;
+}
+.generate .upload input:focus{
+  background-color: white;
+  transform: scale(1.05);
+  box-shadow: 13px 13px 100px #969696,
+             -13px -13px 100px #ffffff;
 }
 
 .generate .upload-box {

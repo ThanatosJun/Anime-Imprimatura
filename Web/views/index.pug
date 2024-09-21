@@ -4,7 +4,7 @@ block content
   main
     section.hero
       .img-container 
-        img(src=`/images/LOGO_01.png`, alt='Home Image')
+        img#hero-img(src=`/images/LOGO_01.png`, alt='Home Image')
       .btn-container
         .more-btn More
     section#how-to-use
@@ -15,19 +15,19 @@ block content
             h1 upload your chd
         .card(style=`background-image: url('/images/choose_pt.png')`)
           .card-content
-            h1 choose the pt
+            h1 choose the model
         .card(style=`background-image: url('/images/chs.png')`)
           .card-content
-            h1 upload the chs
+            h1 upload your chs
         .card(style=`background-image: url('/images/seg.png')`)
           .card-content
-            h1 execute segment
+            h1 execute
     section#about-us
       h2 About Us
       .about-card
         p To Be Continued...
-    .btn-container
-      a.generate-btn(href='/generate/train') ⚡ Generate
+      .btn-container
+        a.generate-btn(href='/generate/train') ⚡ Generate
   footer
     .footer-links
       a(href="#") Support

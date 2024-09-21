@@ -1,10 +1,3 @@
-function downloadImage(){
-  // Create a hidden <a> tag for downloading the file
-  const link = document.createElement('a');
-  
-  
-}
-
 document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('getUserCompleted', async () => {
     console.log('User ID in getGalleryImages:', window.user_id); // 验证 user_id 是否有值
@@ -30,10 +23,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const galleryItem = document.createElement('div');
             galleryItem.className = 'gallery-item'; // 添加 gallery-item 类
 
+            const imgBtnHolder = document.createElement('div');
+            imgBtnHolder.className = 'img-btn-holder';
+
             const img = document.createElement('img');
             img.className = 'image'; // 添加 image 类
             img.src = `http://localhost:3000/images/${image._id}`; // 使用返回的 _id 生成图片的 URL
             img.alt = image.filename;
+            img.setAttribute('id', image._id);
 
             // display file name
             const filename = document.createElement('p');
@@ -43,15 +40,19 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create a hidden <a> tag for downloading the file
             const link = document.createElement('a');
             link.className = 'download-link';
-            link.textContent = 'download';
+            link.textContent = 'Download';
             link.href = img.src;
 
-            // Set the download attribute to name the downloaded file 'result.zip'
+            // Set the download attribute to name the downloaded file
             link.setAttribute('download', image.filename);
+
+            const dele_btn = createDeleteBtn();
 
             galleryItem.appendChild(img);
             galleryItem.appendChild(filename);
-            galleryItem.appendChild(link);
+            galleryItem.appendChild(imgBtnHolder);
+            imgBtnHolder.appendChild(link);
+            imgBtnHolder.appendChild(dele_btn);
             galleryContainer.appendChild(galleryItem);
           });
         }
@@ -65,3 +66,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+function createDownloadBtn(image) {
+  const downloadButton = document.createElement('a');
+  downloadButton.classList.add('download-btn');
+  downloadButton.textContent = 'Download';
+  downloadButton.href = `http://localhost:3000/images/${image._id}`;
+  downloadButton.setAttribute('download', image.filename);
+
+  return downloadButton;
+}
+
+function createDeleteBtn() {
+  const deleteButton = document.createElement('button');
+  deleteButton.classList.add('delete-btn');
+  deleteButton.onclick = function() { deleteImage(this); };
+
+  const icon = document.createElement('i');
+  icon.classList.add('fas', 'fa-trash-alt');
+
+  const buttonText = document.createTextNode('Delete');
+  deleteButton.appendChild(icon);
+  deleteButton.appendChild(buttonText);
+
+  return deleteButton;
+}

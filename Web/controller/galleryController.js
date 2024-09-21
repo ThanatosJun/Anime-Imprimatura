@@ -37,10 +37,10 @@ exports.saveToGallery_personal_chd = async (req, res) => {
           if (!gridFSBucket) {
             throw new Error('GridFSBucket is not initialized');
           }
-
+          const file_type = 'chd';
           const fileStream = fs.createReadStream(fileRoute);
           const uploadStream = gridFSBucket.openUploadStream(path.basename(fileRoute), {
-            metadata: { user_id, character, CHD_modelpt },
+            metadata: { user_id, character, CHD_modelpt, file_type },
           });
 
           await new Promise((resolve, reject) => {
@@ -125,9 +125,10 @@ exports.saveToGallery_personal_chs = async (req, res) => {
             throw new Error('GridFSBucket is not initialized');
           }
 
+          const file_type = 'chs';
           const fileStream = fs.createReadStream(fileRoute);
           const uploadStream = gridFSBucket.openUploadStream(path.basename(fileRoute), {
-            metadata: { user_id },
+            metadata: { user_id, file_type },
           });
 
           await new Promise((resolve, reject) => {
@@ -180,110 +181,111 @@ exports.saveToGallery_personal_chs = async (req, res) => {
 }
 
 // save final image to personal gallery
-  exports.saveToGallery_personal_final = async (req, res) => {
-    try {
-      console.log('---start saving final_img---');
-      const { user_id, image_paths } = req.body;
-      console.log('Saving request: ', req.body);
-  
-      // check if the gallery exists
-      let existingGallery = await Gallery.findOne({ user_id });
-      if (!existingGallery) {
-        // create a new gallery
-        existingGallery = new Gallery({ user_id });
-        await existingGallery.save();
-        console.log('Created a personal gallery: ', existingGallery);
-      }
-  
-      // save images to image
-      const savedImages = [];
-  
-      // Check if the image_paths is a directory and get all image files inside
-      const getFilesInDirectory = (dir) => {
-        return fs.readdirSync(dir)
-          .filter(file => {
-            // Only include files with image extensions (e.g., .jpg, .png)
-            const ext = path.extname(file).toLowerCase();
-            return ['.jpg', '.jpeg', '.png', '.gif'].includes(ext);
-          })
-          .map(file => path.join(dir, file));
-      };
+exports.saveToGallery_personal_final = async (req, res) => {
+  try {
+    console.log('---start saving final_img---');
+    const { user_id, image_paths } = req.body;
+    console.log('Saving request: ', req.body);
 
-      let filesToUpload = [];
-
-      // Check if image_paths is a directory
-      if (fs.lstatSync(image_paths).isDirectory()) {
-        // If it's a directory, get all image files inside
-        filesToUpload = getFilesInDirectory(image_paths);
-      } else {
-        // If it's not a directory, assume it's a single file path
-        filesToUpload = [image_paths];
-      }
-
-      // Loop through each file and upload
-      for (const fileRoute of filesToUpload) {
-        if (fs.existsSync(fileRoute) && fs.lstatSync(fileRoute).isFile()) {
-          try {
-            const gridFSBucket = getGridFSBucket();
-
-            if (!gridFSBucket) {
-              throw new Error('GridFSBucket is not initialized');
-            }
-
-            const fileStream = fs.createReadStream(fileRoute);
-            const uploadStream = gridFSBucket.openUploadStream(path.basename(fileRoute), {
-              metadata: { user_id },
-            });
-
-            // Handle file upload
-            await new Promise((resolve, reject) => {
-              fileStream.pipe(uploadStream);
-
-              uploadStream.on('error', (err) => {
-                console.error(`Error in upload stream for file ${fileRoute}:`, err);
-                reject(err);
-              });
-
-              uploadStream.on('finish', async (file) => {
-                try {
-                  if (!file) {
-                    console.error(`File object is undefined for ${fileRoute}`);
-                    return reject(new Error(`File object is undefined for ${fileRoute}`));
-                  }
-
-                  console.log('File upload finished. File object:', file);
-
-                  const newColored_Chd = new Colored_Chd({
-                    gallery_id: existingGallery._id,
-                    user_id: user_id,
-                    path: file.filename // Save the GridFS filename or ID
-                  });
-
-                  await newColored_Chd.save();
-                  savedImages.push(newColored_Chd);
-                  console.log('Saved image to database: ', newColored_Chd);
-                  resolve();
-                } catch (err) {
-                  console.error(`Error saving CHD for file ${fileRoute}:`, err);
-                  reject(err);
-                }
-              });
-            });
-          } catch (err) {
-            console.error(`Error processing file ${fileRoute}:`, err);
-          }
-        } else {
-          console.error(`File not found: ${fileRoute}`);
-        }
-      }
-  
-      // success msg
-      res.status(200).json({message: 'Image saved successfully to personal gallery'});
-    } catch (error) {
-      console.error("saveToGallery_perosonal_final error: ", error);
-      res.status(500).json({ error: "An error occurred during saveToGallery_perosonal_final. Please try again." });
+    // check if the gallery exists
+    let existingGallery = await Gallery.findOne({ user_id });
+    if (!existingGallery) {
+      // create a new gallery
+      existingGallery = new Gallery({ user_id });
+      await existingGallery.save();
+      console.log('Created a personal gallery: ', existingGallery);
     }
+
+    // save images to image
+    const savedImages = [];
+
+    // Check if the image_paths is a directory and get all image files inside
+    const getFilesInDirectory = (dir) => {
+      return fs.readdirSync(dir)
+        .filter(file => {
+          // Only include files with image extensions (e.g., .jpg, .png)
+          const ext = path.extname(file).toLowerCase();
+          return ['.jpg', '.jpeg', '.png', '.gif'].includes(ext);
+        })
+        .map(file => path.join(dir, file));
+    };
+
+    let filesToUpload = [];
+
+    // Check if image_paths is a directory
+    if (fs.lstatSync(image_paths).isDirectory()) {
+      // If it's a directory, get all image files inside
+      filesToUpload = getFilesInDirectory(image_paths);
+    } else {
+      // If it's not a directory, assume it's a single file path
+      filesToUpload = [image_paths];
+    }
+
+    // Loop through each file and upload
+    for (const fileRoute of filesToUpload) {
+      if (fs.existsSync(fileRoute) && fs.lstatSync(fileRoute).isFile()) {
+        try {
+          const gridFSBucket = getGridFSBucket();
+
+          if (!gridFSBucket) {
+            throw new Error('GridFSBucket is not initialized');
+          }
+
+          const file_type = 'final';
+          const fileStream = fs.createReadStream(fileRoute);
+          const uploadStream = gridFSBucket.openUploadStream(path.basename(fileRoute), {
+            metadata: { user_id, file_type },
+          });
+
+          // Handle file upload
+          await new Promise((resolve, reject) => {
+            fileStream.pipe(uploadStream);
+
+            uploadStream.on('error', (err) => {
+              console.error(`Error in upload stream for file ${fileRoute}:`, err);
+              reject(err);
+            });
+
+            uploadStream.on('finish', async (file) => {
+              try {
+                if (!file) {
+                  console.error(`File object is undefined for ${fileRoute}`);
+                  return reject(new Error(`File object is undefined for ${fileRoute}`));
+                }
+
+                console.log('File upload finished. File object:', file);
+
+                const newColored_Chd = new Colored_Chd({
+                  gallery_id: existingGallery._id,
+                  user_id: user_id,
+                  path: file.filename // Save the GridFS filename or ID
+                });
+
+                await newColored_Chd.save();
+                savedImages.push(newColored_Chd);
+                console.log('Saved image to database: ', newColored_Chd);
+                resolve();
+              } catch (err) {
+                console.error(`Error saving CHD for file ${fileRoute}:`, err);
+                reject(err);
+              }
+            });
+          });
+        } catch (err) {
+          console.error(`Error processing file ${fileRoute}:`, err);
+        }
+      } else {
+        console.error(`File not found: ${fileRoute}`);
+      }
+    }
+
+    // success msg
+    res.status(200).json({message: 'Image saved successfully to personal gallery'});
+  } catch (error) {
+    console.error("saveToGallery_perosonal_final error: ", error);
+    res.status(500).json({ error: "An error occurred during saveToGallery_perosonal_final. Please try again." });
   }
+}
 
 // display gallery
 exports.getPersonalGallery = async (req, res) => {
@@ -304,6 +306,7 @@ exports.getPersonalGallery = async (req, res) => {
         filename: file.filename,
         contentType: file.contentType,
         uploadDate: file.uploadDate,
+        file_type: file.file_type,
       });
     });
 
@@ -314,3 +317,34 @@ exports.getPersonalGallery = async (req, res) => {
     res.status(500).json({ message: 'Error retrieving gallery' });
   }
 };
+
+exports.deleteImageGallery = async (req, res) => {
+  try {
+    console.log('---start deleting img---');
+    const { file_id } = req.body;
+    
+    if(!file_id){
+      return res.status(400).json({ error: 'File ID is required' });
+    }
+
+    const gridFSBucket = getGridFSBucket();
+    if(!gridFSBucket){
+      throw new Error('GridFSBucket is not initialize');
+    }
+    
+    // delete the file from gfs by file_id
+    await gridFSBucket.delete(new mongoose.Types.ObjectId(file_id), (err) => {
+      if (err) {
+        console.error('Error deleting file from GridFS:', err);
+        return res.status(500).json({ error: 'Failed to delete file from GridFS' });
+      }
+
+      console.log(`File ${file_id} deleted from GridFS`);
+      res.status(200).json({ message: 'Image deleted successfully from GridFS' });
+    });
+
+  } catch (error) {
+    console.error('Error deleting image: ', error);
+    res.status(500).json({ message: 'Error deleting image' });
+  }
+}
