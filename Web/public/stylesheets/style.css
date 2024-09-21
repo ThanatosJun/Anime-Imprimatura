@@ -177,23 +177,28 @@ section h2{
   padding-bottom: 20px;
 }
 .img-container{
-  width: 100vh;
-  height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 868px;
+  height: 565px;
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
   border: 1px solid rgba(188, 184, 184, 0.59);
   margin-bottom: 10px;
+  overflow: hidden;
 }
-.image-container img{
-  width: 100px;
-  height: 60px;
+#hero-img{
+  max-width: 100%;
+  height: auto;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  border: 1px solid rgba(188, 184, 184, 0.59);
+  justify-self: center;
   border-radius: 16px;
+  object-fit: cover;
 }
 .more-btn {
   font-size: 15px;
@@ -268,6 +273,9 @@ section h2{
   overflow: hidden;
   transform: translateY(calc(100% - 54px));
   transition: all 0.4s ease-in-out;
+}
+.card-content h1 {
+  -webkit-text-stroke: 0.5px black;
 }
 
 .about-card {
@@ -403,6 +411,7 @@ footer {
   text-align: center;
   display: flex;
   flex-wrap: wrap;
+  flex-direction: column;
   gap: 20px;
 }
 
@@ -437,6 +446,14 @@ footer {
   margin-bottom: 10px;
 }
 
+.gallery .img-btn-holder {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
 .gallery .download-link {
   padding: 5px 15px;
   width: fit-content;
@@ -446,6 +463,27 @@ footer {
   backdrop-filter: blur(9.4px);
   -webkit-backdrop-filter: blur(9.4px);
   border: 1px solid rgba(255, 255, 255, 0.31);
+  text-decoration: none;
+  font-size: 12px;
+  color: rgb(255, 255, 255);
+}
+
+.gallery .delete-btn {
+  background-color: #e74d3cac;
+  width: fit-content;
+  padding: 5px 15px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.31);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 12px;
+  color: rgb(255, 255, 255);
+  backdrop-filter: blur(9.4px);
+  -webkit-backdrop-filter: blur(9.4px);
+  gap: 3px;
 }
 
 .gallery .gallery-item {
