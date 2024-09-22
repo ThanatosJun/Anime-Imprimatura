@@ -242,11 +242,27 @@ app.get('/images', (req, res) => {
 });
 
 // handling deleteImg
-app.delete('/delete-image/:imageId', (req, res) => {
+app.delete('/delete-image/:imageId', async (req, res) => {
   const imageId = req.params.imageId;
-  console.log(`Received request to delete image with ID: ${imageId}`);
-  
-  return res.status(200).json({ success: true, message: `Image ${imageId} deleted (frontend only)` });
+
+  if (!mongoose.Types.ObjectId.isValid(imageId)) {
+    return res.status(400).json({ message: 'Invalid image ID format' });
+}
+
+  try {
+      const file = await mongoose.connection.db.collection('uploads.files').findOne({ _id: new mongoose.Types.ObjectId(imageId) });
+
+      if (!file) {
+          return res.status(404).json({ message: 'File not found' });
+      }
+
+      await getGridFSBucket().delete(file._id);
+
+      res.status(200).json({ success: true, message: 'File deleted successfully' });
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Error deleting file' });
+  }
 });
 
 // Handle 404 errors
