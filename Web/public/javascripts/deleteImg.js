@@ -20,4 +20,4 @@ function deleteImage(buttonElement) {
     })
     .catch(err => console.error(err));
     }
-  }
+}

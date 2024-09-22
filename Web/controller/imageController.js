@@ -269,4 +269,8 @@ router.post('/uploadAndSegment', (req, res) => {
   });
 });
 
+router.post('deleteImg', (req, res) => {
+  console.log('R')
+})
+
 module.exports = router;

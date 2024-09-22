@@ -241,6 +241,14 @@ app.get('/images', (req, res) => {
   res.json({ images }); // Return list of image URLs
 });
 
+// handling deleteImg
+app.delete('/delete-image/:imageId', (req, res) => {
+  const imageId = req.params.imageId;
+  console.log(`Received request to delete image with ID: ${imageId}`);
+  
+  return res.status(200).json({ success: true, message: `Image ${imageId} deleted (frontend only)` });
+});
+
 // Handle 404 errors
 app.use((req, res, next) =>{
   console.log('404 not found:', req.originalUrl);
