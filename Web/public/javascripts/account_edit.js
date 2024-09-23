@@ -13,6 +13,7 @@ document.addEventListener('getUserCompleted', () => {
 // Toggle the readOnly state of an input field and focus it if editable
 function enableEdit(id) {
     const input = document.getElementById(id);
+    console.log("(account_edit) id: ",id );
     if (input) {
         // Toggle readOnly property
         input.readOnly = !input.readOnly;

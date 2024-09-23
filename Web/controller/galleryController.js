@@ -321,7 +321,9 @@ exports.getPersonalGallery = async (req, res) => {
 exports.deleteImageGallery = async (req, res) => {
   try {
     console.log('---start deleting img---');
-    const { file_id } = req.body;
+    const file_id = mongoose.Types.ObjectId(req.body.image_id);
+    console.log('file_id: ', file_id);
+    console.log('req.body: ', req.body);
     
     if(!file_id){
       return res.status(400).json({ error: 'File ID is required' });
@@ -340,7 +342,7 @@ exports.deleteImageGallery = async (req, res) => {
       }
 
       console.log(`File ${file_id} deleted from GridFS`);
-      res.status(200).json({ message: 'Image deleted successfully from GridFS' });
+      res.status(200).json({ success: true, message: 'Image deleted successfully from GridFS' });
     });
 
   } catch (error) {

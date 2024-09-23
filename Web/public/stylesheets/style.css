@@ -92,6 +92,7 @@ body {
   border-radius: 50%;
   display: flex;
   justify-content: center;
+  overflow: hidden;
 }
 .user-icon {
   width: 40px;
@@ -506,13 +507,7 @@ footer {
   flex-direction: column;
   align-items: center;
 }
-.acc-container {
-  display: -webkit-box;
-  display: flex;
-  flex-wrap: wrap;
-  -webkit-box-pack: center;
-  justify-content: center;
-}
+
 .cardWrap {
   -webkit-transform: perspective(800px);
   transform: perspective(800px);

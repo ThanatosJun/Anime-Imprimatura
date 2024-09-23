@@ -26,6 +26,6 @@ wrapper.forEach(element => {
   element.addEventListener("mouseout", () => {
     const card = element.querySelector(".account_card");
     card.style.transform = `rotateY(0deg) rotateX(0deg) `;
-    cardBg.style.transform = `translateX(0px) translateY(0px)`;
+    // cardBg.style.transform = `translateX(0px) translateY(0px)`;
   });
 });

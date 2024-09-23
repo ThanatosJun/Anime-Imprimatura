@@ -5,8 +5,14 @@ function deleteImage(buttonElement) {
 
     // Confirm deletion
     if (confirm('Are you sure you want to delete this image?')) {
-    fetch(`/delete-image/${imageId}`, {
+    fetch('/api/delete_image', {
         method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+            'image_id': imageId
+        })
     })
     .then(response => response.json())
     .then(data => {
