@@ -484,7 +484,11 @@ footer {
 .gallery .filter-btn:hover {
   background: #c8c5c67a;
   color: white;
-  transition-duration: 0.1s;
+}
+
+.gallery .filter-btn.active {
+  background: #c8c5c67a;
+  color: white;
 }
 
 .gallery .gallery-grid {
