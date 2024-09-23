@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             img.className = 'image'; // 添加 image 类
             img.src = `http://localhost:3000/images/${image._id}`; // 使用返回的 _id 生成图片的 URL
             img.alt = image.filename;
-            img.dataset.type = 'chd';
+            img.dataset.type = image.file_type;
             img.setAttribute('id', image._id);
 
             // display file name
