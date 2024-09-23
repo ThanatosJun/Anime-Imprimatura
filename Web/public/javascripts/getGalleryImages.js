@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             img.className = 'image'; // 添加 image 类
             img.src = `http://localhost:3000/images/${image._id}`; // 使用返回的 _id 生成图片的 URL
             img.alt = image.filename;
+            img.dataset.type = 'chd';
             img.setAttribute('id', image._id);
 
             // display file name
@@ -37,15 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             filename.className = 'fileName';
             filename.textContent = `${image.filename}`;
 
-            // Create a hidden <a> tag for downloading the file
-            const link = document.createElement('a');
-            link.className = 'download-link';
-            link.textContent = 'Download';
-            link.href = img.src;
-
-            // Set the download attribute to name the downloaded file
-            link.setAttribute('download', image.filename);
-
+            const link = createDownloadBtn(img);
             const dele_btn = createDeleteBtn();
 
             galleryItem.appendChild(img);
@@ -64,15 +57,51 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Error fetching gallery:', error);
       document.querySelector('.gallery-grid').innerHTML = '<p>Error fetching gallery.</p>'; // 修改为 .gallery-grid
     }
+
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const items = document.querySelectorAll('.gallery-item');
+
+    if (filterButtons.length > 0) {
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const filterValue = this.getAttribute('data-filter');
+  
+          items.forEach(item => {
+            const img = item.querySelector('img');
+
+            if (filterValue === 'all' || img.dataset.type === filterValue) {
+              item.style.display = '';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
+      });
+    } else {
+        console.log('(galleryFilter.js) filter-btn not found');
+    }
   });
 });
 
 function createDownloadBtn(image) {
-  const downloadButton = document.createElement('a');
-  downloadButton.classList.add('download-btn');
-  downloadButton.textContent = 'Download';
-  downloadButton.href = `http://localhost:3000/images/${image._id}`;
-  downloadButton.setAttribute('download', image.filename);
+  const downloadButton = document.createElement('button');
+  downloadButton.classList.add('download-link');
+  downloadButton.onclick = function() {
+    const link = document.createElement('a');
+    console.log("img:",image);
+    link.href = image.src;
+    link.download = image.id;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  const buttonText = document.createTextNode('Download');
+  const icon = document.createElement('i');
+  icon.classList.add('fas', 'fa-download');
+
+  downloadButton.appendChild(icon);
+  downloadButton.appendChild(buttonText);
 
   return downloadButton;
 }

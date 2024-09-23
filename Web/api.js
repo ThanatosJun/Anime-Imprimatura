@@ -84,6 +84,7 @@ router.get('/saveToGallery_personal_chd', galleryController.saveToGallery_person
 router.get('/saveToGallery_personal_chs', galleryController.saveToGallery_personal_chs);
 router.post('/saveToGallery_personal_final', galleryController.saveToGallery_personal_final);
 router.post('/getPersonalGallery', galleryController.getPersonalGallery);
+router.delete('/delete_image', galleryController.deleteImageGallery);
 
 // create
 // (1)-user
