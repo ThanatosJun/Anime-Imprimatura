@@ -37,15 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             filename.className = 'fileName';
             filename.textContent = `${image.filename}`;
 
-            // Create a hidden <a> tag for downloading the file
-            const link = document.createElement('a');
-            link.className = 'download-link';
-            link.textContent = 'Download';
-            link.href = img.src;
-
-            // Set the download attribute to name the downloaded file
-            link.setAttribute('download', image.filename);
-
+            const link = createDownloadBtn(img);
             const dele_btn = createDeleteBtn();
 
             galleryItem.appendChild(img);
@@ -68,11 +60,24 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function createDownloadBtn(image) {
-  const downloadButton = document.createElement('a');
-  downloadButton.classList.add('download-btn');
-  downloadButton.textContent = 'Download';
-  downloadButton.href = `http://localhost:3000/images/${image._id}`;
-  downloadButton.setAttribute('download', image.filename);
+  const downloadButton = document.createElement('button');
+  downloadButton.classList.add('download-link');
+  downloadButton.onclick = function() {
+    const link = document.createElement('a');
+    console.log("img:",image);
+    link.href = image.src;
+    link.download = image.id;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  const buttonText = document.createTextNode('Download');
+  const icon = document.createElement('i');
+  icon.classList.add('fas', 'fa-download');
+
+  downloadButton.appendChild(icon);
+  downloadButton.appendChild(buttonText);
 
   return downloadButton;
 }

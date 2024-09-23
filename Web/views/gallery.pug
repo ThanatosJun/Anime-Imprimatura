@@ -4,16 +4,16 @@ block body
   - var bodyClass = 'gallery'
 
 block content
-  main
-    .gallery
-      .gallery-buttons
-        button.gallery-btn Personal Gallery
-        button.gallery-btn Team Gallery
-      .filter 
-        button.filter-btn CHD
-        button.filter-btn CHS
-        button.filter-btn Final Image
-      .gallery-grid
-        .gallery-image
+  .gallery-buttons
+    button.gallery-btn Personal Gallery
+    button.gallery-btn Team Gallery
+  .gallery-container
+    .filter 
+      button.filter-btn All
+      button.filter-btn CHD
+      button.filter-btn CHS
+      button.filter-btn Final Image
+    .gallery-grid
+      .gallery-image
   script(src='/javascripts/deleteImg.js')
   script(src='/javascripts/getGalleryImages.js')
