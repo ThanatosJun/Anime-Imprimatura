@@ -68,7 +68,7 @@ exports.saveToGallery_personal_chd = async (req, res) => {
                   character: character,
                   path: file.filename || path.basename(fileRoute),
                   createdAt: new Date(),
-                  CHD_modelpt: chdModelptString, 
+                  CHD_modelpt: character, 
                 });
 
                 await newChd.save();

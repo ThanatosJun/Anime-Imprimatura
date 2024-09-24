@@ -11,6 +11,10 @@ const multer = require('multer'); // For handling file uploads
 const fs = require('fs');
 let { PythonShell } = require('python-shell'); // For running Python scripts
 const axios = require('axios');
+const AOS = require('aos').default;
+
+// // initialize AOS
+// AOS.init();
 
 // Import modules
 const mongoose = require('mongoose'); // Import the database connection module

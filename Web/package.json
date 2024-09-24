@@ -7,6 +7,7 @@
     "devstart": "nodemon ./bin/www"
   },
   "dependencies": {
+    "aos": "^3.0.0-beta.6",
     "archiver": "^7.0.1",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
@@ -14,9 +15,11 @@
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.4.5",
+    "expo": "^51.0.32",
     "express": "~4.16.1",
     "fs": "^0.0.1-security",
     "gridfs-stream": "^1.1.0",
+    "gsap": "^3.12.5",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^3.6.3",
