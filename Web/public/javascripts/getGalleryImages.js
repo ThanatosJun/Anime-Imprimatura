@@ -63,12 +63,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (filterButtons.length > 0) {
       filterButtons.forEach(button => {
+        
         button.addEventListener('click', function() {
           const filterValue = this.getAttribute('data-filter');
-  
+          button.classList.toggle('active');
+
           items.forEach(item => {
             const img = item.querySelector('img');
-
+            
             if (filterValue === 'all' || img.dataset.type === filterValue) {
               item.style.display = '';
             } else {
