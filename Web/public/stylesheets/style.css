@@ -992,7 +992,7 @@ button.logout-btn {
   color: #000000;
   font-size: 12px;
   text-align: left;
-  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .login button {
@@ -1011,7 +1011,8 @@ button.logout-btn {
 }
 
 .login p {
-  margin-top: 10px;
+  margin-top: 15px;
+  font-size: 14px;
 }
 
 .login p a {
@@ -1023,7 +1024,6 @@ button.logout-btn {
 .login a:hover {
   text-decoration: underline;
 }
-.login
 
 /* Create Account Page Styles */
 .create-account .content {

@@ -37,20 +37,24 @@ async function login(event) {
             if (contentResponse.ok) {
                 const contentData = await contentResponse.json();
                 console.log('Content fetched:', contentData);
+
+                // Redirect to "account management" page
+                window.location.href = '/account_management';
+
             } else {
                 console.error('Failed to fetch content:', contentResponse.status, contentResponse.statusText);
+                alert('Login error. Please try again');
             }
 
         } else {
             // Handle login failure
             const errorData = await loginResponse.json();
             console.error('Login failed: ', errorData);
+            alert('Login error. Please try again');
         }
-
-        // Redirect to "account management" page
-        window.location.href = '/account_management';
         
     } catch (error) {
         console.error('Error during login:', error);
+        alert('Login error. Please try again');
     }
 }

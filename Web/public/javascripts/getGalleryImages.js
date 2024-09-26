@@ -66,7 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         button.addEventListener('click', function() {
           const filterValue = this.getAttribute('data-filter');
-          button.classList.toggle('active');
+
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          button.classList.add('active');
 
           items.forEach(item => {
             const img = item.querySelector('img');
