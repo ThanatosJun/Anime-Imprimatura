@@ -1060,17 +1060,19 @@ button.logout-btn {
   align-items: center;
   height: 80vh;
 }
-
+.create-account .form-container {
+  width: auto;
+  height: auto;
+}
 .create-account .form-container form {
+  margin: 20px 10px;
   display: flex;
   flex-direction: column;
   background-color: #FFFFFFB8;
   padding: 30px;
   border-radius: 40px;
   text-align: center;
-  width: 484px;
-  height: 650px;
-  opacity: 0.72;  
+  opacity: 0.72;
 }
 
 .create-account .form-container input {
