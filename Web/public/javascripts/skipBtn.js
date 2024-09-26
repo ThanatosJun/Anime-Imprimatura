@@ -3,7 +3,7 @@ const skipBtn = () => {
     if(window.user_id){
         const newButton = document.createElement('button');
         newButton.textContent = 'Skip ->';
-        newButton.className = 'generate-btn';
+        newButton.className = 'skip-btn';
         newButton.addEventListener('click', function() {
             window.location.href = '/generate/detect';
         });
