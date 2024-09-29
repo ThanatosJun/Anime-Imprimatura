@@ -1,0 +1,28 @@
+extends layout
+
+block body
+  - var bodyClass = 'login'
+
+block header
+  header.navigation-bar
+    a.logo-placeholder(href="/")
+      img(src='/images/logo.png')
+    .nav
+      a(href="/") Home
+    a
+
+block content
+  main.content
+    .login-container
+      .login-box
+        form#loginForm(method="POST" action="/api/login" onsubmit="login(event)")
+          .input-group
+            input#gmail(type="email" name="gmail" placeholder="Email" required)
+            input#password(type="password" name="password" placeholder="Password" required)
+          .remember-me
+            input(type="checkbox" id="remember" name="remember")
+            label(for="remember") Remember me
+          button(type="submit") Log in ⭢
+        p Not a member? 
+          a(href="create_account") Create an account
+  script(src='/javascripts/login.js')
