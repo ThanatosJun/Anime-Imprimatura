@@ -243,8 +243,8 @@ async function submitFormCHS() {
       // Save CHS_save_dir in localStorage
       localStorage.setItem('CHS_save_dir', uploadData.CHS_save_dir);
 
-      // Redirect to "final" page after "detect"
-      window.location.href = '/generate';
+      // Redirect to "segment" page after "detect"
+      window.location.href = '/generate/segment';
 
   } catch (error) {
       console.error(`Error:`, error.message);
