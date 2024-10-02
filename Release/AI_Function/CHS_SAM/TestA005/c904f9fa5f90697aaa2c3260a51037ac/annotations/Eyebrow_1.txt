@@ -1,0 +1,8 @@
+Image_Name: c904f9fa5f90697aaa2c3260a51037ac
+Class: Eyebrow
+Inner Main Points: [(224, 260)]
+Mask Points:
+[[        209      251.75]
+ [        209      268.38]
+ [     239.88      268.38]
+ [     239.88      251.75]]

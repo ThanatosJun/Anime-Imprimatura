@@ -1,0 +1,31 @@
+extends layout
+
+block body
+  - var bodyClass = 'generated'
+
+block content
+  main.content
+    .loading-mask
+      .loading 
+        span(data-text="L") L
+        span(data-text="O") O
+        span(data-text="A") A
+        span(data-text="D") D
+        span(data-text="I") I
+        span(data-text="N") N
+        span(data-text="G") G
+    .title Here it is!
+    .container
+      .content-box.chs
+        .image-title your chs
+        .image-container#detectResult
+      .content-box.final
+        .color-container#colorContainer
+        .image-title the result
+        .image-container#finalImage
+    .buttons
+      button.edit-btn Edit
+      button#save-btn.save-btn Save to Gallery
+      button#download-btn.download-btn Download
+  script(src='/javascripts/getFinalImages.js')
+  script(src='/javascripts/loading.js')

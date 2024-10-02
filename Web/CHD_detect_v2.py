@@ -73,6 +73,7 @@ def main(CHD_Name, image_path, User_ID):
         i+=1
 
     model_path = "CHD_Model/" + User_ID + "/" + CHD_Name + ".pt"
+    # absolute_path = os.path.abspath(model_path)
     results = CHS_detect(model_path, CHS_dir)    # detect
     CHS_save(results, CHS_save_dir)  # save CHS
     print("Finish SAVE CHS\n")

@@ -1,0 +1,48 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Generate Visitor
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src="/javascripts/anm_background.js")
+  body.generate-visitor
+    script(src='/javascripts/loading.js')
+    .bouncing-blobs-container
+      .bouncing-blobs-glass
+      .bouncing-blobs
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--blue
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--purple
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--purple
+        .bouncing-blob.bouncing-blob--pink
+    header.navigation-bar
+      a.logo-placeholder(href="/")
+      .nav
+        a(href="/") Home
+        a(href="/#how-to-use") How to Use
+        a(href="/#about-us") About Us
+        a(href="/gallery") Gallery
+      a.login-btn(href="login") Log In
+    .content
+      .loading-mask
+        .loading
+          span(data-text="L") L
+          span(data-text="O") O
+          span(data-text="A") A
+          span(data-text="D") D
+          span(data-text="I") I
+          span(data-text="N") N
+          span(data-text="G") G
+      .container
+        .content-box
+          .image-title Your CHS
+          .image-container#chsContainer
+        .content-box
+          .image-title Detect result
+          .image-container#detectResult
+      button.generate-btn(type="button" onclick="submitFormSegment()") ⚡ Generate
+    script(src='/javascripts/upload.js')
+    script(src='/javascripts/detectResult.js')
