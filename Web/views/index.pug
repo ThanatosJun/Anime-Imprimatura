@@ -10,7 +10,7 @@ block content
       .cards
         .card.active(style=`background-image: url('/images/chd.png')`, data-aos="zoom-in-up")
           .card-content
-          h1 upload your chd
+            h1 upload your chd
         .card(style=`background-image: url('/images/choose_pt.png')`, data-aos="zoom-in-up")
           .card-content
             h1 choose the model
@@ -20,19 +20,22 @@ block content
         .card(style=`background-image: url('/images/seg.png')`, data-aos="zoom-in-up")
           .card-content
             h1 execute
-    div.text-container.c1
-      h1 Anime Imprimatura
+    //- div.text-container
+    //-   div.c1
+    //-     h1 Anime Imprimatura
     section#about-us
       h2 About Us
       .about-card
         p To Be Continued...
       .btn-container
-        a.generate-btn(onclick="window.location.href=window.user_id?'/generate/select':'generate/fast'") ⚡ Generate
+        a.generate-btn(onclick="window.location.href=window.user_id?'/generate/select':'generate/fast'") ⚡ Get Started
   footer
     .footer-links
       a(href="#") Support
       a(href="#") Contact
   link(rel='stylesheet', href='https://unpkg.com/aos@2.3.1/dist/aos.css')
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js") 
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/ScrollTrigger.min.js") 
   script(src='/javascripts/anm_scrolling.js') 
   script(src='https://unpkg.com/aos@2.3.1/dist/aos.js')
   script.

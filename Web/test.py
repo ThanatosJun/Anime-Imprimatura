@@ -80,5 +80,30 @@ def segment_image():
         print(f'Error during segmenting: {e}')
         return jsonify({'status': 'error', 'error': str(e), 'color_dictionary': color_dictionary, 'CHS_Finished_dir': CHS_Finished_dir})
     
+# flexDetect
+@app.route('/flexDetect', methods=['POST'])
+def detect_image():
+    data = request.get_json()  # 获取POST请求的JSON数据
+    user_id = data.get('user_id')
+    character_name = data.get('character_name')
+    model = data.get('model')
+    chd_path = data.get('chd_path')
+    chs_path = data.get('chs_path')
+
+    print('Now executing "Detect". ')
+    import CHD_detect_v2
+    CHS_save_dir = None
+    try:
+        print(f'Received detect request with character_name: {character_name}, model: {model}, chd_path: {chd_path}, chs_path: {chs_path}')
+        CHS_save_dir = CHD_detect_v2.main( user_id, character_name, chd_path, chs_path )
+        print(CHS_save_dir)            
+        
+        output = "Detect script executed successfully."
+        return jsonify({'status': 'success', 'output': output })
+    except Exception as e:
+        print(f'Error during detecting: {e}')
+        return jsonify({'status': 'error', 'error': str(e) })
+
+    
 if __name__ == '__main__':
     app.run(port=5001, debug=True)  # 在5001端口上启动服务
