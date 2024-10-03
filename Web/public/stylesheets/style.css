@@ -201,26 +201,6 @@ section h2{
   border-radius: 16px;
   object-fit: cover;
 }
-.more-btn {
-  font-size: 15px;
-  font-weight: 600;
-  color: #ffffff;
-  width: Fixed (214px)px;
-  height: Fixed (83px)px;
-  top: 713px;
-  left: 649px;
-  padding: 15px 30px;
-  gap: 10px;
-  border-radius: 42px;
-  opacity: 0px;
-  cursor: pointer;
-  margin-top: 20px; 
-  background: rgba( 220, 220, 220, 0.45 );
-  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-  backdrop-filter: blur( 20px );
-  -webkit-backdrop-filter: blur( 20px );
-  border: 2px solid rgba( 255, 255, 255, 0.18 );
-}
 
 .how-to-use, .about-us {
   padding: 50px 20px;
