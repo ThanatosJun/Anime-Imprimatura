@@ -36,4 +36,9 @@ router.get('/flexible', function(req, res, next) {
   res.render('generate_flexible', { title: 'Flexible'});
 });
 
+/* GET generate_fast page. */
+router.get('/fast', function(req, res, next) {
+  res.render('generate_fast', { title: 'Fast Track'});
+});
+
 module.exports = router;

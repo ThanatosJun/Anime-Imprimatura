@@ -16,11 +16,14 @@ block content
         span(data-text="G") G
     .form
         .upload-form
-            form(id="uploadFormFlex", method="post", action="/", enctype="multipart/form-data")
+            form(id="uploadFormFlex", method="post", action="", enctype="multipart/form-data")
             .upload-section
                 .upload
                     span the name of the character
                     input#character_name(type="text" name="character_name" placeholder="character name" required)
+                .upload
+                    label(for="model-select") choose the model you would like to use for detecting
+                    select.model-select#model-select(name="options")
                 .upload-img
                     .upload
                         span Upload CHD
@@ -31,7 +34,7 @@ block content
                         .upload-box#uploadBoxCHS
                             input#chs(type="file" name="chs" accept="image/*" multiple onchange="handleFiles(this.files, 'uploadBoxCHS')")
             .btn-container#btn-container
-                button.generate-btn(type="button" onclick="submitFormFlex()") ⚡ Generate
+                button.generate-btn(type="button" onclick="submitFormFlex()") ⚡ Detect
   script(src='/javascripts/loading.js')
   script(src='/javascripts/upload.js')
   script(src='/javascripts/getModel.js')
