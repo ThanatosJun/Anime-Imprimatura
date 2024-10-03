@@ -380,7 +380,7 @@ async function submitFormFlex() {
       return;
     } 
 
-    const flexResponse = await fetch(`/`, {
+    const flexResponse = await fetch(`/uploadAndDetect_flex`, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json'
@@ -439,7 +439,7 @@ async function submitFormFast() {
   loadingMask.style.opacity = 1;
 
   try {
-      const fastResponse = await fetch(`/`, {
+      const fastResponse = await fetch(`/upload_fast`, {
           method: 'POST',
           headers: {
           'Content-Type': 'application/json'

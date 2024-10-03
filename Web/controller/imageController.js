@@ -300,7 +300,7 @@ const uploadFlexDetect = multer({ storage: storageFlexDetect }).fields([
 ]);
 
 // flexible-1
-router.post('/flexDetect',uploadFlexDetect,  async (req, res) => {
+router.post('/uploadAndDetect_flex',uploadFlexDetect,  async (req, res) => {
   try {
     console.log('Received Data');
     const userId = req.body.user_id;
@@ -399,7 +399,7 @@ router.post('/flexDetect',uploadFlexDetect,  async (req, res) => {
       }
     });
 
-    res.status(200).json({ message: 'Images uploaded and processed successfully.' });
+    res.status(200).json({ message: 'Images uploaded and processed successfully.', detectData: detectData });
   } catch (error) {
     
   }
