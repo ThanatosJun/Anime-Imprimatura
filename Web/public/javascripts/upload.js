@@ -403,7 +403,7 @@ async function submitFormFlex() {
   loadingMask.style.opacity = 1;
 
   try {
-      const flexResponse = await fetch(`/`, {
+      const flexResponse = await fetch(`/flexDetect`, {
           method: 'POST',
           headers: {
           'Content-Type': 'application/json'

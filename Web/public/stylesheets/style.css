@@ -232,6 +232,11 @@ section h2{
   display: flex;
   position: relative;
   margin-bottom: 30px;
+  background-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000
+  );
 }
 
 .cards .card:nth-child(odd) {
@@ -262,6 +267,7 @@ section h2{
 div {
   box-sizing: border-box;
 }
+
 .text-container {
   position: relative;
   background: #000000;
@@ -269,10 +275,11 @@ div {
   height: 100vh;
   display: grid;
   place-items: center;
+  overflow: hidden; /* 防止橫向滾動過程中內容溢出 */
 }
 
 .c1 {
-  width: 100%;
+  width: 200vw; /* 讓容器足夠寬來容納橫向滾動 */
   overflow: hidden;
 }
 
@@ -281,6 +288,7 @@ div {
   font-size: 30vw;
   color: #ffffff;
   white-space: nowrap;
+  opacity: 0.5; /* 初始透明度 */
 }
 
 .about-card {
@@ -788,6 +796,10 @@ button.logout-btn {
   margin-bottom: 10px;
   position: relative;
   overflow: hidden;
+  border: none;
+  outline: none;
+  background-color: #ccc;
+  box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
 }
 
 .generate .upload-box input[type="file"] {
