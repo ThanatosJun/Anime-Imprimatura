@@ -15,7 +15,7 @@ body {
   align-items: center;
   justify-content: flex-start; /* Change from center to flex-start */
   min-height: 100vh;
-  padding-top: 80px; /* Add padding to avoid content overlapping with the nav bar */
+  padding-top: 100px; /* Add padding to avoid content overlapping with the nav bar */
 }
 .bouncing-blob {
   width: 32vw;
@@ -150,7 +150,7 @@ body {
   display: flex;
 }
 main{
-  padding-top: 100px;
+  padding-top: 80px;
 }
 .section-padding {
   padding: 100vh 0;
@@ -179,6 +179,7 @@ section h2{
 }
 .img-container{
   display: flex;
+  position: relative;
   justify-content: center;
   align-items: center;
   width: 868px;
@@ -468,8 +469,7 @@ footer {
 
 /* Gallery Page Styles */
 .gallery {
-  height: 100%;
-  margin-top: 80px;
+  margin-top: 20px;
   align-content: flex-start;
 }
 
@@ -502,7 +502,6 @@ footer {
 
 .gallery .gallery-container {
   width: 70%;
-  margin-top: 20px;
   padding: 20px 30px;
   border-radius: 40px;
   background-color: #66666655;
@@ -778,7 +777,7 @@ button.logout-btn {
 .generate .upload {
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: center;
   gap: 10px;
 }
 
@@ -790,6 +789,7 @@ button.logout-btn {
   background-color: #ccc;
   box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
   transition: 300ms ease-in-out;
+  width: 80%;
 }
 .generate .upload input:focus{
   background-color: white;
@@ -824,6 +824,12 @@ button.logout-btn {
 
 .generate .upload span {
   z-index: 1;
+}
+
+.generate .upload-img {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
 }
 
 .generate .preview {
@@ -918,8 +924,6 @@ button.logout-btn {
   flex-direction: column;
 }
 
-
-
 /* Generated Page Styles */
 .generated {
   display: flex;
@@ -930,6 +934,7 @@ button.logout-btn {
 .generated .content {
   gap: 10px;
   padding: auto;
+  margin-top: 0px;
 }
 
 .generated .title {

@@ -28,7 +28,12 @@ router.get('/generated', function(req, res, next) {
 
 /* GET generate_train_detect page. */
 router.get('/train_detect', function(req, res, next) {
-  res.render('generate_train_detect', { title: 'Train and Detect'});
+  res.render('generate_fast', { title: 'Fast Track'});
+});
+
+/* GET generate_flexible page. */
+router.get('/flexible', function(req, res, next) {
+  res.render('generate_flexible', { title: 'Flexible'});
 });
 
 module.exports = router;
