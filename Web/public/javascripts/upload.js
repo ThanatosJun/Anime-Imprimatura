@@ -307,7 +307,7 @@ async function submitFormSegment() {
       localStorage.setItem('CHS_Finished_dir', segmentData.CHS_Finished_dir);
 
       // Redirect to "final" page after "generate"
-      window.location.href = '/generate/generated';
+      window.location.href = '/generate/segment';
 
   } catch (error) {
       console.error(`(upload.js) Error:`, error.message);
@@ -326,15 +326,33 @@ async function submitFormSegment() {
  * Handles the form submission for flexible process.
  */
 async function submitFormFlex() {
+  const form = document.getElementById(`uploadFormFlex`);
+  const characterName = document.getElementById(`character_name`).value;
+  const chsInput = document.getElementById('chs');
+  const chdInput = document.getElementById('chd');
   const loadingMasks = document.getElementsByClassName('loading-mask');
   const userId = window.user_id ? window.user_id : 'visitor';
+  const model = document.getElementById('model-select').value;
   const formData = new FormData(form);
+
   // Adding userId to formData
   formData.append('user_id', userId);
+  localStorage.setItem('selected-model', model);
 
   if (loadingMasks.length === 0) {
       console.error('(upload.js) Loading mask elements are missing');
       return;
+  }
+
+  // Check if a file has been selected
+  if (chsInput.files.length === 0 || chdInput.files.length === 0) {
+    alert(`Please select an image to upload.`);
+    return;
+  }
+
+  if (!characterName){ 
+    alert('Please type in your character name.');
+    return;
   }
 
   var loadingMask = loadingMasks[0];
@@ -343,30 +361,47 @@ async function submitFormFlex() {
   loadingMask.style.display = 'block';
   loadingMask.style.opacity = 1;
 
+  // Converts files to Base64 images and stores them in localStorage for showing on the next page
+  fileToImage(chsInput.files, 'chs'); 
+
   try {
-      const flexResponse = await fetch(`/`, {
-          method: 'POST',
-          headers: {
-          'Content-Type': 'application/json'
-          },
-          body: formData
-      });
+    const isDuplicate = await fetch('/api/checkmodelduplicate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        model_name: characterName })
+    });
 
-      if (!flexResponse.ok) {
-          const errorText = await flexResponse.text();
-          throw new Error(`(upload.js) Flex failed: ${errorText}`);
-      }
+    if (!isDuplicate.ok) {
+      alert('The character name is repeated. Please choose another name.');
+      return;
+    } 
 
-      // Parse the response JSON data
-      const flexData = await flexResponse.json();
-      console.log(`(upload.js) Flex response:`, flexData);
+    const flexResponse = await fetch(`/`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: formData
+    });
 
-      // Save color_dictionary in localStorage
-      localStorage.setItem('color_dictionary', JSON.stringify(flexData.color_dictionary));
-      localStorage.setItem('CHS_Finished_dir', flexData.CHS_Finished_dir);
+    if (!flexResponse.ok) {
+        const errorText = await flexResponse.text();
+        throw new Error(`(upload.js) Flex failed: ${errorText}`);
+    }
 
-      // Redirect to "final" page after "generate"
-      window.location.href = '/generate/generated';
+    // Parse the response JSON data
+    const flexData = await flexResponse.json();
+    console.log(`(upload.js) Flex response:`, flexData);
+
+    // Save CHS_save_dir in localStorage
+    localStorage.setItem('CHS_save_dir', flexData.CHS_save_dir);
+
+    // Redirect to "segment" page
+    window.location.href = '/generate/segment';
 
   } catch (error) {
       console.error(`(upload.js) Error:`, error.message);
@@ -385,6 +420,7 @@ async function submitFormFlex() {
  * Handles the form submission for fast track process.
  */
 async function submitFormFast() {
+  const form = document.getElementById(`uploadFormFast`);
   const loadingMasks = document.getElementsByClassName('loading-mask');
   const userId = window.user_id ? window.user_id : 'visitor';
   const formData = new FormData(form);
