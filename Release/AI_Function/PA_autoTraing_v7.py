@@ -43,11 +43,11 @@ class PA_init():
     # Function for initialize variables and datas
     def __init__(self, CHD_Name, User_ID):
         # image dir
-        self.image_dir = "CHD_Images/" + CHD_Name + "_Images" # Image dir for store CHD ,CHD_SK and mutiple CHD
-        self.image_augmentation_outputdir = "CHD_Images/" + CHD_Name + "_AugImages" # Image after augmentated
+        self.image_dir = "CHD_Images/" + User_ID + CHD_Name + "_Images" # Image dir for store CHD ,CHD_SK and mutiple CHD
+        self.image_augmentation_outputdir = "CHD_Images/" + User_ID + CHD_Name + "_AugImages" # Image after augmentated
         self.CHD_Detect = "CHD_Detect/" + CHD_Name
         # datasets dir for training
-        self.dataset_train_dir = "datasets/" + CHD_Name # datasets for training
+        self.dataset_train_dir = "datasets/" + User_ID + "/" + CHD_Name # datasets for training
         self.dataset_train_train = self.dataset_train_dir + "/train"    # waiting for labeling images in train file
         self.dataset_train_test = self.dataset_train_dir + "/test"  # waiting for labeling images in test file
         self.dataset_train_valid = self.dataset_train_dir + "/valid" # waiting for labeling images in valid file
@@ -113,7 +113,7 @@ class PA_preprocess(PA_init):
     def __init__(self, CHD_Name, User_ID):    
         super().__init__(CHD_Name, User_ID)
         # change dataset path in .yaml
-        change_yaml_path(self.data_yaml, CHD_Name)
+        change_yaml_path(self.data_yaml, User_ID + "/" + CHD_Name)
 
     # Function for resize image into 640x640
     def CHD_resize(self, CHD_directory):

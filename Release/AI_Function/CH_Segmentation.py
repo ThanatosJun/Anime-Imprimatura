@@ -112,7 +112,6 @@ class CH_Segmentation(CH_SEG__init):
         for detect in self.detect_list:
             results = detect.predict(detect_dir, save = False)
             # Announce whether this model's detection class has been save or not
-            class_store = False
             # Solve the results' informations
             for i, result in enumerate(results):
                 if result.masks == None:
@@ -152,9 +151,10 @@ class CH_Segmentation(CH_SEG__init):
                             # Create all white background
                             masked_image = np.ones_like(image) * 255
                             # Check wheather is this class been saved
-                            if (class_store == False):
-                                self.class_list.append(detect_class)
-                                class_store = True      
+                            if (detect_class in self.class_list):
+                                continue
+                            else:
+                                self.class_list.append(detect_class)      
                         else:
                             # Create all black background
                             masked_image = np.zeros_like(image)
