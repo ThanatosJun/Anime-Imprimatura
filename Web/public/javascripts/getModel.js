@@ -23,7 +23,7 @@ const getModel = async () => {
             // optionsData = [ 'option1', 'option2' ];
 
             if (response.status == 404){
-                alert("You can't skip this step if you have no existing model");
+                alert("You can't skip training step if you have no existing model");
                 window.location.href = '/generate/train';
             } else {
                 optionsData = data;

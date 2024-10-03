@@ -1,0 +1,32 @@
+html(lang="en")
+  head
+    title=title
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css")
+    script(src='/javascripts/getUser.js')
+  block body
+  body(class=bodyClass)
+    .bouncing-blobs-container
+      .bouncing-blobs-glass
+      .bouncing-blobs
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--blue
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--purple
+        .bouncing-blob.bouncing-blob--black
+        .bouncing-blob.bouncing-blob--purple
+        .bouncing-blob.bouncing-blob--pink
+    script(src="/javascripts/anm_background.js")
+    block header
+      header.navigation-bar
+        a.logo-placeholder(href="/")
+          img(src='/images/logo.png')
+        .nav
+          a(href="/") Home
+          a(href="/#how-to-use") How to Use
+          a(href="/#about-us") About Us
+          a(href="/gallery/personal") Gallery
+        a.login-btn#auth-btn(href='/login') Log In
+    block content
