@@ -307,66 +307,7 @@ async function submitFormSegment() {
       localStorage.setItem('CHS_Finished_dir', segmentData.CHS_Finished_dir);
 
       // Redirect to "final" page after "generate"
-      window.location.href = '/generate/generated';
-
-  } catch (error) {
-      console.error(`(upload.js) Error:`, error.message);
-      alert(`An error occurred: ${error.message}`);
-  } finally {
-      // Hide the loading mask regardless of success or failure
-      loadingMask.style.transition = 'opacity 600ms';
-      loadingMask.style.opacity = 0;
-      setTimeout(function() {
-          loadingMask.style.display = 'none';
-      }, 600); // Wait for the fade-out animation to complete before hiding
-  }
-}
-
-/**
- * Handles the form submission for fast track process.
- */
-async function submitFormFast() {
-  const loadingMasks = document.getElementsByClassName('loading-mask');
-  const userId = window.user_id ? window.user_id : 'visitor';
-  const formData = new FormData(form);
-  // Adding userId to formData
-  formData.append('user_id', userId);
-
-  if (loadingMasks.length === 0) {
-      console.error('(upload.js) Loading mask elements are missing');
-      return;
-  }
-
-  var loadingMask = loadingMasks[0];
-
-  // Display the loading mask
-  loadingMask.style.display = 'block';
-  loadingMask.style.opacity = 1;
-
-  try {
-      const flexResponse = await fetch(`/`, {
-          method: 'POST',
-          headers: {
-          'Content-Type': 'application/json'
-          },
-          body: formData
-      });
-
-      if (!fastResponse.ok) {
-          const errorText = await fastResponse.text();
-          throw new Error(`(upload.js) Flex failed: ${errorText}`);
-      }
-
-      // Parse the response JSON data
-      const fastData = await fastResponse.json();
-      console.log(`(upload.js) Flex response:`, fastData);
-
-      // Save color_dictionary in localStorage
-      localStorage.setItem('color_dictionary', JSON.stringify(fastData.color_dictionary));
-      localStorage.setItem('CHS_Finished_dir', fastData.CHS_Finished_dir);
-
-      // Redirect to "final" page after "generate"
-      window.location.href = '/generate/generated';
+      window.location.href = '/generate/segment';
 
   } catch (error) {
       console.error(`(upload.js) Error:`, error.message);
@@ -385,6 +326,101 @@ async function submitFormFast() {
  * Handles the form submission for flexible process.
  */
 async function submitFormFlex() {
+  const form = document.getElementById(`uploadFormFlex`);
+  const characterName = document.getElementById(`character_name`).value;
+  const chsInput = document.getElementById('chs');
+  const chdInput = document.getElementById('chd');
+  const loadingMasks = document.getElementsByClassName('loading-mask');
+  const userId = window.user_id ? window.user_id : 'visitor';
+  const model = document.getElementById('model-select').value;
+  const formData = new FormData(form);
+
+  // Adding userId to formData
+  formData.append('user_id', userId);
+  localStorage.setItem('selected-model', model);
+
+  if (loadingMasks.length === 0) {
+      console.error('(upload.js) Loading mask elements are missing');
+      return;
+  }
+
+  // Check if a file has been selected
+  if (chsInput.files.length === 0 || chdInput.files.length === 0) {
+    alert(`Please select an image to upload.`);
+    return;
+  }
+
+  if (!characterName){ 
+    alert('Please type in your character name.');
+    return;
+  }
+
+  var loadingMask = loadingMasks[0];
+
+  // Display the loading mask
+  loadingMask.style.display = 'block';
+  loadingMask.style.opacity = 1;
+
+  // Converts files to Base64 images and stores them in localStorage for showing on the next page
+  fileToImage(chsInput.files, 'chs'); 
+
+  try {
+    const isDuplicate = await fetch('/api/checkmodelduplicate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        model_name: characterName })
+    });
+
+    if (!isDuplicate.ok) {
+      alert('The character name is repeated. Please choose another name.');
+      return;
+    } 
+
+    const flexResponse = await fetch(`/`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: formData
+    });
+
+    if (!flexResponse.ok) {
+        const errorText = await flexResponse.text();
+        throw new Error(`(upload.js) Flex failed: ${errorText}`);
+    }
+
+    // Parse the response JSON data
+    const flexData = await flexResponse.json();
+    console.log(`(upload.js) Flex response:`, flexData);
+
+    // Save CHS_save_dir in localStorage
+    localStorage.setItem('CHS_save_dir', flexData.CHS_save_dir);
+
+    // Redirect to "segment" page
+    window.location.href = '/generate/segment';
+
+  } catch (error) {
+      console.error(`(upload.js) Error:`, error.message);
+      alert(`An error occurred: ${error.message}`);
+  } finally {
+      // Hide the loading mask regardless of success or failure
+      loadingMask.style.transition = 'opacity 600ms';
+      loadingMask.style.opacity = 0;
+      setTimeout(function() {
+          loadingMask.style.display = 'none';
+      }, 600); // Wait for the fade-out animation to complete before hiding
+  }
+}
+
+/**
+ * Handles the form submission for fast track process.
+ */
+async function submitFormFast() {
+  const form = document.getElementById(`uploadFormFast`);
   const loadingMasks = document.getElementsByClassName('loading-mask');
   const userId = window.user_id ? window.user_id : 'visitor';
   const formData = new FormData(form);
@@ -403,7 +439,7 @@ async function submitFormFlex() {
   loadingMask.style.opacity = 1;
 
   try {
-      const flexResponse = await fetch(`/flexDetect`, {
+      const fastResponse = await fetch(`/`, {
           method: 'POST',
           headers: {
           'Content-Type': 'application/json'
@@ -411,18 +447,18 @@ async function submitFormFlex() {
           body: formData
       });
 
-      if (!flexResponse.ok) {
-          const errorText = await flexResponse.text();
+      if (!fastResponse.ok) {
+          const errorText = await fastResponse.text();
           throw new Error(`(upload.js) Flex failed: ${errorText}`);
       }
 
       // Parse the response JSON data
-      const flexData = await flexResponse.json();
-      console.log(`(upload.js) Flex response:`, flexData);
+      const fastData = await fastResponse.json();
+      console.log(`(upload.js) Flex response:`, fastData);
 
-      // Save color_dictionary in localStorage
-      localStorage.setItem('color_dictionary', JSON.stringify(flexData.color_dictionary));
-      localStorage.setItem('CHS_Finished_dir', flexData.CHS_Finished_dir);
+      localStorage.setItem('CHS_save_dir', fastData.CHS_save_dir);
+      localStorage.setItem('color_dictionary', JSON.stringify(fastData.color_dictionary));
+      localStorage.setItem('CHS_Finished_dir', fastData.CHS_Finished_dir);
 
       // Redirect to "final" page after "generate"
       window.location.href = '/generate/generated';
