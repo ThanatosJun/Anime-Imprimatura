@@ -49,7 +49,7 @@ def detect_image():
     CHS_save_dir = None
     try:
         print(f'Received detect request with CHD_name: {CHD_name}, image_path: {image_path}')
-        CHS_save_dir = CHD_detect_v2.main(CHD_name, image_path, user_id)
+        CHS_save_dir = CHS_detect_flow1.main(CHD_name, image_path, user_id)
         print(CHS_save_dir)            
         
         output = "Detect script executed successfully."
@@ -93,7 +93,7 @@ def flex_detect_image():
     import CHS_detect_flow2
     CHS_save_dir = None
     try:
-        print(f'Received detect request with character_name: {character_name}, model: {model}, chd_path: {chd_path}, chs_path: {chs_path}')
+        print(f'Received detect request with character_name: {character_name}, chd_path: {chd_path}, chs_path: {chs_path}')
         CHS_save_dir = CHS_detect_flow2.main( user_id, character_name, chd_path, chs_path )
         print(CHS_save_dir)            
         
@@ -112,12 +112,14 @@ def fast_segment_image():
     chs_path = data.get('chs_path')
 
     print('Now executing "Segmentation". ')
+    import CH_Upload_Store
     import CH_Segmentation
     color_dictionary = None
     CHS_Finished_dir = None
     try:
         print(f'Received segment request with CH_Name: {CH_Name}')
-        color_dictionary, CHS_Finished_dir  = CH_Segmentation.main(CH_Name, chd_path, chs_path)
+        CH_Upload_Store(CH_Name, chd_path, chs_path)
+        color_dictionary, CHS_Finished_dir  = CH_Segmentation.main(CH_Name)
         print("Color Dictionary: ", color_dictionary)
         print("CHS Finished dir: ", CHS_Finished_dir)
         
