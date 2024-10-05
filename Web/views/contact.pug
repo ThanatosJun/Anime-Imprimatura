@@ -1,0 +1,31 @@
+extends layout
+
+
+block body
+  - var bodyClass = 'contact'
+
+block content
+  h1 Contact Us
+  p Have a question or need help? Get in touch with us, and we'll get back to you as soon as possible.
+
+  h2 Contact Information
+  ul
+    li
+      h3 Email
+      p You can email us at: support@example.com
+    li
+      h3 Phone
+      p Call us at: +1 (800) 123-4567 (Mon-Fri, 9am-5pm)
+    li
+      h3 Address
+      p Visit us at: 1234 Example Street, City, Country
+  
+  h2 Send Us a Message
+  form(action="/contact" method="POST")
+    label(for="name") Name:
+    input#name(type="text" name="name" required)
+    label(for="email") Email:
+    input#email(type="email" name="email" required)
+    label(for="message") Your Message:
+    textarea#message(name="message" required)
+    button(type="submit") Send Message

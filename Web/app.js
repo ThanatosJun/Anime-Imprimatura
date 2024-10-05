@@ -76,6 +76,7 @@ var generateRouter = require('./routes/generateRoute');
 var teamGalleryFRouter = require('./routes/team_gallery_f');
 var teamGalleryTRouter = require('./routes/team_gallery_t');
 var testRouter = require('./routes/testRoute');
+var supportRouter = require('./routes/supportRoute');
 
 // Use the imported routes
 app.use('/', guestRouter);
@@ -86,6 +87,7 @@ app.use('/generate', generateRouter);
 app.use('/team_gallery_f', teamGalleryFRouter);
 app.use('/team_gallery_t', teamGalleryTRouter);
 app.use('/test', testRouter);
+app.use('/support', supportRouter);
 
 // API route handler
 app.use('/api', apiRouter); // Prefix API routes with '/api'

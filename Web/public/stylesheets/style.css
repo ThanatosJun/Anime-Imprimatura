@@ -1261,6 +1261,24 @@ div.buttons {
   text-decoration: underline;
 }
 
+/* Support Page Styles */
+.support {
+  margin-top: 30px;
+  gap: 20px;
+}
+
+.support .faq {
+  margin-top: 20px;
+}
+
+.support .faq h2 {
+  text-align: center;
+}
+
+.support .faq li {
+  margin: 15px;
+}
+
 /* Team Gallery T Page Styles */
 .team-gallery-t .gallery {
   padding: 50px 20px;
