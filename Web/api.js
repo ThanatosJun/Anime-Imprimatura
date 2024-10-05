@@ -22,6 +22,11 @@ router.post('/login', (req, res, next) => {
     next();
 }, userController.login);
 
+router.post('/editUser', (req, res, next) =>{
+    console.log('POST /api/editUser', req.body);
+    next();
+}, userController.editUser);
+
 router.get('/content', userController.authenticateToken, userController.content);
 
 // pt routes

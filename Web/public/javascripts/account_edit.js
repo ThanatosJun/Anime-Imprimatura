@@ -1,13 +1,15 @@
 document.addEventListener('getUserCompleted', () => {
     console.log('getUser has completed, executing account_edit');
     
-    var idInput = document.getElementById('id');
+    var nameInput = document.getElementById('name');
     var emailInput = document.getElementById('email');
+    var pwdInput = document.getElementById('password');
     var userNameSection = document.getElementById('username');
 
     if(window.user_id) {
-        idInput.value = window.user_name;
+        nameInput.value = window.user_name;
         emailInput.value = window.user_email;
+        pwdInput.value = window.password;
         userNameSection.textContent = window.user_name;
 
     }
@@ -33,17 +35,42 @@ function enableEdit(id) {
 }
 
 // Handle form submission
-document.getElementById('editForm').addEventListener('submit', async function(event) {
+document.getElementById('editForm').addEventListener('submit', async function editUser(event) {
     event.preventDefault(); // Prevent default form submission
 
     const formData = new FormData(this);
+    const originalData = {
+        user_name: this.user_name.defaultValue,
+        gmail: this.gmail.defaultValue,
+        password: this.password.defaultValue
+    };
+
+    // 準備要發送的更新資料
+    const updatedData = {
+        id: window.user_id
+    };
+
+    if (this.user_name.value !== originalData.user_name) {
+        updatedData.user_name = this.user_name.value;
+    }
+    if (this.gmail.value !== originalData.gmail) {
+        updatedData.gmail = this.gmail.value;
+    }
+    if (this.password.value !== originalData.password) {
+        updatedData.password = this.password.value;
+    }
+    
+    console.log("updated field: ", updatedData);
 
     try {
         // Send POST request with form data
-        const response = await fetch('/edituser', {
+        const response = await fetch('/api/editUser', {
             method: 'POST',
-            body: formData
-        });
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedData)
+          });
 
         // Check if the response is OK
         if (!response.ok) {

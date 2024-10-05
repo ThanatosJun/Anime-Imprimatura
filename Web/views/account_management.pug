@@ -6,26 +6,26 @@ block body
 block content
     main
       .cardWrap
-        form.account_card#editForm
+        form.account_card#editForm(method="POST" action="/api/editUser")
           div.profile-pic
             i.fas.fa-circle-user
           .username-section#username
           div.inputs
             .input-section
               p User Name
-              input#id(type="text", value="user id", readonly)
+              input#name(type="text", name="user_name", value="user name", readonly)
               button.edit-icon(type="button", onclick="enableEdit('id')") ✎
             .input-section
               p Email
-              input#email(type="email", value="user email", readonly)
+              input#email(type="email", name="gmail", value="user email", readonly)
               button.edit-icon(type="button", onclick="enableEdit('email')") ✎
             .input-section
               p Password
-              input(type="password", placeholder="password", id="password", value="user password", readonly)
+              input#password(type="password", name="password", placeholder="password", value="user password", readonly)
               button.edit-icon(type="button", onclick="enableEdit('password')") ✎
-      div.buttons
-        button(type="submit") Save Changes
-        button.logout-btn#logout-btn Log out
+          div.buttons
+            button(type="submit") Save Changes
+            button.logout-btn#logout-btn Log out
     script(src='/javascripts/account_edit.js')
     script(src='/javascripts/logout.js')
     script(src="/javascripts/anm_hologram.js")

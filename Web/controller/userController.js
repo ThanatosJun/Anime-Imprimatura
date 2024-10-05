@@ -179,3 +179,46 @@ exports.logout = (req, res) => {
         res.status(500).json({ error: "An error occurred during logout. Please try again." });
     }
 };
+
+// editUser
+exports.editUser = async (req, res) => {
+    try {
+        const id = req.body.id;
+        const user_name = req.body.user_name;
+        const gmail = req.body.gmail;
+        const password = req.body.password;
+
+        // find by id
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        // update user info
+        if (user_name) {
+            user.user_name = user_name;  // 更新用戶名
+        }
+        if (gmail) {
+            user.gmail = gmail;  // 更新用戶郵箱
+        }
+        if (password) {
+            user.password = password;  // 更新密碼
+            user.password = await bcrypt.hash(password, 10);
+        }
+
+        // save updated user info
+        await user.save();
+
+        res.status(200).json({
+            message: "User updated successfully",
+            updatedUser: {
+                user_name: user.user_name,
+                gmail: user.gmail
+            }
+        });
+
+    } catch (error) {
+        console.error("Error updating user", error);
+        res.status(500).json({ error: "An error occurred while updating the user. Please try again." });
+    }
+};
