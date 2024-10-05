@@ -45,7 +45,7 @@ def detect_image():
     image_path = data.get('image_path')
 
     print('Now executing "Detect". ')
-    import CHD_detect_v2
+    import CHS_detect_flow1
     CHS_save_dir = None
     try:
         print(f'Received detect request with CHD_name: {CHD_name}, image_path: {image_path}')
@@ -86,15 +86,15 @@ def flex_detect_image():
     data = request.get_json()  # 获取POST请求的JSON数据
     user_id = data.get('user_id')
     character_name = data.get('character_name')
-    model = data.get('model')
+    # model = data.get('model')
     chd_path = data.get('chd_path')
     chs_path = data.get('chs_path')
 
     print('Now executing "Detect". ')
-    import CHD_detect_v2
+    import CHS_detect_flow2
     CHS_save_dir = None
     try:
-        print(f'Received detect request with character_name: {character_name}, model: {model}, chd_path: {chd_path}, chs_path: {chs_path}')
+        print(f'Received detect request with character_name: {character_name}, chd_path: {chd_path}, chs_path: {chs_path}')
         CHS_save_dir = CHD_detect_v2.main( user_id, character_name, chd_path, chs_path )
         print(CHS_save_dir)            
         
