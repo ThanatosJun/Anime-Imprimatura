@@ -82,7 +82,7 @@ def segment_image():
     
 # flexDetect
 @app.route('/flexDetect', methods=['POST'])
-def detect_image():
+def flex_detect_image():
     data = request.get_json()  # 获取POST请求的JSON数据
     user_id = data.get('user_id')
     character_name = data.get('character_name')
@@ -104,6 +104,28 @@ def detect_image():
         print(f'Error during detecting: {e}')
         return jsonify({'status': 'error', 'error': str(e) })
 
+@app.route('/fast', methods=['POST'])
+def fast_segment_image():
+    data = request.get_json()  # 获取POST请求的JSON数据
+    CH_Name = data.get('CH_Name')
+    chd_path = data.get('chd_path')
+    chs_path = data.get('chs_path')
+
+    print('Now executing "Segmentation". ')
+    import CH_Segmentation
+    color_dictionary = None
+    CHS_Finished_dir = None
+    try:
+        print(f'Received segment request with CH_Name: {CH_Name}')
+        color_dictionary, CHS_Finished_dir  = CH_Segmentation.main(CH_Name, chd_path, chs_path)
+        print("Color Dictionary: ", color_dictionary)
+        print("CHS Finished dir: ", CHS_Finished_dir)
+        
+        output = "Segment script executed successfully."
+        return jsonify({'status': 'success', 'output': output, 'color_dictionary': color_dictionary, 'CHS_Finished_dir': CHS_Finished_dir})
+    except Exception as e:
+        print(f'Error during segmenting: {e}')
+        return jsonify({'status': 'error', 'error': str(e), 'color_dictionary': color_dictionary, 'CHS_Finished_dir': CHS_Finished_dir})
     
 if __name__ == '__main__':
     app.run(port=5001, debug=True)  # 在5001端口上启动服务
