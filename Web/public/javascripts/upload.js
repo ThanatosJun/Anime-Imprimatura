@@ -1,6 +1,6 @@
 // this file handle the img preview and the generating process's submition
 
-const { model } = require("mongoose");
+// const { model } = require("mongoose");
 
 /**
  * Converts files to Base64 images and stores them in localStorage 
