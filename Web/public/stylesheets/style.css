@@ -644,15 +644,14 @@ footer {
   align-items: center;
 }
 
-.cardWrap {
+/* .cardWrap {
   -webkit-transform: perspective(800px);
   transform: perspective(800px);
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  cursor: pointer;
-}
+} */
 
-.cardWrap:hover .account_card {
+/* .cardWrap:hover .account_card {
   -webkit-transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
   transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
@@ -673,7 +672,7 @@ footer {
   box-shadow: rgba(255, 255, 255, 0.2) 0 0 40px 5px, white 0 0 0 1px,
     rgba(0, 0, 0, 0.66) 0 30px 60px 0, inset #333 0 0 0 5px,
     inset white 0 0 0 6px;
-}
+} */
 
 .account_card {
   background-color: #555;
@@ -701,11 +700,18 @@ footer {
 .account_card .profile-pic i {
   font-size: 100px;
 }
-div.inputs{
-  padding: 20px 0;
+.account-management .username-section {
+  margin: 20px 10px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
 }
 .account_card p {
   margin: 10px 0;
+  font-size: 15px;
 }
 .account_card input[type="text"], .account_card input[type="email"], .account_card input[type="password"] {
   width: auto;
@@ -719,8 +725,20 @@ div.inputs{
 .account_card .input-section {
   margin: 18px 80px;
 }
-span.edit-icon {
+.edit-icon {
   margin-left: 8px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  font-size: 15px;
+  z-index: 999;
 }
 div.buttons {
   margin-top: 6vh;
@@ -728,19 +746,23 @@ div.buttons {
   justify-content: center;
   gap: 20px;
 }
-.buttons button {
-  color: rgba(213, 213, 210);
-  font-size: 16px;
+.account-management .buttons button {
+  color: #ccc;
+  font-size: 15px;
   font-weight: 450;
-  background-color: rgba(135, 188, 83, 0.5);
+  background-color: rgba( 220, 220, 220, 0.15 );
   border: 1px solid #ccc;
   border-radius: 16px;
   padding: 6px 18px;
   cursor: pointer;
+  text-decoration: none;
 }
-
-button.logout-btn {
-  background-color: rgba(210, 40, 64, 0.5);
+.account-management .buttons button:hover {
+  font-weight: bold;
+}
+.account-management #logout-btn {
+  color: #ccc;
+  background-color: rgba(79, 26, 126, 0.243);
 }
 
 /* Generate Page Styles */
@@ -857,7 +879,7 @@ button.logout-btn {
   max-width: 1200px;
 }
 
-.responsive-image {
+.generate .responsive-image {
   max-width: 100%;
   height: auto;
   object-fit: contain; /* Ensure the image fits well inside the container */
@@ -916,7 +938,7 @@ button.logout-btn {
     0 0 100px #008cff;
 }
 
-.generate .btn-container {
+.generate .select-btn-container {
   position: relative; 
   display: inline-block;
   margin: 50px;
@@ -1126,7 +1148,7 @@ button.logout-btn {
   border: solid 1px #ffffff;
 }
 
-.login input[type="email"], input[type="password"] {
+.login input[type="email"], .login input[type="password"] {
   width: 100%;
   padding: 10px;
   margin: 10px 0;

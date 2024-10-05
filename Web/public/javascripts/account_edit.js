@@ -3,15 +3,20 @@ document.addEventListener('getUserCompleted', () => {
     
     var idInput = document.getElementById('id');
     var emailInput = document.getElementById('email');
+    var userNameSection = document.getElementById('username');
 
     if(window.user_id) {
-        idInput.value = window.user_id;
+        idInput.value = window.user_name;
         emailInput.value = window.user_email;
+        userNameSection.textContent = window.user_name;
+
     }
 });
 
 // Toggle the readOnly state of an input field and focus it if editable
 function enableEdit(id) {
+    event.preventDefault(); // Prevent default form submission
+
     const input = document.getElementById(id);
     console.log("(account_edit) id: ",id );
     if (input) {

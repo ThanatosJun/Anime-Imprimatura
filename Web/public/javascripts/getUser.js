@@ -1,6 +1,7 @@
 // this file get the logined user's id & mail
 
 window.user_id = null;
+window.user_name = null;
 window.user_email = null;
 
 async function fetchUserData() {
@@ -23,6 +24,7 @@ async function fetchUserData() {
             console.log('Content fetched:', data);
 
             window.user_id = data.user.id;
+            window.user_name = data.user.name;
             window.user_email = data.user.gmail;
 
             console.log('(getUser.js) id:', window.user_id);

@@ -1,24 +1,28 @@
 extends layout
 
+block body
+  - var bodyClass = 'account-management'
+
 block content
     main
       .cardWrap
         form.account_card#editForm
           div.profile-pic
             i.fas.fa-circle-user
+          .username-section#username
           div.inputs
             .input-section
-              p user id
+              p User Name
               input#id(type="text", value="user id", readonly)
-              span.edit-icon(onclick="enableEdit('id')") ✎
+              button.edit-icon(type="button", onclick="enableEdit('id')") ✎
             .input-section
-              p email
+              p Email
               input#email(type="email", value="user email", readonly)
-              span.edit-icon(onclick="enableEdit('email')") ✎
+              button.edit-icon(type="button", onclick="enableEdit('email')") ✎
             .input-section
-              p password
+              p Password
               input(type="password", placeholder="password", id="password", value="user password", readonly)
-              span.edit-icon(onclick="enableEdit('password')") ✎
+              button.edit-icon(type="button", onclick="enableEdit('password')") ✎
       div.buttons
         button(type="submit") Save Changes
         button.logout-btn#logout-btn Log out

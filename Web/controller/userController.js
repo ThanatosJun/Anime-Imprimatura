@@ -71,7 +71,7 @@ exports.login = async (req, res)=>{
 
         if(user&&isPasswordValid){
             //generate jwt and return
-            const token = await jwt.sign({id: user._id.toString(), gmail: user.gmail}, process.env.JWT_SECRET, { expiresIn: rememberMe ? '7d' : '1h' });
+            const token = await jwt.sign({id: user._id.toString(), name: user.user_name, gmail: user.gmail}, process.env.JWT_SECRET, { expiresIn: rememberMe ? '7d' : '1h' });
             res.json({
                 message: 'Login successful',
                 token: token
