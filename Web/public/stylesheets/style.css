@@ -362,7 +362,7 @@ div {
 }
 
 footer {
-  background-color: #333;
+  background-color: #33333367;
   padding: 20px 20px;
   text-align: center;
   display: flex;
@@ -375,7 +375,7 @@ footer {
 .footer-links a {
   color: white;
   text-decoration: none;
-  margin: 0 10px;
+  margin: 0 40px;
 }
 
 .footer-links a:hover {
@@ -864,10 +864,23 @@ button.logout-btn {
 }
 
 .generate .select-title {
+  position: relative;
   display: flex;
   margin-bottom: 20px;
   font-size: 25px;
   font-family: roboto;
+}
+
+.generate .select-title::after {
+  content: ''; 
+  position: absolute;
+  left: 0; 
+  right: 0; 
+  bottom: 3;
+  height: 8px; 
+  background-color: rgba(178, 146, 241, 0.751); 
+  z-index: -1;
+  border-radius: 3px;
 }
 
 .generate .process-select {
@@ -883,7 +896,7 @@ button.logout-btn {
   border-radius: 42px;
   font-size: 15px;
   font-weight: 500;
-  color: #ffffff80;
+  color: #ffffffe4;
   text-shadow: none;
   background: transparent;
   cursor: pointer;
@@ -901,6 +914,69 @@ button.logout-btn {
   text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;
   box-shadow: 0 0 5px #008cff, 0 0 20px #008cff, 0 0 50px #008cff,
     0 0 100px #008cff;
+}
+
+.generate .btn-container {
+  position: relative; 
+  display: inline-block;
+  margin: 50px;
+}
+
+.generate .description {
+  position: absolute;
+  top: 200%;
+  left: -55%;
+  right: -55%;
+  background-color: #8b87877d;
+  border-radius: 14px;
+  padding: 10px;
+  text-align: center;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.5s ease;
+}
+
+.generate .btn-container:hover .description {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#standard-btn:hover {
+  content: "start now!";
+}
+
+#standard-btn::after {
+  content: "standard process";
+}
+
+#standard-btn:hover::after {
+  content: "start now!";
+}
+
+#flex-btn:hover {
+  content: "start now!";
+}
+
+#flex-btn::after {
+  content: "flexible process";
+}
+
+#flex-btn:hover::after {
+  content: "start now!";
+}
+
+#fast-btn:hover {
+  content: "start now!";
+}
+
+#fast-btn::after {
+  content: "fast track process";
+}
+
+#fast-btn:hover::after {
+  content: "start now!";
 }
 
 .generate .form {
