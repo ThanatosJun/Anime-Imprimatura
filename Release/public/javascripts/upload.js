@@ -385,7 +385,7 @@ async function submitFormFlex() {
         headers: {
         'Content-Type': 'application/json'
         },
-        body: formData
+        body: JSON.stringify(formData)
     });
 
     if (!flexResponse.ok) {
@@ -441,10 +441,10 @@ async function submitFormFast() {
   try {
       const fastResponse = await fetch(`/fast`, {
           method: 'POST',
-          headers: {
-          'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData)
+          // headers: {
+          // 'Content-Type': 'application/json'
+          // },
+          body: formData
       });
 
       if (!fastResponse.ok) {

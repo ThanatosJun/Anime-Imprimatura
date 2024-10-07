@@ -58,6 +58,10 @@ app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use('/path/to/images', express.static(path.join(__dirname)));
 app.use(express.json());
 
+// upload payload settings
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+
 // Middleware to log requests
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
