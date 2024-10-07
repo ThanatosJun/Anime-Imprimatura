@@ -299,7 +299,7 @@ const uploadFlexDetect = multer({ storage: storageFlexDetect }).fields([
   { name: 'uploadBoxCHS', maxCount: 10 }  // CHS upload field
 ]);
 
-// flexible-1
+// flexible
 router.post('/uploadAndDetect_flex',uploadFlexDetect,  async (req, res) => {
   try {
     console.log('Received Data');
@@ -433,7 +433,7 @@ const uploadFast = multer({ storage: storageFast }).fields([
 ]);
 
 // fast
-router.post('/fast',uploadFast,  async (req, res) => {
+router.post('/fast', uploadFast,  async (req, res) => {
   try {
     console.log('Received Data');
     const userId = req.body.user_id;
