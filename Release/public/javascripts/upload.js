@@ -427,6 +427,8 @@ async function submitFormFast() {
   // Adding userId to formData
   formData.append('user_id', userId);
 
+  console.log("formData: ", formData);
+
   if (loadingMasks.length === 0) {
       console.error('(upload.js) Loading mask elements are missing');
       return;
@@ -441,10 +443,7 @@ async function submitFormFast() {
   try {
       const fastResponse = await fetch(`/fast`, {
           method: 'POST',
-          headers: {
-          'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData)
+          body: formData
       });
 
       if (!fastResponse.ok) {
