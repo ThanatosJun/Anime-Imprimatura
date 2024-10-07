@@ -427,8 +427,6 @@ async function submitFormFast() {
   // Adding userId to formData
   formData.append('user_id', userId);
 
-  console.log("formData: ", formData);
-
   if (loadingMasks.length === 0) {
       console.error('(upload.js) Loading mask elements are missing');
       return;
