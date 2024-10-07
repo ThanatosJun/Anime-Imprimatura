@@ -439,7 +439,7 @@ async function submitFormFast() {
   loadingMask.style.opacity = 1;
 
   try {
-      const fastResponse = await fetch(`/upload_fast`, {
+      const fastResponse = await fetch(`/fast`, {
           method: 'POST',
           headers: {
           'Content-Type': 'application/json'
@@ -449,12 +449,12 @@ async function submitFormFast() {
 
       if (!fastResponse.ok) {
           const errorText = await fastResponse.text();
-          throw new Error(`(upload.js) Flex failed: ${errorText}`);
+          throw new Error(`(upload.js) Fast failed: ${errorText}`);
       }
 
       // Parse the response JSON data
       const fastData = await fastResponse.json();
-      console.log(`(upload.js) Flex response:`, fastData);
+      console.log(`(upload.js) Fast response:`, fastData);
 
       localStorage.setItem('CHS_save_dir', fastData.CHS_save_dir);
       localStorage.setItem('color_dictionary', JSON.stringify(fastData.color_dictionary));
