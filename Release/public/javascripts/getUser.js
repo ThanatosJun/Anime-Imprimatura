@@ -1,15 +1,18 @@
 // this file get the logined user's id & mail
 
 window.user_id = null;
+window.user_name = null;
 window.user_email = null;
 
 async function fetchUserData() {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('token')||sessionStorage.getItem('token')) {
+        const token = localStorage.getItem('token') ? localStorage.getItem('token') : sessionStorage.getItem('token');
+
         try {
             const response = await fetch('/api/content', {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    'Authorization': `Bearer ${token}`
                 }
             });
 
@@ -21,6 +24,7 @@ async function fetchUserData() {
             console.log('Content fetched:', data);
 
             window.user_id = data.user.id;
+            window.user_name = data.user.name;
             window.user_email = data.user.gmail;
 
             console.log('(getUser.js) id:', window.user_id);
@@ -33,7 +37,7 @@ async function fetchUserData() {
             console.error('(getUser.js) Error fetching content:', error); // Handle other errors
         }
     } else {
-        console.log('(getUser.js) No token found in localStorage');
+        console.log('(getUser.js) No token found in cookie');
     }
 
     document.dispatchEvent(new Event('getUserCompleted'));

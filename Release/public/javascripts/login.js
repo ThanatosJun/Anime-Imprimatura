@@ -6,6 +6,17 @@
 5. 在 userController.js 的 content 函數中，伺服器處理用戶請求並返回受保護的內容
 */
 
+const userMailInput = document.getElementById('gmail');
+const userPwdInput = document.getElementById('password');
+const rememberMail = localStorage.getItem('user_mail');
+const rememberPwd = localStorage.getItem('user_pwd');
+console.log('(login.js) user_email: ', localStorage.getItem(user_email));
+
+if(rememberMail&&rememberPwd){
+    userMailInput.value = rememberMail;
+    userPwdInput.value = decodePassword(rememberPwd);
+}
+
 async function login(event) {
     event.preventDefault(); // Prevent the form from submitting normally
 
@@ -25,12 +36,23 @@ async function login(event) {
             // Handle successful login
             const loginData = await loginResponse.json();
             console.log('Login successful');
-            localStorage.setItem('token', loginData.token);
+
+            if (rememberMe) {
+                localStorage.setItem('token', loginData.token);
+                const encodedPassword = encodePassword(userPassword);
+                localStorage.setItem('user_mail', userMail);
+                localStorage.setItem('user_pwd', encodedPassword);
+
+            } else {
+                sessionStorage.setItem('token', loginData.token);
+                localStorage.removeItem('user_mail');
+                localStorage.removeItem('user_pwd');
+            }
 
             const contentResponse = await fetch('/api/content', {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    'Authorization': `Bearer ${loginData.token}`
                 }
             })
 
@@ -57,4 +79,12 @@ async function login(event) {
         console.error('Error during login:', error);
         alert('Login error. Please try again');
     }
+}
+
+function encodePassword(password) {
+    return btoa(password);
+}
+  
+function decodePassword(encodedPassword) {
+    return atob(encodedPassword);
 }

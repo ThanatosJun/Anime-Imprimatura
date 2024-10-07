@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+/* GET account management page. */
 router.get('/', function(req, res, next) {
   res.render('account_management', { title: 'Account Management' });
 });

@@ -76,6 +76,7 @@ var generateRouter = require('./routes/generateRoute');
 var teamGalleryFRouter = require('./routes/team_gallery_f');
 var teamGalleryTRouter = require('./routes/team_gallery_t');
 var testRouter = require('./routes/testRoute');
+var supportRouter = require('./routes/supportRoute');
 
 // Use the imported routes
 app.use('/', guestRouter);
@@ -86,6 +87,7 @@ app.use('/generate', generateRouter);
 app.use('/team_gallery_f', teamGalleryFRouter);
 app.use('/team_gallery_t', teamGalleryTRouter);
 app.use('/test', testRouter);
+app.use('/support', supportRouter);
 
 // API route handler
 app.use('/api', apiRouter); // Prefix API routes with '/api'
@@ -213,6 +215,8 @@ app.post('/edituser', async (req, res) => {
 app.post('/uploadAndTrain', imageController); // Handle CHD upload and initial processing
 app.post('/uploadAndDetect', imageController); // Handle CHS upload and initial processing
 app.post('/uploadAndSegment', imageController);
+app.post('/fast', imageController);
+app.post('/uploadAndDetect_flex', imageController);
 app.post('/saveToGallery_personal_chd', galleryController.saveToGallery_personal_chd);
 app.post('/saveToGallery_personal_chs', galleryController.saveToGallery_personal_chs);
 app.post('/saveToGallery_personal_final', galleryController.saveToGallery_personal_final);

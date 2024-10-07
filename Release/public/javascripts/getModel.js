@@ -6,11 +6,12 @@ const getModel = async () => {
     if(window.user_id){
         try {
             const userId = window.user_id;
+            const token = localStorage.getItem('token') ? localStorage.getItem('token') : sessionStorage.getItem('token');
             console.log('(getModel.js) user_id: ', userId);
             const response = await fetch('/api/getmodel', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`, 
+                    'Authorization': `Bearer ${token}`, 
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ user_id: userId })
@@ -23,7 +24,7 @@ const getModel = async () => {
             // optionsData = [ 'option1', 'option2' ];
 
             if (response.status == 404){
-                alert("You can't skip this step if you have no existing model");
+                alert("You can't skip training step if you have no existing model");
                 window.location.href = '/generate/train';
             } else {
                 optionsData = data;
