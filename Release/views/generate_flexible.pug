@@ -17,22 +17,22 @@ block content
     .form
         .upload-form
             form(id="uploadFormFlex", method="post", action="/uploadAndDetect_flex", enctype="multipart/form-data")
-            .upload-section
-                .upload
-                    span the name of the character
-                    input#character_name(type="text" name="character_name" placeholder="character name" required)
-                .upload
-                    label(for="model-select") choose the model you would like to use for detecting
-                    select.model-select#model-select(name="options")
-                .upload-img
+                .upload-section
                     .upload
-                        span Upload CHD
-                        .upload-box#uploadBoxCHD
-                            input#chd(type="file" name="chd" accept="image/*" multiple onchange="handleFiles(this.files, 'uploadBoxCHD')")
+                        span the name of the character
+                        input#character_name(type="text" name="character_name" placeholder="character name" required)
                     .upload
-                        span Upload CHS
-                        .upload-box#uploadBoxCHS
-                            input#chs(type="file" name="chs" accept="image/*" multiple onchange="handleFiles(this.files, 'uploadBoxCHS')")
+                        label(for="model-select") choose the model you would like to use for detecting
+                        select.model-select#model-select(name="options")
+                    .upload-img
+                        .upload
+                            span Upload CHD
+                            .upload-box#uploadBoxCHD
+                                input#chd(type="file" name="chd" accept="image/*" multiple onchange="handleFiles(this.files, 'uploadBoxCHD')")
+                        .upload
+                            span Upload CHS
+                            .upload-box#uploadBoxCHS
+                                input#chs(type="file" name="chs" accept="image/*" multiple onchange="handleFiles(this.files, 'uploadBoxCHS')")
             .btn-container#btn-container
                 button.generate-btn(type="button" onclick="submitFormFlex()") ⚡ Detect
   script(src='/javascripts/loading.js')
