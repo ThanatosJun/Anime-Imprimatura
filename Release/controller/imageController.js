@@ -13,7 +13,6 @@ const storageTrain = multer.diskStorage({
     // folder path
     const chdName = req.body.character_name;
     console.log(chdName)
-    // console.log(str(chdName))
     const uploadPath = path.join(__dirname, 'uploads', chdName);
 
     // check if the folder exsists
@@ -272,5 +271,270 @@ router.post('/uploadAndSegment', (req, res) => {
 router.post('deleteImg', (req, res) => {
   console.log('R')
 })
+
+// multer for flexible
+const storageFlexDetect = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const chdName = req.body.character_name;
+    const uploadPath = path.join(__dirname, 'uploadFlexDetect', chdName);
+
+    // check if the folder exsists
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+
+    // Store files in different directories based on the type (CHD or CHS)
+    if (file.fieldname === 'uploadBoxCHD') {
+      cb(null, path.join(uploadPath, 'chd')); // CHD images
+    } else if (file.fieldname === 'uploadBoxCHS') {
+      cb(null, path.join(uploadPath, 'chs')); // CHS images
+    }
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = crypto.randomBytes(16).toString('hex');
+    cb(null, uniqueSuffix + path.extname(file.originalname));  }
+});
+const uploadFlexDetect = multer({ storage: storageFlexDetect }).fields([
+  { name: 'uploadBoxCHD', maxCount: 10 }, // CHD upload field
+  { name: 'uploadBoxCHS', maxCount: 10 }  // CHS upload field
+]);
+
+// flexible-1
+router.post('/uploadAndDetect_flex',uploadFlexDetect,  async (req, res) => {
+  try {
+    console.log('Received Data');
+    const userId = req.body.user_id;
+    const chdName = req.body.character_name;
+    
+    console.log('user id:', userId);
+    console.log('character name: ', chdName);
+
+    // Handle CHD images
+    const uploadedChdFilePaths = [];
+    if (req.files['uploadBoxCHD']) {
+      for (let i = 0; i < req.files['uploadBoxCHD'].length; i++) {
+        uploadedChdFilePaths.push(req.files['uploadBoxCHD'][i].path);
+      }
+      console.log('CHD image paths:', uploadedChdFilePaths);
+    }
+
+    // Handle CHS images
+    const uploadedChsFilePaths = [];
+    if (req.files['uploadBoxCHS']) {
+      for (let i = 0; i < req.files['uploadBoxCHS'].length; i++) {
+        uploadedChsFilePaths.push(req.files['uploadBoxCHS'][i].path);
+      }
+      console.log('CHS image paths:', uploadedChsFilePaths);
+    }
+
+    // post to test.py
+    const detectResponse = await fetch('http://localhost:5001/flexDetect', {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId, character_name: chdName, chd_path: uploadedChdFilePaths, chs_path: uploadedChsFilePaths }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const detectData = await detectResponse.json();
+    console.log('(imageController.js) Detect response:', detectData);
+    const CHS_save_dir = detectData.CHS_save_dir;
+    let imagePaths = [];
+
+    // 定義一個函數來遍歷資料夾並獲取圖片路徑
+    function getImagePaths(dir) {
+      return new Promise((resolve, reject) => {
+        fs.readdir(dir, (err, files) => {
+          if (err) {
+            return reject('Error reading directory: ' + err);
+          }
+
+          // 建立圖片路徑的陣列
+          let imagePaths = [];
+
+          // 將每個文件的完整路徑存入陣列
+          files.forEach(file => {
+            const filePath = path.join(dir, file);
+            imagePaths.push(filePath);
+          });
+
+          // 返回圖片路徑陣列
+          resolve(imagePaths);
+        });
+      });
+    }
+
+    // 遍歷 CHS_save_dir 資料夾並獲取所有圖片路徑
+    imagePaths = await getImagePaths(CHS_save_dir);
+    console.log('Image paths:', imagePaths);
+
+    // save chs if logged in
+    if (userId) { 
+      try {
+        const saveResponse = await fetch('http://localhost:3000/saveToGallery_personal_chs', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            CHS_save_dir: imagePaths
+          })
+        });
+
+        const saveData = await saveResponse.json();
+        console.log('Image saved to gallery:', saveData);
+      } catch (saveError) {
+        console.error('Error saving image to gallery:', saveError);
+      }
+    }
+
+    // clear the data
+    const uploadDir = path.join(__dirname, 'uploadFlexDetect', chdName);
+    fs.rmdir(uploadDir, { recursive: true }, (err) => {
+      if (err) {
+        console.error('Error while deleting directory:', err);
+      } else {
+        console.log('Upload directory successfully deleted:', uploadDir);
+      }
+    });
+
+    res.status(200).json({ message: 'Images uploaded and processed successfully.', detectData: detectData });
+  } catch (error) {
+    
+  }
+});
+
+// multer for fast
+const storageFast = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const chdName = req.body.character_name;
+    const uploadPath = path.join(__dirname, 'storageFast', chdName);
+
+    // check if the folder exsists
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+
+    // Store files in different directories based on the type (CHD or CHS)
+    if (file.fieldname === 'uploadBoxCHD') {
+      cb(null, path.join(uploadPath, 'chd')); // CHD images
+    } else if (file.fieldname === 'uploadBoxCHS') {
+      cb(null, path.join(uploadPath, 'chs')); // CHS images
+    }
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = crypto.randomBytes(16).toString('hex');
+    cb(null, uniqueSuffix + path.extname(file.originalname));  }
+});
+const uploadFast = multer({ storage: storageFast }).fields([
+  { name: 'uploadBoxCHD', maxCount: 10 }, // CHD upload field
+  { name: 'uploadBoxCHS', maxCount: 10 }  // CHS upload field
+]);
+
+// fast
+router.post('/fast',uploadFast,  async (req, res) => {
+  try {
+    console.log('Received Data');
+    const userId = req.body.user_id;
+    const chdName = req.body.character_name;
+    
+    console.log('user id:', userId);
+
+    // Handle CHD images
+    const uploadedChdFilePaths = [];
+    if (req.files['uploadBoxCHD']) {
+      for (let i = 0; i < req.files['uploadBoxCHD'].length; i++) {
+        uploadedChdFilePaths.push(req.files['uploadBoxCHD'][i].path);
+      }
+      console.log('CHD image paths:', uploadedChdFilePaths);
+    }
+
+    // Handle CHS images
+    const uploadedChsFilePaths = [];
+    if (req.files['uploadBoxCHS']) {
+      for (let i = 0; i < req.files['uploadBoxCHS'].length; i++) {
+        uploadedChsFilePaths.push(req.files['uploadBoxCHS'][i].path);
+      }
+      console.log('CHS image paths:', uploadedChsFilePaths);
+    }
+
+    // post to test.py
+    const fastResponse = await fetch('http://localhost:5001/fast', {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId, character_name: chdName, chd_path: uploadedChdFilePaths, chs_path: uploadedChsFilePaths }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const fastData = await fastResponse.json();
+    console.log('(imageController.js) Generate response:', fastData);
+    const CHS_save_dir = fastData.CHS_save_dir;
+    let imagePaths = [];
+
+    // 定義一個函數來遍歷資料夾並獲取圖片路徑
+    function getImagePaths(dir) {
+      return new Promise((resolve, reject) => {
+        fs.readdir(dir, (err, files) => {
+          if (err) {
+            return reject('Error reading directory: ' + err);
+          }
+
+          // 建立圖片路徑的陣列
+          let imagePaths = [];
+
+          // 將每個文件的完整路徑存入陣列
+          files.forEach(file => {
+            const filePath = path.join(dir, file);
+            imagePaths.push(filePath);
+          });
+
+          // 返回圖片路徑陣列
+          resolve(imagePaths);
+        });
+      });
+    }
+
+    // 遍歷 CHS_save_dir 資料夾並獲取所有圖片路徑
+    imagePaths = await getImagePaths(CHS_save_dir);
+    console.log('Image paths:', imagePaths);
+
+    // save chs if logged in
+    if (userId) { 
+      try {
+        const saveResponse = await fetch('http://localhost:3000/saveToGallery_personal_chs', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            CHS_save_dir: imagePaths
+          })
+        });
+
+        const saveData = await saveResponse.json();
+        console.log('Image saved to gallery:', saveData);
+      } catch (saveError) {
+        console.error('Error saving image to gallery:', saveError);
+      }
+    }
+
+    // clear the data
+    const uploadDir = path.join(__dirname, 'storageFast', chdName);
+    fs.rmdir(uploadDir, { recursive: true }, (err) => {
+      if (err) {
+        console.error('Error while deleting directory:', err);
+      } else {
+        console.log('Upload directory successfully deleted:', uploadDir);
+      }
+    });
+
+    res.status(200).json({ message: 'Images uploaded and processed successfully.', fastData: fastData });
+  } catch (error) {
+    
+  }
+});
 
 module.exports = router;

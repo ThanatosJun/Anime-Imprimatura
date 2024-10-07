@@ -22,6 +22,11 @@ router.post('/login', (req, res, next) => {
     next();
 }, userController.login);
 
+router.post('/editUser', (req, res, next) =>{
+    console.log('POST /api/editUser', req.body);
+    next();
+}, userController.editUser);
+
 router.get('/content', userController.authenticateToken, userController.content);
 
 // pt routes
@@ -31,52 +36,7 @@ router.post('/checkmodelduplicate', ptController.checkModelDuplicate);
 
 // Image routes
 const imageController = require('./controller/imageController');
-router.post('/uploadAndGenerate', (req, res, next) => {
-    console.log('POST /api/upload', req.body);
-    next();
-}, imageController);
 
-// Train route
-router.post('/train', (req, res) => {
-    script_path = 'yolov8_RPA_character_train_v3/PA_autoTraing_v5.py'
-    const { CHD_name, image_path } = req.body;
-
-    const options = {
-        args: [CHD_name, image_path]
-    };
-
-    PythonShell.run(script_path, options, (err, results) => {
-        if (err) {
-            console.error(`Error: ${err}`);
-            res.status(500).send(err);
-        } else {
-            console.log(`(api.js) Results: ${results}`);
-            res.send(results.join('\n'));
-        }
-    });
-});
-
-// Detect route
-router.post('/detect', (req, res) => {
-    script_path = '/Users/pigg/Documents/GitHub/Anime-Imprimatura/Thanatos/yolov8_RPA_character_train_v3/CHD_detect.py'
-    const { CHS_Name } = req.body;
-    const { image_path } = req.body;
-
-    const options = {
-        args: [CHS_Name],
-        args: [image_path]
-    };
-
-    PythonShell.run(script_path, options, (err, results) => {
-        if (err) {
-            console.error(`Error: ${err}`);
-            res.status(500).send(err);
-        } else {
-            console.log(`Results: ${results}`);
-            res.send(results.join('\n'));
-        }
-    });
-});
 
 // personal gallery routes
 const galleryController = require('./controller/galleryController');
