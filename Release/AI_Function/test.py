@@ -107,7 +107,7 @@ def flex_detect_image():
 @app.route('/fast', methods=['POST'])
 def fast_segment_image():
     data = request.get_json()  # 获取POST请求的JSON数据
-    CH_Name = data.get('CH_Name')
+    CH_Name = data.get('character_name')
     chd_path = data.get('chd_path')
     chs_path = data.get('chs_path')
 
