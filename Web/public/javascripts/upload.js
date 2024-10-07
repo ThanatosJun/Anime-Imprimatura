@@ -444,7 +444,7 @@ async function submitFormFast() {
           headers: {
           'Content-Type': 'application/json'
           },
-          body: formData
+          body: JSON.stringify(formData)
       });
 
       if (!fastResponse.ok) {

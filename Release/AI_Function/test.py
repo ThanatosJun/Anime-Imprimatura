@@ -1,9 +1,5 @@
 from flask import Flask, request, jsonify 
 from flask_cors import CORS
-import subprocess
-import os
-import json
-os.environ['YOLO_HOME'] = '/your/desired/home/path'
 
 app = Flask(__name__)
 CORS(app)
@@ -74,6 +70,56 @@ def segment_image():
     CHS_Finished_dir = None
     try:
         print(f'Received segment request with CH_Name: {CH_Name}')
+        color_dictionary, CHS_Finished_dir  = CH_Segmentation.main(CH_Name)
+        print("Color Dictionary: ", color_dictionary)
+        print("CHS Finished dir: ", CHS_Finished_dir)
+        
+        output = "Segment script executed successfully."
+        return jsonify({'status': 'success', 'output': output, 'color_dictionary': color_dictionary, 'CHS_Finished_dir': CHS_Finished_dir})
+    except Exception as e:
+        print(f'Error during segmenting: {e}')
+        return jsonify({'status': 'error', 'error': str(e), 'color_dictionary': color_dictionary, 'CHS_Finished_dir': CHS_Finished_dir})
+    
+# flexDetect
+@app.route('/flexDetect', methods=['POST'])
+def flex_detect_image():
+    data = request.get_json()  # 获取POST请求的JSON数据
+    user_id = data.get('user_id')
+    character_name = data.get('character_name')
+    chd_path = data.get('chd_path')
+    chs_path = data.get('chs_path')
+
+    print('Now executing "Detect". ')
+    import CHS_detect_flow2
+    CHS_save_dir = None
+    try:
+        print(f'Received detect request with character_name: {character_name}, chd_path: {chd_path}, chs_path: {chs_path}')
+        CHS_save_dir = CHS_detect_flow2.main( user_id, character_name, chd_path, chs_path )
+        print(CHS_save_dir)            
+        
+        output = "Detect script executed successfully."
+        return jsonify({'status': 'success', 'output': output })
+    except Exception as e:
+        print(f'Error during detecting: {e}')
+        return jsonify({'status': 'error', 'error': str(e) })
+
+# fast
+@app.route('/fast', methods=['POST'])
+def fast_segment_image():
+    data = request.get_json()  # 获取POST请求的JSON数据
+    CH_Name = data.get('character_name')
+    chd_path = data.get('chd_path')
+    chs_path = data.get('chs_path')
+    print(data)
+
+    print('Now executing "Segmentation". ')
+    import CH_Upload_Store
+    import CH_Segmentation
+    color_dictionary = None
+    CHS_Finished_dir = None
+    try:
+        print(f'Received segment request with CH_Name: {CH_Name}')
+        CH_Upload_Store(CH_Name, chd_path, chs_path)
         color_dictionary, CHS_Finished_dir  = CH_Segmentation.main(CH_Name)
         print("Color Dictionary: ", color_dictionary)
         print("CHS Finished dir: ", CHS_Finished_dir)

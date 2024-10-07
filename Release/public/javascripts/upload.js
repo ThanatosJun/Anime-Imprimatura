@@ -441,7 +441,10 @@ async function submitFormFast() {
   try {
       const fastResponse = await fetch(`/fast`, {
           method: 'POST',
-          body: formData
+          headers: {
+          'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
       });
 
       if (!fastResponse.ok) {
