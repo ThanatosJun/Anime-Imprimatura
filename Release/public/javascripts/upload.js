@@ -68,8 +68,8 @@ function getBase64Image(img) {
 /**
  * Handles file selection and preview
  */ 
+let imagePaths = { uploadBoxCHS: [], uploadBoxCHD: [] };
 function handleFiles(files, containerId) {
-  let imagePaths = { uploadBoxCHS: [], uploadBoxCHD: [] };
   
   console.log(`Handling files for:`, containerId);
   console.log(`Files:`, files);
