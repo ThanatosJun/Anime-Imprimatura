@@ -385,7 +385,7 @@ async function submitFormFlex() {
         headers: {
         'Content-Type': 'application/json'
         },
-        body: formData
+        body: JSON.stringify(formData)
     });
 
     if (!flexResponse.ok) {
