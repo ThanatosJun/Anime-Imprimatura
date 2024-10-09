@@ -417,7 +417,7 @@ router.post('/uploadAndDetect_flex',uploadFlexDetect,  async (req, res) => {
       }
     });
 
-    res.status(200).json({ message: 'Images uploaded and processed successfully.', detectData: detectData });
+    res.status(200).json(detectData);
   } catch (error) {
     
   }
