@@ -365,21 +365,6 @@ async function submitFormFlex() {
   fileToImage(chsInput.files, 'chs'); 
 
   try {
-    // const isDuplicate = await fetch('/api/checkmodelduplicate', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //     user_id: userId,
-    //     model_name: characterName })
-    // });
-
-    // if (!isDuplicate.ok) {
-    //   alert('The character name is repeated. Please choose another name.');
-    //   return;
-    // } 
-
     const flexResponse = await fetch(`/uploadAndDetect_flex`, {
         method: 'POST',
         body: formData

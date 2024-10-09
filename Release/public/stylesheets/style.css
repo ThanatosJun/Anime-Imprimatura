@@ -817,11 +817,12 @@ div.buttons {
   opacity: 0.7;
   margin-bottom: 10px;
   position: relative;
-  overflow: hidden;
+  overflow: auto;
   border: none;
   outline: none;
   background-color: #ccc;
   box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
+  box-sizing: border-box;
 }
 
 .generate .upload-box input[type="file"] {
@@ -845,8 +846,8 @@ div.buttons {
 }
 
 .generate .preview {
-  width: 108px;
-  height: 100px;
+  width: 150px;
+  height: auto;
   object-fit: cover;
   margin: 5px;
 }
