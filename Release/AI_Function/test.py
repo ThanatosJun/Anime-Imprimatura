@@ -111,6 +111,7 @@ def fast_segment_image():
     chd_path = data.get('chd_path')
     chs_path = data.get('chs_path')
 
+    print(data)
     print('Now executing "Segmentation". ')
     import CH_Upload_Store
     import CH_Segmentation
@@ -118,7 +119,7 @@ def fast_segment_image():
     CHS_Finished_dir = None
     try:
         print(f'Received segment request with CH_Name: {CH_Name}')
-        CH_Upload_Store(CH_Name, chd_path, chs_path)
+        CH_Upload_Store.main(CH_Name, chd_path, chs_path)
         color_dictionary, CHS_Finished_dir  = CH_Segmentation.main(CH_Name)
         print("Color Dictionary: ", color_dictionary)
         print("CHS Finished dir: ", CHS_Finished_dir)
