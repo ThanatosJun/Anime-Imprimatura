@@ -19,6 +19,7 @@ class CHS_Detect():
     def __init__(self, CHD_Name, User_ID):
         self.CHD_Name = os.path.splitext(CHD_Name)[0]
         self.CHD_Detect_dir = os.path.join("CHD_Detect", self.CHD_Name)
+        print(self.CHD_Detect_dir)
         self.CHS_dir = os.path.join("CHS", self.CHD_Name)
         self.CHS_Detect_dir = os.path.join("CHS_Detect", self.CHD_Name)
         self.model_path = os.path.join("CHD_Model", User_ID, self.CHD_Name + ".pt")
@@ -57,8 +58,8 @@ class CHS_Detect():
         CH_Upload(CHD_upload_image_path, self.CHD_Detect_dir)
         CH_Upload(CHS_upload_image_path, self.CHS_dir)
         results = self.CHS_detect(self.model_path, self.CHS_dir)    # detect
-        self.CHS_save(results, self.CHS_save_dir)  # save CHS
-        return self.CHS_save_dir
+        self.CHS_save(results, self.CHS_Detect_dir)  # save CHS
+        return self.CHS_Detect_dir
     
 def CH_Upload(input_dir_path, store_dir_path):
     i = 1
@@ -83,7 +84,7 @@ def get_image_path(dataset_train_path):
     return image_paths
 
 # Function for main process
-def main(CHD_Name, CHD_upload_image_path, CHS_upload_image_path, User_ID):
+def main(User_ID, CHD_Name, CHD_upload_image_path, CHS_upload_image_path):
     CHS_detect = CHS_Detect(CHD_Name, User_ID)
     CHS_save_dir = CHS_detect.main(CHD_upload_image_path, CHS_upload_image_path)
     print("Finish SAVE CHS\n")
@@ -100,5 +101,6 @@ if __name__ == "__main__":
     CHD_upload_image_path = sys.argv[2]
     CHS_upload_image_path = sys.argv[3]
     User_ID = sys.argv[4]
+    model_name = sys.argv[5]
 
     main(CHD_name, CHD_upload_image_path, CHS_upload_image_path, User_ID)
