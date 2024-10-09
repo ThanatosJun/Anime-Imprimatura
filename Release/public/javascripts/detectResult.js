@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check if CHS_save_dir is available in localStorage
     if (CHS_save_dir) {
         // Fetch images from the server using the directory path
-        fetch(`/images?path=${encodeURIComponent(CHS_save_dir)}`)
+        fetch(`/readimages?path=${encodeURIComponent(CHS_save_dir)}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok'); // Handle HTTP errors

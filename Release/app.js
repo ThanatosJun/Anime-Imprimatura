@@ -235,7 +235,7 @@ app.post('/upload', upload.single('upload-box'), (req, res) => {
 });
 
 // Route to provide images based on directory path
-app.get('/images', (req, res) => {
+app.get('/readimages', (req, res) => {
   const imagePath = req.query.path;
 
   if (!imagePath) {
