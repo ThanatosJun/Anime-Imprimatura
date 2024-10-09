@@ -281,22 +281,40 @@ const storageFlexDetect = multer.diskStorage({
     // check if the folder exsists
     if (!fs.existsSync(uploadPath)) {
       fs.mkdirSync(uploadPath, { recursive: true });
+      console.log('created new folder: ', uploadPath);
     }
 
     // Store files in different directories based on the type (CHD or CHS)
+    console.log('---starting saving files thru multer---');
     if (file.fieldname === 'uploadBoxCHD') {
-      cb(null, path.join(uploadPath, 'chd')); // CHD images
+      const chdDir = path.join(uploadPath, 'chd');
+      console.log('CHD directory path: ', chdDir);
+      if (!fs.existsSync(chdDir)) {
+        fs.mkdirSync(chdDir, { recursive: true });
+        console.log('Created CHD directory:', chdDir);
+      }
+      cb(null, chdDir); // CHD images
     } else if (file.fieldname === 'uploadBoxCHS') {
-      cb(null, path.join(uploadPath, 'chs')); // CHS images
+      const chsDir = path.join(uploadPath, 'chs');
+      console.log('CHS directory path: ', chsDir);
+      if (!fs.existsSync(chsDir)) {
+        fs.mkdirSync(chsDir, { recursive: true });
+        console.log('Created CHS directory:', chsDir);
+      }
+      cb(null, chsDir); // CHS images
     }
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = crypto.randomBytes(16).toString('hex');
     cb(null, uniqueSuffix + path.extname(file.originalname));  }
 });
-const uploadFlexDetect = multer({ storage: storageFlexDetect }).fields([
-  { name: 'uploadBoxCHD', maxCount: 10 }, // CHD upload field
-  { name: 'uploadBoxCHS', maxCount: 10 }  // CHS upload field
+
+const uploadFlexDetect = multer({
+  storage: storageFlexDetect,
+  limits: { fileSize: 50 * 1024 * 1024 } // Increase file size limit (50 MB here)
+}).fields([
+  { name: 'uploadBoxCHD', maxCount: 10 },
+  { name: 'uploadBoxCHS', maxCount: 10 }
 ]);
 
 // flexible
@@ -409,27 +427,48 @@ router.post('/uploadAndDetect_flex',uploadFlexDetect,  async (req, res) => {
 const storageFast = multer.diskStorage({
   destination: (req, file, cb) => {
     const chdName = req.body.character_name;
-    const uploadPath = path.join(__dirname, 'storageFast', chdName);
+    const uploadPath = path.join(__dirname, 'uploadFast', chdName);
+    console.log('Received file.fieldname:', file.fieldname);
 
     // check if the folder exsists
     if (!fs.existsSync(uploadPath)) {
       fs.mkdirSync(uploadPath, { recursive: true });
+      console.log('created new folder: ', uploadPath);
     }
 
     // Store files in different directories based on the type (CHD or CHS)
+    console.log('---starting saving files thru multer---');
     if (file.fieldname === 'uploadBoxCHD') {
-      cb(null, path.join(uploadPath, 'chd')); // CHD images
+      const chdDir = path.join(uploadPath, 'chd');
+      console.log('CHD directory path: ', chdDir);
+      if (!fs.existsSync(chdDir)) {
+        fs.mkdirSync(chdDir, { recursive: true });
+        console.log('Created CHD directory:', chdDir);
+      }
+      cb(null, chdDir); // CHD images
     } else if (file.fieldname === 'uploadBoxCHS') {
-      cb(null, path.join(uploadPath, 'chs')); // CHS images
+      const chsDir = path.join(uploadPath, 'chs');
+      console.log('CHS directory path: ', chsDir);
+      if (!fs.existsSync(chsDir)) {
+        fs.mkdirSync(chsDir, { recursive: true });
+        console.log('Created CHS directory:', chsDir);
+      }
+      cb(null, chsDir); // CHS images
     }
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = crypto.randomBytes(16).toString('hex');
-    cb(null, uniqueSuffix + path.extname(file.originalname));  }
+    const fileName = uniqueSuffix + path.extname(file.originalname);
+    cb(null, fileName);
+  }
 });
-const uploadFast = multer({ storage: storageFast }).fields([
-  { name: 'uploadBoxCHD', maxCount: 10 }, // CHD upload field
-  { name: 'uploadBoxCHS', maxCount: 10 }  // CHS upload field
+
+const uploadFast = multer({
+  storage: storageFast,
+  limits: { fileSize: 50 * 1024 * 1024 } // Increase file size limit (50 MB here)
+}).fields([
+  { name: 'uploadBoxCHD', maxCount: 10 },
+  { name: 'uploadBoxCHS', maxCount: 10 }
 ]);
 
 // fast
@@ -523,7 +562,7 @@ router.post('/fast', uploadFast,  async (req, res) => {
     }
 
     // clear the data
-    const uploadDir = path.join(__dirname, 'storageFast', chdName);
+    const uploadDir = path.join(__dirname, 'uploadFast', chdName);
     fs.rmdir(uploadDir, { recursive: true }, (err) => {
       if (err) {
         console.error('Error while deleting directory:', err);
@@ -534,7 +573,8 @@ router.post('/fast', uploadFast,  async (req, res) => {
 
     res.status(200).json({ message: 'Images uploaded and processed successfully.', fastData: fastData });
   } catch (error) {
-    
+    console.error('Error during the fast process:', error); // Log the error
+    res.status(500).json({ error: 'Server error' });
   }
 });
 

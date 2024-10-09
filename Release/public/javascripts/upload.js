@@ -68,8 +68,8 @@ function getBase64Image(img) {
 /**
  * Handles file selection and preview
  */ 
+let imagePaths = { uploadBoxCHS: [], uploadBoxCHD: [] };
 function handleFiles(files, containerId) {
-  let imagePaths = { uploadBoxCHS: [], uploadBoxCHD: [] };
   
   console.log(`Handling files for:`, containerId);
   console.log(`Files:`, files);
@@ -382,10 +382,7 @@ async function submitFormFlex() {
 
     const flexResponse = await fetch(`/uploadAndDetect_flex`, {
         method: 'POST',
-        headers: {
-        'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
+        body: formData
     });
 
     if (!flexResponse.ok) {
@@ -426,6 +423,11 @@ async function submitFormFast() {
   const formData = new FormData(form);
   // Adding userId to formData
   formData.append('user_id', userId);
+
+  // Log all the FormData keys and values
+  for (let pair of formData.entries()) {
+    console.log(pair[0], pair[1]);
+  }
 
   if (loadingMasks.length === 0) {
       console.error('(upload.js) Loading mask elements are missing');
