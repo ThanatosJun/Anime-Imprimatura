@@ -513,24 +513,24 @@ router.post('/fast', uploadFast,  async (req, res) => {
     const CHS_save_dir = fastData.CHS_save_dir;
     let imagePaths = [];
 
-    // 定義一個函數來遍歷資料夾並獲取圖片路徑
     function getImagePaths(dir) {
       return new Promise((resolve, reject) => {
+        if (!dir) {
+          return reject('Directory path is undefined');
+        }
+    
         fs.readdir(dir, (err, files) => {
           if (err) {
             return reject('Error reading directory: ' + err);
           }
-
-          // 建立圖片路徑的陣列
+    
           let imagePaths = [];
-
-          // 將每個文件的完整路徑存入陣列
+    
           files.forEach(file => {
             const filePath = path.join(dir, file);
             imagePaths.push(filePath);
           });
-
-          // 返回圖片路徑陣列
+    
           resolve(imagePaths);
         });
       });
