@@ -98,7 +98,7 @@ def flex_detect_image():
         print(CHS_save_dir)            
         
         output = "Detect script executed successfully."
-        return jsonify({'status': 'success', 'output': output })
+        return jsonify({'status': 'success', 'output': output, 'CHS_save_dir': CHS_save_dir })
     except Exception as e:
         print(f'Error during detecting: {e}')
         return jsonify({'status': 'error', 'error': str(e) })
