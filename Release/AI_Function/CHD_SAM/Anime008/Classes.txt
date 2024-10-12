@@ -1,11 +1,11 @@
-Upper_clothes
 Lower_clothes
+Upper_clothes
 Face
 Shoe
 Hair
 Leg
 Stock
-Hand
 Eye
+Hand
 Ear
 Neck
