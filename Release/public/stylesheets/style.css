@@ -399,6 +399,7 @@ footer {
 }
 
 .loading {
+  margin-top: 40vh;
   font-size: 84px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 800;
