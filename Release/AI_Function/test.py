@@ -125,10 +125,10 @@ def fast_segment_image():
         print("CHS Finished dir: ", CHS_Finished_dir)
         
         output = "Segment script executed successfully."
-        return jsonify({'status': 'success', 'output': output, 'color_dictionary': color_dictionary, 'CHS_Finished_dir': CHS_Finished_dir})
+        return jsonify({'status': 'success', 'output': output, 'color_dictionary': color_dictionary, 'CHS_Finished_dir': CHS_Finished_dir, 'chs_save_dir': chs_path})
     except Exception as e:
         print(f'Error during segmenting: {e}')
-        return jsonify({'status': 'error', 'error': str(e), 'color_dictionary': color_dictionary, 'CHS_Finished_dir': CHS_Finished_dir})
+        return jsonify({'status': 'error', 'error': str(e), 'color_dictionary': color_dictionary, 'CHS_Finished_dir': CHS_Finished_dir, 'chs_save_dir': chs_path})
     
 if __name__ == '__main__':
     app.run(port=5001, debug=True)  # 在5001端口上启动服务

@@ -439,7 +439,7 @@ async function submitFormFast() {
       // Parse the response JSON data
       const fastData = await fastResponse.json();
       console.log(`(upload.js) Fast response:`, fastData);
-
+      localStorage.setItem('CHS_save_dir', fastData.chs_save_dir);
       localStorage.setItem('color_dictionary', JSON.stringify(fastData.color_dictionary));
       localStorage.setItem('CHS_Finished_dir', fastData.CHS_Finished_dir);
 
