@@ -199,6 +199,16 @@ exports.saveToGallery_personal_final = async (req, res) => {
     // save images to image
     const savedImages = [];
 
+    // append the full path
+    const fullImagePath = path.resolve(image_paths);
+    console.log('Resolved fullimgpath: ', fullImagePath);
+
+     // check if it exists
+    if (!fs.existsSync(fullImagePath)) {
+    console.error(`Path does not exist: ${fullImagePath}`);
+    return res.status(400).json({ error: `Path does not exist: ${fullImagePath}` });
+    }
+
     // Check if the image_paths is a directory and get all image files inside
     const getFilesInDirectory = (dir) => {
       return fs.readdirSync(dir)
@@ -231,7 +241,7 @@ exports.saveToGallery_personal_final = async (req, res) => {
             throw new Error('GridFSBucket is not initialized');
           }
 
-          const file_type = 'final';
+          const file_type = 'finalImg';
           const fileStream = fs.createReadStream(fileRoute);
           const uploadStream = gridFSBucket.openUploadStream(path.basename(fileRoute), {
             metadata: { user_id, file_type },
@@ -280,7 +290,7 @@ exports.saveToGallery_personal_final = async (req, res) => {
     }
 
     // success msg
-    res.status(200).json({message: 'Image saved successfully to personal gallery'});
+    res.status(200).json({ message: 'Image saved successfully to personal gallery' });
   } catch (error) {
     console.error("saveToGallery_perosonal_final error: ", error);
     res.status(500).json({ error: "An error occurred during saveToGallery_perosonal_final. Please try again." });
@@ -306,7 +316,7 @@ exports.getPersonalGallery = async (req, res) => {
         filename: file.filename,
         contentType: file.contentType,
         uploadDate: file.uploadDate,
-        file_type: file.file_type,
+        file_type: file.metadata.file_type,
       });
     });
 

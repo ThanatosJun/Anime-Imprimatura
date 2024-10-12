@@ -384,7 +384,29 @@ router.post('/uploadAndDetect_flex',uploadFlexDetect,  async (req, res) => {
 
     // 遍歷 CHS_save_dir 資料夾並獲取所有圖片路徑
     imagePaths = await getImagePaths(CHS_save_dir);
-    console.log('Image paths:', imagePaths);
+    console.log('imagePaths: ', imagePaths);
+
+    // save chd if logged in
+    if (userId) { 
+      try {
+        const saveResponse = await fetch('http://localhost:3000/saveToGallery_personal_chd', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            image_paths: uploadedChdFilePaths,
+            character: chdName, 
+          })
+        });
+
+        const saveData = await saveResponse.json();
+        console.log('Image saved to gallery:', saveData);
+      } catch (saveError) {
+        console.error('Error saving image to gallery:', saveError);
+      }
+    }
 
     // save chs if logged in
     if (userId) { 
@@ -510,7 +532,8 @@ router.post('/fast', uploadFast,  async (req, res) => {
 
     const fastData = await fastResponse.json();
     console.log('(imageController.js) Generate response:', fastData);
-    const CHS_save_dir = fastData.CHS_save_dir;
+    const CHS_Finished_dir = fastData.CHS_Finished_dir;
+    const absolute_path_CHS_Finished_dir = path.resolve(__dirname, '..', CHS_Finished_dir);
     let imagePaths = [];
 
     function getImagePaths(dir) {
@@ -537,13 +560,13 @@ router.post('/fast', uploadFast,  async (req, res) => {
     }
 
     // 遍歷 CHS_save_dir 資料夾並獲取所有圖片路徑
-    imagePaths = await getImagePaths(CHS_save_dir);
+    imagePaths = await getImagePaths(absolute_path_CHS_Finished_dir);
     console.log('Image paths:', imagePaths);
 
     // save chs if logged in
     if (userId) { 
       try {
-        const saveResponse = await fetch('http://localhost:3000/saveToGallery_personal_chs', {
+        const saveResponse = await fetch('http://localhost:3000/saveToGallery_personal_final', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -571,7 +594,7 @@ router.post('/fast', uploadFast,  async (req, res) => {
       }
     });
 
-    res.status(200).json({ message: 'Images uploaded and processed successfully.', fastData: fastData });
+    res.status(200).json(fastData);
   } catch (error) {
     console.error('Error during the fast process:', error); // Log the error
     res.status(500).json({ error: 'Server error' });

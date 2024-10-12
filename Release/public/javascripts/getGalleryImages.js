@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
               img.className = 'image'; // 添加 image 类
               img.src = `http://localhost:3000/images/${image._id}`; // 使用返回的 _id 生成图片的 URL
               img.alt = image.filename;
+              console.log('Image file_type: ', image.file_type);
               img.dataset.type = image.file_type;
               img.setAttribute('id', image._id);
 
@@ -76,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
           items.forEach(item => {
             const img = item.querySelector('img');
             
-            if (filterValue === 'all' || img.dataset.type === filterValue) {
+            if (filterValue === 'all' || img.dataset.type.toLowerCase() === filterValue.toLowerCase()) {
               item.style.display = '';
             } else {
               item.style.display = 'none';

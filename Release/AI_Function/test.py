@@ -95,7 +95,7 @@ def flex_detect_image():
     try:
         print(f'Received detect request with character_name: {character_name}, chd_path: {chd_path}, chs_path: {chs_path}')
         CHS_save_dir = CHS_detect_flow2.main( user_id, character_name, chd_path, chs_path )
-        print(CHS_save_dir)            
+        print("----", CHS_save_dir)            
         
         output = "Detect script executed successfully."
         return jsonify({'status': 'success', 'output': output, 'CHS_save_dir': CHS_save_dir })

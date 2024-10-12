@@ -1,0 +1,11 @@
+Upper_clothes
+Hair
+Face
+Lower_clothes
+Leg
+Shoe
+Hand
+Eye
+Stock
+Ear
+Neck
