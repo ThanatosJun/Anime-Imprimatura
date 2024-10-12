@@ -182,8 +182,10 @@ section h2{
   position: relative;
   justify-content: center;
   align-items: center;
-  width: 868px;
-  height: 565px;
+  /* width: 868px; */
+  /* height: 565px; */
+  width: 69vw;
+  aspect-ratio: 868 / 565;
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(3px);
@@ -193,8 +195,8 @@ section h2{
   overflow: hidden;
 }
 #hero-img{
-  max-width: 100%;
-  height: auto;
+  width: 100%;        /* 設定寬度填滿容器 */
+  height: 100%;       /* 設定高度填滿容器 */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
