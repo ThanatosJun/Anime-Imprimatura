@@ -60,7 +60,7 @@ exports.saveToGallery_personal_chd = async (req, res) => {
 
                 console.log('File upload finished. File object:', file);
 
-                const chdModelptString = CHD_modelpt.join(',');
+                // const chdModelptString = CHD_modelpt.join(',');
 
                 const newChd = new Chd({
                   gallery_id: existingGallery._id,
@@ -198,29 +198,29 @@ exports.saveToGallery_personal_final = async (req, res) => {
     const savedImages = [];
     const resolvedPaths = [];
 
-    // 逐一解析每個路徑
-    for (const imagePath of image_paths) {
-      if (typeof imagePath === 'string') {
-        const resolvedPath = path.resolve(imagePath);
-        console.log('Resolved path:', resolvedPath);
-
-        // 檢查該路徑是否存在
-        if (!fs.existsSync(resolvedPath)) {
-          console.error(`Path does not exist: ${resolvedPath}`);
-          return res.status(400).json({ error: `Path does not exist: ${resolvedPath}` });
-        }
-
-        resolvedPaths.push(resolvedPath);
-      } else {
-        console.error('Invalid path, expected a string:', imagePath);
-        return res.status(400).json({ error: 'Invalid path format.' });
-      }
+    // 確認 image_paths 是一個資料夾
+    const basePath = path.resolve(image_paths); // 將相對路徑解析為絕對路徑
+    if (!fs.lstatSync(basePath).isDirectory()) {
+      return res.status(400).json({ error: 'Provided path is not a directory.' });
     }
 
-    console.log('All resolved paths:', resolvedPaths);
+    // 獲取資料夾中的所有圖片檔案
+    const getFilesInDirectory = (dir) => {
+      return fs.readdirSync(dir)
+        .filter(file => {
+          // 只包括圖片檔案的擴展名
+          const ext = path.extname(file).toLowerCase();
+          return ['.jpg', '.jpeg', '.png', '.gif'].includes(ext);
+        })
+        .map(file => path.join(dir, file)); // 返回完整的檔案路徑
+    };
+
+    // 獲取所有圖片檔案路徑
+    const filesToUpload = getFilesInDirectory(basePath);
+    console.log('Files to upload:', filesToUpload);
 
     // 上傳每個檔案
-    for (const fileRoute of resolvedPaths) {
+    for (const fileRoute of filesToUpload) {
       try {
         if (fs.existsSync(fileRoute) && fs.lstatSync(fileRoute).isFile()) {
           const gridFSBucket = getGridFSBucket();
