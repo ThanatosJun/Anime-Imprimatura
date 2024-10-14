@@ -60,7 +60,7 @@ exports.saveToGallery_personal_chd = async (req, res) => {
 
                 console.log('File upload finished. File object:', file);
 
-                const chdModelptString = CHD_modelpt.join(',');
+                // const chdModelptString = CHD_modelpt.join(',');
 
                 const newChd = new Chd({
                   gallery_id: existingGallery._id,
@@ -187,115 +187,93 @@ exports.saveToGallery_personal_final = async (req, res) => {
     const { user_id, image_paths } = req.body;
     console.log('Saving request: ', req.body);
 
-    // check if the gallery exists
+    // 檢查或建立使用者的圖庫
     let existingGallery = await Gallery.findOne({ user_id });
     if (!existingGallery) {
-      // create a new gallery
       existingGallery = new Gallery({ user_id });
       await existingGallery.save();
       console.log('Created a personal gallery: ', existingGallery);
     }
 
-    // save images to image
     const savedImages = [];
+    const resolvedPaths = [];
 
-    // append the full path
-    const fullImagePath = path.resolve(image_paths);
-    console.log('Resolved fullimgpath: ', fullImagePath);
-
-     // check if it exists
-    if (!fs.existsSync(fullImagePath)) {
-    console.error(`Path does not exist: ${fullImagePath}`);
-    return res.status(400).json({ error: `Path does not exist: ${fullImagePath}` });
+    // 確認 image_paths 是一個資料夾
+    const basePath = path.resolve(image_paths); // 將相對路徑解析為絕對路徑
+    if (!fs.lstatSync(basePath).isDirectory()) {
+      return res.status(400).json({ error: 'Provided path is not a directory.' });
     }
 
-    // Check if the image_paths is a directory and get all image files inside
+    // 獲取資料夾中的所有圖片檔案
     const getFilesInDirectory = (dir) => {
       return fs.readdirSync(dir)
         .filter(file => {
-          // Only include files with image extensions (e.g., .jpg, .png)
+          // 只包括圖片檔案的擴展名
           const ext = path.extname(file).toLowerCase();
           return ['.jpg', '.jpeg', '.png', '.gif'].includes(ext);
         })
-        .map(file => path.join(dir, file));
+        .map(file => path.join(dir, file)); // 返回完整的檔案路徑
     };
 
-    let filesToUpload = [];
+    // 獲取所有圖片檔案路徑
+    const filesToUpload = getFilesInDirectory(basePath);
+    console.log('Files to upload:', filesToUpload);
 
-    // Check if image_paths is a directory
-    if (fs.lstatSync(image_paths).isDirectory()) {
-      // If it's a directory, get all image files inside
-      filesToUpload = getFilesInDirectory(image_paths);
-    } else {
-      // If it's not a directory, assume it's a single file path
-      filesToUpload = [image_paths];
-    }
-
-    // Loop through each file and upload
+    // 上傳每個檔案
     for (const fileRoute of filesToUpload) {
-      if (fs.existsSync(fileRoute) && fs.lstatSync(fileRoute).isFile()) {
-        try {
+      try {
+        if (fs.existsSync(fileRoute) && fs.lstatSync(fileRoute).isFile()) {
           const gridFSBucket = getGridFSBucket();
+          if (!gridFSBucket) throw new Error('GridFSBucket is not initialized');
 
-          if (!gridFSBucket) {
-            throw new Error('GridFSBucket is not initialized');
-          }
-
-          const file_type = 'finalImg';
           const fileStream = fs.createReadStream(fileRoute);
           const uploadStream = gridFSBucket.openUploadStream(path.basename(fileRoute), {
-            metadata: { user_id, file_type },
+            metadata: { user_id, file_type: 'finalImg' },
           });
 
-          // Handle file upload
           await new Promise((resolve, reject) => {
             fileStream.pipe(uploadStream);
 
             uploadStream.on('error', (err) => {
-              console.error(`Error in upload stream for file ${fileRoute}:`, err);
+              console.error(`Error in upload stream for ${fileRoute}:`, err);
               reject(err);
             });
 
             uploadStream.on('finish', async (file) => {
-              try {
-                if (!file) {
-                  console.error(`File object is undefined for ${fileRoute}`);
-                  return reject(new Error(`File object is undefined for ${fileRoute}`));
-                }
-
-                console.log('File upload finished. File object:', file);
-
-                const newColored_Chd = new Colored_Chd({
-                  gallery_id: existingGallery._id,
-                  user_id: user_id,
-                  path: file.filename // Save the GridFS filename or ID
-                });
-
-                await newColored_Chd.save();
-                savedImages.push(newColored_Chd);
-                console.log('Saved image to database: ', newColored_Chd);
-                resolve();
-              } catch (err) {
-                console.error(`Error saving CHD for file ${fileRoute}:`, err);
-                reject(err);
+              if (!file) {
+                const errorMsg = `File object is undefined for ${fileRoute}`;
+                console.error(errorMsg);
+                return reject(new Error(errorMsg));
               }
+
+              console.log('File upload finished. File object:', file);
+
+              const newColored_Chd = new Colored_Chd({
+                gallery_id: existingGallery._id,
+                user_id: user_id,
+                path: file.filename,
+              });
+
+              await newColored_Chd.save();
+              savedImages.push(newColored_Chd);
+              console.log('Saved image to database: ', newColored_Chd);
+              resolve();
             });
           });
-        } catch (err) {
-          console.error(`Error processing file ${fileRoute}:`, err);
+        } else {
+          console.error(`File not found or not a valid file: ${fileRoute}`);
         }
-      } else {
-        console.error(`File not found: ${fileRoute}`);
+      } catch (err) {
+        console.error(`Error processing file ${fileRoute}:`, err);
       }
     }
 
-    // success msg
     res.status(200).json({ message: 'Image saved successfully to personal gallery' });
   } catch (error) {
-    console.error("saveToGallery_perosonal_final error: ", error);
-    res.status(500).json({ error: "An error occurred during saveToGallery_perosonal_final. Please try again." });
+    console.error('saveToGallery_personal_final error:', error);
+    res.status(500).json({ error: 'An error occurred during saveToGallery_personal_final. Please try again.' });
   }
-}
+};
 
 // display gallery
 exports.getPersonalGallery = async (req, res) => {

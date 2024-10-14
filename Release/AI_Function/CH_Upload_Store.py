@@ -24,6 +24,7 @@ def main(CH_Name, CHD_Upload_path, CHS_Upload_path):
     CH_Upload = class_CH_Upload(CH_Name)
     CH_Upload.CH_Upload(CHS_Upload_path, CH_Upload.CHS_Detect_dir)
     CH_Upload.CH_Upload(CHD_Upload_path, CH_Upload.CHD_Detect_dir)
+    return "AI_Function/" + CH_Upload.CHS_Detect_dir
 
 if __name__ == "main":
     CH_Name = sys.argv[1]

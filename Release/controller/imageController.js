@@ -573,7 +573,7 @@ router.post('/fast', uploadFast,  async (req, res) => {
           },
           body: JSON.stringify({
             user_id: userId,
-            CHS_save_dir: imagePaths
+            image_paths: imagePaths
           })
         });
 
