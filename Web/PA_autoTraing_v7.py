@@ -455,15 +455,15 @@ def change_yaml_path(data_yaml, newpath):
 
 # Function for main process
 def main(CHD_Name, file_paths, User_ID):
-    # Up_img = Upload_images(CHD_Name, User_ID)
-    # Up_img.receive_images(file_paths)
-    # PA_pre = PA_preprocess(CHD_Name, User_ID)
-    # PA_tra = PA_train(CHD_Name, User_ID)
-    # PA_pre.main()
-    # CHD_modelpt = PA_tra.main()
+    Up_img = Upload_images(CHD_Name, User_ID)
+    Up_img.receive_images(file_paths)
+    PA_pre = PA_preprocess(CHD_Name, User_ID)
+    PA_tra = PA_train(CHD_Name, User_ID)
+    PA_pre.main()
+    CHD_modelpt = PA_tra.main()
     print(f"======2======={file_paths}")
-    return file_paths
-    # return CHD_modelpt
+    # return file_paths
+    return CHD_modelpt
 
 
 
