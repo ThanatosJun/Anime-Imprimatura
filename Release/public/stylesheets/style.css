@@ -220,7 +220,6 @@ section h2{
   aspect-ratio: 4/3;
 }
 
-/* test */
 .tutorial-container {
   margin-top: 20px;
   display: flex;
@@ -257,7 +256,8 @@ section h2{
 }
 .tutorial-container .step-container .step p {
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 350;
+  font-family: 'Montserrat', arial;
   color: #b2b2b2;
   overflow: visible;
 }
@@ -265,7 +265,7 @@ section h2{
   opacity: 100%;
 }
 
-#how-to-use, #intro, #about-us h1, p {
+#how-to-use h1, #about-us h1, #about-us p, #intro h2 {
   font-family: "Roboto Flex", sans-serif;
   font-variation-settings: "opsz" 48, "slnt" 0, "GRAD" 0, "XTRA" 603, "YOPQ" 79,
     "YTAS" 750, "YTDE" -203, "YTFI" 738, "YTLC" 514, "YTUC" 712, "wght" 700;
@@ -894,11 +894,16 @@ div.buttons {
   position: relative;
   display: flex;
   margin-bottom: 20px;
-  font-size: 25px;
-  font-family: 'Roboto', arial;
+  font-size: 32px;
+  font-family: "Roboto Flex", sans-serif;
+  font-variation-settings: "opsz" 48, "slnt" 0, "GRAD" 0, "XTRA" 603, "YOPQ" 79,
+    "YTAS" 750, "YTDE" -203, "YTFI" 738, "YTLC" 514, "YTUC" 712, "wght" 700;
+  font-stretch: 151%;
+  font-optical-sizing: auto;
+  transform:rotate3d(3);
 }
 
-.generate .select-title::after {
+/* .generate .select-title::after {
   content: ''; 
   position: absolute;
   left: 0; 
@@ -908,7 +913,7 @@ div.buttons {
   background-color: rgba(178, 146, 241, 0.751); 
   z-index: -1;
   border-radius: 3px;
-}
+} */
 
 .generate .process-select {
   display: flex;
