@@ -1083,11 +1083,10 @@ div.buttons {
 }
 
 .generated .image-container img {
-  flex: 0 1 150px;
+  width: 150px;
+  height: auto;
   object-fit: cover;
-  height: 200px;
-  margin: 10px;
-  display: block;
+  margin: 5px;
 }
 
 .generated .chs {
