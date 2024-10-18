@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
               const img = document.createElement('img');
               img.className = 'image'; // 添加 image 类
-              img.src = `http://api/images/${image._id}`; // 使用返回的 _id 生成图片的 URL
+              img.src = `http://localhost:3000/images/${image._id}`; // 使用返回的 _id 生成图片的 URL
               img.alt = image.filename;
               console.log('Image file_type: ', image.file_type);
               img.dataset.type = image.file_type;
