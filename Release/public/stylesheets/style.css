@@ -1070,7 +1070,7 @@ div.buttons {
   opacity: 0.7;
   margin-bottom: 10px;
   position: relative;
-  overflow: hidden;
+  overflow: auto;
   border: none;
   outline: none;
   box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
