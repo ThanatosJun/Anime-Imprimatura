@@ -24,7 +24,11 @@ block content
         .image-title the result
         .image-container#finalImage
     .buttons
-      button#save-btn.save-btn Save to Gallery
-      button#download-btn.download-btn Download
+      button#save-btn.save-btn 
+        i.fas.fa-image
+        p Save to Gallery
+      button#download-btn.download-btn
+        i.fas.fa-download
+        p Download
   script(src='/javascripts/getFinalImages.js')
   script(src='/javascripts/loading.js')

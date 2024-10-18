@@ -6,37 +6,36 @@ block content
       .img-container 
         img#hero-img(src=`/images/LOGO_01.png`, alt='Home Image')
     section#how-to-use
-      h2 How to Use
-      .cards
-        .card.active(style=`background-image: url('/images/chd.png')`, data-aos="zoom-in-up")
-          .card-content
-            h1 upload your chd
-        .card(style=`background-image: url('/images/choose_pt.png')`, data-aos="zoom-in-up")
-          .card-content
-            h1 choose the model
-        .card(style=`background-image: url('/images/chs.png')`, data-aos="zoom-in-up")
-          .card-content
-            h1 upload your chs
-        .card(style=`background-image: url('/images/seg.png')`, data-aos="zoom-in-up")
-          .card-content
-            h1 execute
-    //- div.text-container
-    //-   div.c1
-    //-     h1 Anime Imprimatura
+      h1 How to Use
+      .tutorial-container
+        img#chd-img.active(src="/images/uploadCHD.gif", alt="chd")
+        img#model-img(src="/images/chooseModel.gif", alt="model")
+        img#chs-img(src="/images/uploadCHS.gif", alt="chs")
+        img#exe-img(src="/images/execute.gif", alt="execute")
+        .step-container
+          .step(data-img="chd-img") Upload CHD
+            p CHD stands for 
+          .step(data-img="model-img") Choose Model
+            p There may be multiple models for you to choose
+          .step(data-img="chs-img") Upload CHS
+            p Here you can upload sketch files.
+          .step(data-img="exe-img") Execute
+            p After uploading so many resource in the session, you can finally run it, and wait for the result!
     section#about-us
-      h2 About Us
+      h1 About Us
       .about-card
         p To Be Continued...
+      #intro
+        h2 What's Anime Imprimatura?
+        p Anime Imprimatura is focused on the 2D animation industry, specializing in basic character colorization.
+        p Our core principles are threefold: 
+        p to promote collaboration between the animation industry and AI
+        p to inspire creative innovation
+        p to achieve a win-win situation for the animation industry.
       .btn-container
         a.generate-btn(onclick="window.location.href=window.user_id?'/generate/select':'generate/fast'") ⚡ Get Started
   footer
     .footer-links
       a(href="/support") Support
       a(href="/support/contact") Contact
-  link(rel='stylesheet', href='https://unpkg.com/aos@2.3.1/dist/aos.css')
-  script(src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js") 
-  script(src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/ScrollTrigger.min.js") 
-  script(src='/javascripts/anm_scrolling.js') 
-  script(src='https://unpkg.com/aos@2.3.1/dist/aos.js')
-  script.
-    AOS.init();
+  script(src="/javascripts/anm_tapCard.js") 
