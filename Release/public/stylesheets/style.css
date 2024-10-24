@@ -307,8 +307,13 @@ section h2{
   color: white;
   font-family: 'Montserrat', arial;
 }
-#intro p {
-  font-size: 32px;
+#intro p, #intro ol {
+  font-size: 20px;
+  font-variation-settings: "wdth" 400;
+}
+
+#intro li {
+  margin: 5px;
 }
 
 #intro h2 {
