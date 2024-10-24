@@ -265,7 +265,7 @@ section h2{
   opacity: 100%;
 }
 
-#how-to-use h1, #about-us h1, #about-us p, #intro h2 {
+#how-to-use h1, #about-us h1, #about-us p, #intro h2, #terminology h1 {
   font-family: "Roboto Flex", sans-serif;
   font-variation-settings: "opsz" 48, "slnt" 0, "GRAD" 0, "XTRA" 603, "YOPQ" 79,
     "YTAS" 750, "YTDE" -203, "YTFI" 738, "YTLC" 514, "YTUC" 712, "wght" 700;
@@ -273,9 +273,39 @@ section h2{
   font-optical-sizing: auto;
 }
 
-#how-to-use h1, #about-us h1 {
+#how-to-use h1, #about-us h1, #terminology h1 {
   font-size: 64px;
   margin-bottom: 5vh;
+}
+
+.terms-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 2vw;
+  width: 78vw;
+}
+.term-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.term-container img{
+  height: 400px; 
+  width: auto; 
+  object-fit: contain; 
+}
+.term-container h3 {
+  font-size: 36px;
+  color: white;
+}
+.term-container p{
+  font-size: 24px;
+  color: white;
+  font-family: 'Montserrat', arial;
 }
 #intro p {
   font-size: 32px;
