@@ -310,8 +310,29 @@ section h2{
 #intro p {
   font-size: 32px;
 }
+
 #intro h2 {
-  font-size: 40px
+  font-size: 40px;
+}
+
+.img-star {
+  width: 20px;
+  height: auto;
+}
+
+.font-italic {
+  font-style: italic;
+  font-weight: 700;
+}
+
+#principles {
+  margin-top: 15px;
+}
+
+#bullet-points {
+  list-style-position: inside;
+  margin-top: 5px;
+  gap: 5px;
 }
 
 .about-card {
