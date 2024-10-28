@@ -1,65 +1,71 @@
 extends layout
 
 block content
-  .home
-    section.hero
-      .img-container 
-        img#hero-img(src=`/images/LOGO_01.png`, alt='Home Image')
-    section#terminology
-      h1 Terminology
-      .terms-container
-        .term-container
-          h3 CHD
-          img(src="/images/chd.png", alt="chd-img")
-          p CHaracter Design
-        .term-container
-          h3 CHS
-          img(src="/images/chs.png", alt="chs-img")
-          p CHaracter Sketch
-        .term-container
-          h3 CHSF
-          img(src="/images/seg.png", alt="seg-img")
-          p CHaracter Sketch Finished
-    section#how-to-use
-      h1 How to Use
-      .tutorial-container
-        img#chd-img.active(src="/images/uploadCHD.gif", alt="chd")
-        img#model-img(src="/images/chooseModel.gif", alt="model")
-        img#chs-img(src="/images/uploadCHS.gif", alt="chs")
-        img#exe-img(src="/images/execute.gif", alt="execute")
-        .step-container
-          .step(data-img="chd-img") Upload CHD
-            p Upload the original character design to use as the base for coloring.
-          .step(data-img="model-img") Choose Model
-            p Select a pre-trained model to apply.
-          .step(data-img="chs-img") Upload CHS
-            p Upload the sketch images that need to be colored.
-          .step(data-img="exe-img") Execute
-            p Get your colored character instantly!
-    section#about-us
-      h1 About Us
-      .about-card
-        p To Be Continued...
-      #intro
-        h2 What we do?
-        p 
-          span.font-italic Anime Imprimatura 
-          | is dedicated to the 2D animation industry, specializing in foundational character colorization.
-        #principles
-          p 
-            img.img-star(src="/images/hand_draw_star.png")
-            img.img-star(src="/images/hand_draw_star.png") 
-            | Our mission is built on three core principles
-            img.img-star(src="/images/hand_draw_star.png")
-            img.img-star(src="/images/hand_draw_star.png") 
-          ol#bullet-points
-            li Fostering collaboration between the animation industry and AI technology
-            li Inspiring creative innovation within the field, particularly for independent creators.
-            li Creating a win-win scenario that benefits both the animation industry and technological advancement.
-      .btn-container
-        a.generate-btn(onclick="window.location.href=window.user_id?'/generate/select':'generate/fast'") ⚡ Get Started
-  footer
-    .footer-links
-      a(href="/support") Support
-      a(href="/support/contact") Contact
-  script(src="/javascripts/anm_tapCard.js") 
+	.home
+		section.hero
+			.img-container 
+				img#hero-img(src=`/images/LOGO_01.png`, alt='Home Image')
+		section#terminology
+			h1 Terminology
+			.terms-container
+				.term-container
+					.img-container
+						img(src="/images/chd.png", alt="chd-img")
+					.textBox
+						h3 CHD
+						p CHaracter Design
+				.term-container
+					.img-container
+						img(src="/images/chs.png", alt="chs-img")
+					.textBox
+						h3 CHS
+						p CHaracter Sketch
+				.term-container
+					.img-container
+						img(src="/images/seg.png", alt="chsf-img")
+					.textBox
+						h3 CHSF
+						p CHaracter Sketch Finished
+		section#how-to-use
+			h1 How to Use
+			.tutorial-container
+				img#chd-img.active(src="/images/uploadCHD.gif", alt="chd")
+				img#model-img(src="/images/chooseModel.gif", alt="model")
+				img#chs-img(src="/images/uploadCHS.gif", alt="chs")
+				img#exe-img(src="/images/execute.gif", alt="execute")
+				.step-container
+					.step(data-img="chd-img") Upload CHD
+						p Upload the original character design to use as the base for coloring.
+					.step(data-img="model-img") Choose Model
+						p Select a pre-trained model to apply.
+					.step(data-img="chs-img") Upload CHS
+						p Upload the sketch images that need to be colored.
+					.step(data-img="exe-img") Execute
+						p Get your colored character instantly!
+		section#about-us
+			h1 About Us
+			.about-card
+				p To Be Continued...
+			#intro
+				h2 What we do?
+				p 
+					span.font-italic Anime Imprimatura 
+					| is dedicated to the 2D animation industry, specializing in foundational character colorization.
+				#principles
+					p 
+						img.img-star(src="/images/hand_draw_star.png")
+						img.img-star(src="/images/hand_draw_star.png") 
+						| Our mission is built on three core principles
+						img.img-star(src="/images/hand_draw_star.png")
+						img.img-star(src="/images/hand_draw_star.png") 
+					ol#bullet-points
+						li Fostering collaboration between the animation industry and AI technology
+						li Inspiring creative innovation within the field, particularly for independent creators.
+						li Creating a win-win scenario that benefits both the animation industry and technological advancement.
+			.btn-container
+				a.generate-btn(onclick="window.location.href=window.user_id?'/generate/select':'generate/fast'") ⚡ Get Started
+	footer
+		.footer-links
+			a(href="/support") Support
+			a(href="/support/contact") Contact
+	script(src="/javascripts/anm_tapCard.js") 

@@ -1,0 +1,32 @@
+extends layout 
+
+block body
+	- var bodyClass = 'generate'
+
+block content 
+  .content-for-select
+    .terms-container
+      .term-container
+        h3 CHD 
+        img(src="/images/chd.png", alt="chd-img")
+        p C
+      .term-container
+        h3 CHS
+        img(src="/images/chs.png", alt="chd-img")
+        p C
+      .term-container
+        h3 CHSF
+        img(src="/images/chsf.png", alt="chd-img")
+        p C
+    .select-container 
+      h2 Pick a process that suits your needs! 
+      .process-options 
+        .option-btn-container 
+          a.option-btn#standard-btn(href='/generate/train')
+          p.tool-tip The most complete process, starting from model training. It provides the best accuracy for coloring your character.
+        .option-btn-container 
+          a.option-btn#standard-btn(href='/generate/train')
+          p.tool-tip Ideal for quickly adjusting character colors after training a model using the standard process.
+        .option-btn-container 
+          a.option-btn#standard-btn(href='/generate/train')
+          p.tool-tip Our quickest option, using a preset model to color your character efficiently.

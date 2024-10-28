@@ -205,8 +205,12 @@ section h2{
 }
 
 #how-to-use, #about-us, #intro {
+  margin-top: 20vh;
   padding: 50px 20px;
   text-align: center;
+}
+#intro {
+  margin-top: 0vh;
 }
 
 .about-card {
@@ -277,36 +281,75 @@ section h2{
   font-size: 64px;
   margin-bottom: 5vh;
 }
-
 #terminology .terms-container {
   margin-top: 20px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  align-items: center;
-  gap: 2vw;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 20px 45px;
   width: 78vw;
 }
-#terminology .term-container{
+#terminology .term-container {
+  position: relative;
+  width: 200px; /* Set width based on design */
+  height: 465px; /* Adjust based on your needs */
+  border-radius: 15px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+#terminology .term-container:hover {
+  transform: scale(1.04) rotate(-1deg);
+}
+#terminology .img-container {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+#terminology .img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+  transition: filter 0.3s ease, transform 3s infinite;
+}
+#terminology .term-container:hover .img-container img {
+  filter: blur(5px);
+  transform: translateY(-10px);
+}
+#terminology .textBox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark overlay */
 }
-#terminology .term-container img{
-  height: 400px; 
-  width: auto; 
-  object-fit: contain; 
+
+#terminology .term-container:hover .textBox {
+  opacity: 1;
 }
-#terminology .term-container h3 {
+
+#terminology .textBox h3 {
   font-size: 36px;
-  color: white;
+  font-weight: bold;
+  margin-bottom: 5px;
 }
-#terminology .term-container p{
+
+#terminology .textBox p {
   font-size: 24px;
-  color: white;
-  font-family: 'Montserrat', arial;
+  color: lightgrey;
 }
+
+
 #intro p, #intro ol {
   font-size: 20px;
   font-variation-settings: "wdth" 400;
@@ -952,62 +995,99 @@ div.buttons {
 .generate .content-select {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 20px;
-  width: 78vw;
+  margin-top: 15vh;
+  gap: 38px;
 }
 .generate .terms-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
-  gap: 15px;
+  align-items: flex-start;
+  gap: 20px;
+  /* background: rgba( 198, 198, 198, 0.45 );
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  backdrop-filter: blur( 7px );
+  -webkit-backdrop-filter: blur( 7px ); */
+  border-radius: 24px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  padding: 20px 45px;
 }
-.generate .term-container{
+.generate .term-container {
+  position: relative;
+  width: 200px; /* Set width based on design */
+  height: 465px; /* Adjust based on your needs */
+  border-radius: 15px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+.generate .term-container:hover {
+  transform: scale(1.04) rotate(-1deg);
+}
+.generate .img-container {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+.generate .img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+  transition: filter 0.3s ease, transform 3s infinite;
+}
+.generate .term-container:hover .img-container img {
+  filter: blur(5px);
+  transform: translateY(-10px);
+}
+.generate .textBox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark overlay */
 }
-.generate .term-container img{
-  height: 150px; 
-  width: auto; 
-  object-fit: contain; 
+
+.generate .term-container:hover .textBox {
+  opacity: 1;
 }
-.generate .term-container h3 {
+
+.generate .textBox h3 {
   font-size: 24px;
-  color: white;
+  font-weight: bold;
+  margin-bottom: 5px;
 }
-.generate .term-container p{
+
+.generate .textBox p {
   font-size: 16px;
-  color: white;
-  font-family: 'Montserrat', arial;
+  color: lightgrey;
 }
 
 /* .generate .select-container {
+  gap: 20vh;
 } */
 
 .generate .select-container .select-title {
-  position: relative;
-  display: flex;
-  margin-bottom: 20px;
-  font-size: 32px;
   font-family: "Roboto Flex", sans-serif;
-  font-variation-settings: "opsz" 48, "wght" 700;
+  font-variation-settings: "opsz" 48, "slnt" 0, "GRAD" 0, "XTRA" 603, "YOPQ" 79,
+    "YTAS" 750, "YTDE" -203, "YTFI" 738, "YTLC" 514, "YTUC" 712, "wght" 700;
+  font-stretch: 151%;
+  font-optical-sizing: auto;
+  font-size: 48px;
+  max-width: 32vw;
+  overflow: visible;
+  height: auto;
+  margin-bottom: 8vh;
 }
-
-/* .generate .select-title::after {
-  content: ''; 
-  position: absolute;
-  left: 0; 
-  right: 0; 
-  bottom: 3;
-  height: 8px; 
-  background-color: rgba(178, 146, 241, 0.751); 
-  z-index: -1;
-  border-radius: 3px;
-} */
 
 .generate .process-select {
   display: flex;
@@ -1016,8 +1096,6 @@ div.buttons {
 
 .generate .process-select-btn {
   padding: 10px 20px;
-  margin: 50px auto;
-  gap: 10px;
   text-transform: uppercase;
   border-radius: 42px;
   font-size: 15px;
@@ -1031,6 +1109,9 @@ div.buttons {
   transition: 0.5s ease;
   user-select: none;
   text-decoration: none;
+  width: 60em; /* Set exact width */
+  max-width: 60em; /* Constrain max width to 60em */
+  box-sizing: border-box; /* Ensure padding does not affect total width */
 }
 
 .generate .process-select-btn:hover {
@@ -1043,30 +1124,34 @@ div.buttons {
 }
 
 .generate .select-btn-container {
-  position: relative; 
+  position: relative; /* Make it the reference point for the description */
   display: inline-block;
-  margin: 50px;
+  margin: 20px;
 }
 
 .generate .description {
-  position: absolute;
-  top: 200%;
-  left: -55%;
-  right: -55%;
+  position: absolute; 
+  bottom: 130%; /* Position slightly below the button */
+  left: 50%; /* Center align based on the parent container */
+  transform: translateX(-50%); /* Center horizontally */
   background-color: #8b87877d;
   border-radius: 14px;
   padding: 10px;
   text-align: center;
   visibility: hidden;
   opacity: 0;
-  transform: translateY(-20px);
-  transition: all 0.5s ease;
+  max-width: 250px; /* Set a reasonable max-width */
+  width: auto; /* Allow content to determine the width */
+  height: fit-content;
+  overflow: visible;
+  transition: all 0.3s ease; /* Smooth appearance */
+  z-index: 10; /* Make sure it stays above other elements */
 }
 
 .generate .select-btn-container:hover .description {
   visibility: visible;
   opacity: 1;
-  transform: translateY(0);
+  transform: translate(-50%, 10px); /* Keep it centered and aligned */
 }
 
 #standard-btn:hover {
@@ -1103,7 +1188,7 @@ div.buttons {
 
 #fast-btn:hover::after {
   content: "start now!";
-}
+} 
 
 .generate .form {
   display: flex;
