@@ -56,10 +56,11 @@ saveBtn.addEventListener('click', async function (event) {
         updatedData.id = window.user_id;
 
         try {
-            const response = await fetch(form.action, {
+            // Send POST request with form data
+            const response = await fetch('/api/editUser', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(updatedData)
             });

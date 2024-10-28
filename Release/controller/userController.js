@@ -186,7 +186,7 @@ exports.editUser = async (req, res) => {
         const id = req.body.id;
         const user_name = req.body.user_name;
         const gmail = req.body.gmail;
-        const password = req.body.password;
+        // const password = req.body.password;
 
         // find by id
         const user = await User.findById(id);
@@ -195,16 +195,15 @@ exports.editUser = async (req, res) => {
         }
 
         // update user info
-        if (user_name) {
+        if (user_name !== user.user_name) {
             user.user_name = user_name;  // 更新用戶名
         }
-        if (gmail) {
+        if (gmail !== user.gmail) {
             user.gmail = gmail;  // 更新用戶郵箱
         }
-        if (password) {
-            user.password = password;  // 更新密碼
-            user.password = await bcrypt.hash(password, 10);
-        }
+        // if (password !== user.password) {
+        //     user.password = await bcrypt.hash(password, 10);
+        // }
 
         // save updated user info
         await user.save();
@@ -214,6 +213,7 @@ exports.editUser = async (req, res) => {
             updatedUser: {
                 user_name: user.user_name,
                 gmail: user.gmail
+                // password: user.password
             }
         });
 
