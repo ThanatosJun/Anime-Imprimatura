@@ -14,78 +14,67 @@ document.addEventListener('getUserCompleted', () => {
 
     }
 });
+// Initialize edit state
+let isEditable = false;
 
-// Toggle the readOnly state of an input field and focus it if editable
-function enableEdit(id) {
-    event.preventDefault(); // Prevent default form submission
+// Get the buttons and inputs
+const editBtn = document.getElementById('edit-btn');
+const saveBtn = document.getElementById('save-btn');
+const form = document.getElementById('editForm');
+const inputs = document.querySelectorAll('#name, #email, #password');
 
-    const input = document.getElementById(id);
-    console.log("(account_edit) id: ",id );
-    if (input) {
-        // Toggle readOnly property
-        input.readOnly = !input.readOnly;
-        if (!input.readOnly) {
-            // Focus the input if it is now editable
-            input.focus();
-        }
-    } else {
-        // Log a warning if the element with the given ID is not found
-        console.warn(`Element with id "${id}" not found.`);
-    }
+// Toggle the edit mode
+function toggleEditMode(event) {
+    event.preventDefault(); // Prevent accidental form submission
+    isEditable = !isEditable;
+
+    // Toggle readonly state and add/edit styles for editing
+    inputs.forEach(input => {
+        input.readOnly = !isEditable;
+        input.classList.toggle('editable', isEditable);
+    });
+
+    // Toggle button visibility between Edit and Save
+    editBtn.style.display = isEditable ? 'none' : 'inline';
+    saveBtn.style.display = isEditable ? 'inline' : 'none';
 }
 
-// Handle form submission
-document.getElementById('editForm').addEventListener('submit', async function editUser(event) {
-    event.preventDefault(); // Prevent default form submission
+// Attach event listeners
+editBtn.addEventListener('click', toggleEditMode);
+saveBtn.addEventListener('click', async function (event) {
+    if (isEditable) {
+        event.preventDefault(); // Prevent form from submitting automatically
+        const updatedData = {};
 
-    const formData = new FormData(this);
-    const originalData = {
-        user_name: this.user_name.defaultValue,
-        gmail: this.gmail.defaultValue,
-        password: this.password.defaultValue
-    };
+        // Prepare form data
+        inputs.forEach(input => {
+            if (input.value !== input.defaultValue) {
+                updatedData[input.name] = input.value;
+            }
+        });
 
-    // 準備要發送的更新資料
-    const updatedData = {
-        id: window.user_id
-    };
+        updatedData.id = window.user_id;
 
-    if (this.user_name.value !== originalData.user_name) {
-        updatedData.user_name = this.user_name.value;
-    }
-    if (this.gmail.value !== originalData.gmail) {
-        updatedData.gmail = this.gmail.value;
-    }
-    if (this.password.value !== originalData.password) {
-        updatedData.password = this.password.value;
-    }
-    
-    console.log("updated field: ", updatedData);
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedData)
+            });
 
-    try {
-        // Send POST request with form data
-        const response = await fetch('/api/editUser', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(updatedData)
-          });
+            if (!response.ok) throw new Error('Failed to update user settings');
 
-        // Check if the response is OK
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+            const data = await response.json();
+            console.log('Updated user settings:', data);
+
+            // Switch back to view mode
+            toggleEditMode(event);
+
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Failed to update user settings');
         }
-
-        // Parse JSON response
-        const data = await response.json();
-        
-        // Update page content with new data
-        document.getElementById('email').innerText = formData.get('newGmail') || data.newGmail;
-        document.getElementById('password').innerText = formData.get('newPassword') || data.newPassword;
-    } catch (error) {
-        // Log and alert errors
-        console.error('Error:', error);
-        alert('Error updating user settings');
     }
 });

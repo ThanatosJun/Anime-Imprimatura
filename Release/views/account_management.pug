@@ -14,17 +14,18 @@ block content
             .input-section
               p User Name
               input#name(type="text", name="user_name", value="user name", readonly)
-              button.edit-icon(type="button", onclick="enableEdit('name')") ✎
+              //- button.edit-icon(type="button", onclick="enableEdit('name')") ✎
             .input-section
-              p Email
+              p Emai
               input#email(type="email", name="gmail", value="user email", readonly)
-              button.edit-icon(type="button", onclick="enableEdit('email')") ✎
+              //- button.edit-icon(type="button", onclick="enableEdit('email')") ✎
             .input-section
               p Password
               input#password(type="password", name="password", placeholder="password", value="user password", readonly)
-              button.edit-icon(type="button", onclick="enableEdit('password')") ✎
+              //- button.edit-icon(type="button", onclick="enableEdit('password')") ✎
           div.buttons
-            button(type="submit") Save Changes
+            button#edit-btn(type='button') Edit
+            button#save-btn(type='submit' style='display:none') Save Changes
             button.logout-btn#logout-btn(type="button") Log out
     script(src='/javascripts/account_edit.js')
     script(src='/javascripts/logout.js')

@@ -278,7 +278,7 @@ section h2{
   margin-bottom: 5vh;
 }
 
-.terms-container {
+#terminology .terms-container {
   margin-top: 20px;
   display: flex;
   flex-direction: row;
@@ -287,22 +287,22 @@ section h2{
   gap: 2vw;
   width: 78vw;
 }
-.term-container{
+#terminology .term-container{
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
 }
-.term-container img{
+#terminology .term-container img{
   height: 400px; 
   width: auto; 
   object-fit: contain; 
 }
-.term-container h3 {
+#terminology .term-container h3 {
   font-size: 36px;
   color: white;
 }
-.term-container p{
+#terminology .term-container p{
   font-size: 24px;
   color: white;
   font-family: 'Montserrat', arial;
@@ -768,7 +768,9 @@ footer {
   margin: 10px 0;
   font-size: 15px;
 }
-.account_card input[type="text"], .account_card input[type="email"], .account_card input[type="password"] {
+.account_card input:read-only,
+.account_card input.editable,
+.account_card input:focus {
   width: auto;
   flex: 2;
   padding: 6px 8px;
@@ -777,6 +779,7 @@ footer {
   background-color: rgba(220, 220, 220, 0);
   color: white;
 }
+
 .account_card .input-section {
   margin: 18px 80px;
 }
@@ -946,17 +949,52 @@ div.buttons {
   object-fit: contain; /* Ensure the image fits well inside the container */
 }
 
-.generate .select-title {
+.generate .content-select {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  width: 78vw;
+}
+.generate .terms-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+.generate .term-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.generate .term-container img{
+  height: 150px; 
+  width: auto; 
+  object-fit: contain; 
+}
+.generate .term-container h3 {
+  font-size: 24px;
+  color: white;
+}
+.generate .term-container p{
+  font-size: 16px;
+  color: white;
+  font-family: 'Montserrat', arial;
+}
+
+/* .generate .select-container {
+} */
+
+.generate .select-container .select-title {
   position: relative;
   display: flex;
   margin-bottom: 20px;
   font-size: 32px;
   font-family: "Roboto Flex", sans-serif;
-  font-variation-settings: "opsz" 48, "slnt" 0, "GRAD" 0, "XTRA" 603, "YOPQ" 79,
-    "YTAS" 750, "YTDE" -203, "YTFI" 738, "YTLC" 514, "YTUC" 712, "wght" 700;
-  font-stretch: 151%;
-  font-optical-sizing: auto;
-  transform:rotate3d(3);
+  font-variation-settings: "opsz" 48, "wght" 700;
 }
 
 /* .generate .select-title::after {
