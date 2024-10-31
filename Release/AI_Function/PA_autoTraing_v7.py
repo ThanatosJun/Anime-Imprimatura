@@ -364,7 +364,7 @@ class PA_train(PA_init):
         # Train the model
         results = model.train(**train_params)
         print("====Finish Training====")
-        CHD_model_path = str(results.save_dir) + "\\weights\\best.pt"
+        CHD_model_path = str(results.save_dir) + "/weights/best.pt"
         return CHD_model_path
     
     # Function for getting a new file name if the names were the same
