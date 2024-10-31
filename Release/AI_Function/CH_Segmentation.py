@@ -359,7 +359,7 @@ class Coloring(CH_SEG__init):
         mask = np.zeros([h+2, w+2], np.uint8)
         # Color CHS with color_dictionary and points
         for key, position_list in position_dictionary.items():
-            key = key.split("_")[0]
+            key = key.rsplit("_",1)[0]
             if key in color_dictionary:
                 rgb = color_dictionary[key]
                 r, g, b = rgb
@@ -408,9 +408,9 @@ class Coloring(CH_SEG__init):
             second_color = self.get_second_dominant_color(image).tolist()
             
             # Get file path ex: Hair_1.png
-            file_name = os.path.basename(image_path)
+            file_name = Path(image_path).stem
             # Get class from file path ex : Hair
-            name_part = file_name.split('_')[0]  # Hair
+            name_part = file_name.rsplit('_',1)[0]  # Hair
             image_key = str(name_part)
             # Put scond_color in to dictionary
             color_dictionary[image_key] = second_color
@@ -440,7 +440,6 @@ class Coloring(CH_SEG__init):
             # Save all main points into position_dictionary
             for CHS_annotation_path in CHS_annotations_paths:
                 cls, points = self.extract_class_and_points(CHS_annotation_path)
-                print("cls = " + cls)
                 position_dictionary[cls] = points
                 class_count += 1
             # Color and save image
