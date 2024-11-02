@@ -326,17 +326,15 @@ class Coloring(CH_SEG__init):
 
     # Function for getting CHS label in txt
     def extract_class_and_points(self, file_path):
-        class_name = None
+        # Get Class
+        class_name = Path(file_path).stem
         inner_main_points = None
         # Get class and inner main points in Classes.txt
         with open(file_path, 'r', encoding='utf-8') as file:
             # For each row
             for line in file:
                 line = line.strip()
-                # If start "Class"
-                if line.startswith("Class:"):
-                    class_name = line.split(":")[1].strip()
-                # If start "Class"
+                # If start "Point"
                 if line.startswith("Inner Main Points:"):
                     points_str = line.split(":")[1].strip()
                     # Change string into list
@@ -361,7 +359,7 @@ class Coloring(CH_SEG__init):
         mask = np.zeros([h+2, w+2], np.uint8)
         # Color CHS with color_dictionary and points
         for key, position_list in position_dictionary.items():
-            key = key.split("_")[0]
+            key = key.rsplit("_",1)[0]
             if key in color_dictionary:
                 rgb = color_dictionary[key]
                 r, g, b = rgb
@@ -394,9 +392,6 @@ class Coloring(CH_SEG__init):
         for point in clear_points:
             mask.fill(0)
             cv2.floodFill(copy_img, None, point, (int(255), int(255), int(255)), (50, 50, 50), (50, 50, 50), cv2.FLOODFILL_FIXED_RANGE)
-        # cv2.namedWindow("Block", cv2.WINDOW_AUTOSIZE)
-        # cv2.imshow(f"Block", copy_img)
-        # cv2.waitKey(0)
         return copy_img
 
     # Function for pick color in CHD and make a color dictionary
@@ -413,9 +408,9 @@ class Coloring(CH_SEG__init):
             second_color = self.get_second_dominant_color(image).tolist()
             
             # Get file path ex: Hair_1.png
-            file_name = os.path.basename(image_path)
+            file_name = Path(image_path).stem
             # Get class from file path ex : Hair
-            name_part = file_name.split('_')[0]  # Hair
+            name_part = file_name.rsplit('_',1)[0]  # Hair
             image_key = str(name_part)
             # Put scond_color in to dictionary
             color_dictionary[image_key] = second_color
@@ -442,15 +437,10 @@ class Coloring(CH_SEG__init):
             # Announce main points dictionary for coloring
             position_dictionary = {}
             class_count = 1
-            old_cls = ""
             # Save all main points into position_dictionary
             for CHS_annotation_path in CHS_annotations_paths:
                 cls, points = self.extract_class_and_points(CHS_annotation_path)
-                if (old_cls != cls):
-                    class_count = 1
-                    old_cls = cls
-                in_cls = old_cls + "_" + str(class_count)
-                position_dictionary[in_cls] = points
+                position_dictionary[cls] = points
                 class_count += 1
             # Color and save image
             CHS_Finished = self.fill_color_demo(CHS_image, color_dictionary, position_dictionary)
