@@ -1,5 +1,0 @@
-Image_Name: _a_10,100 copy
-Class: Eyebrow
-Inner Main Points: [(0, 0)]
-Mask Points:
-[]

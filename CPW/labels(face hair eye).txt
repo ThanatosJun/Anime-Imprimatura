@@ -1,3 +1,0 @@
-0 face
-1 hair
-2 eye

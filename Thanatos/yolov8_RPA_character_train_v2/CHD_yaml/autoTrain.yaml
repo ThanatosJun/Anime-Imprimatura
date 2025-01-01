@@ -1,7 +1,0 @@
-path: Anime001
-train: train
-val: valid
-test: test
-
-nc: 1
-names: [Maincharacter]
