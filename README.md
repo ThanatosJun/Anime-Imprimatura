@@ -8,12 +8,18 @@
 ## 專案介紹
 - **功能說明**  
   Anime Imprimatura，漫塗是一個幫助2D動畫繪師上人物底色的系統。
+    - CHD 角色設計圖
+    - CHS 角色線稿圖
+    - CHSF 角色鋪色圖
+    (以上三者為此專案為方便溝通所設立之名詞。)
+    ![UserIO](READMEimages/UserIO.png)
+    UserIO
 <table>
   <thead>
     <tr>
-      <th align="center">CHD</th>
-      <th colspan="3" align="center">CHS</th>
-      <th colspan="3" align="center">CHSF</th>
+      <th align="center">CHD, Character Design</th>
+      <th colspan="3" align="center">CHS, Character Sketch</th>
+      <th colspan="3" align="center">CHSF, Character Sketch Finished</th>
     </tr>
   </thead>
   <tbody>
@@ -25,20 +31,20 @@
       </td>
       <!-- CHS 區塊 -->
       <td colspan="3" align="center" style="text-align: center; vertical-align: top;">
-        <img src="TESTimages/Anime003/Anime003_CHS_01.png" alt="CHS01" width="200" />
+        <img src="TESTimages/Anime003/Anime003_CHS_01.png" alt="CHS_01" width="200" />
         <p>CHS01</p>
-        <img src="TESTimages/Anime003/Anime003_CHS_02.png" alt="CHS02" width="200" />
+        <img src="TESTimages/Anime003/Anime003_CHS_02.png" alt="CHS_02" width="200" />
         <p>CHS02</p>
-        <img src="TESTimages/Anime003/Anime003_CHS_03.png" alt="CHS03" width="200" />
+        <img src="TESTimages/Anime003/Anime003_CHS_03.png" alt="CHS_03" width="200" />
         <p>CHS03</p>
       </td>
       <!-- CHSF 區塊 -->
       <td colspan="3" align="center" style="text-align: center; vertical-align: top;">
-        <img src="TESTimages/Anime003/Anime003_CHSF_01.png" alt="CHSF01" width="200" />
+        <img src="TESTimages/Anime003/colored/CHSF_01_01.png" alt="CHSF_01" width="200" />
         <p>CHSF01</p>
-        <img src="TESTimages/Anime003/Anime003_CHSF_02.png" alt="CHSF02" width="200" />
+        <img src="TESTimages/Anime003/colored/CHSF_01_02.png" alt="CHSF_02" width="200" />
         <p>CHSF02</p>
-        <img src="TESTimages/Anime003/Anime003_CHSF_03.png" alt="CHSF03" width="200" />
+        <img src="TESTimages/Anime003/colored/CHSF_01_03.png" alt="CHSF_03" width="200" />
         <p>CHSF03</p>
       </td>
     </tr>
