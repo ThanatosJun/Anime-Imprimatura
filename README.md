@@ -1,4 +1,10 @@
 # Anime-Imprimatura *漫塗* <img src="READMEimages/LOGO.png" alt="漫塗LOGO" style="height: 1em; vertical-align: middle;">
+
+### Demo網站(http://202.5.253.153/)
+### 影片宣傳(https://youtu.be/OfGPD1aC1yY)
+### 影片介紹(中文 https://youtu.be/tt2whU94dNM)
+### 影片介紹(English https://www.youtube.com/watch?v=w2TM-NOkEMM)
+
 ## 目錄
 - [專案介紹](#專案介紹)
 - [系統架構](#系統架構)
@@ -85,6 +91,15 @@
     3. 怎麼確保根據CHD為CHS 正確上色？
 
         我們透過Roboflow訓練一個分割辨識模型，以達到角色基礎部件的辨識與分割，再透過遮罩部分達到CHD的取色與CHS的上色。
+- ### 使用者模組
+
+    我們將功能完整三個階段，使用者可以依照自己的需求決定目前該選用哪一個模組。
+1. Standard 標準流程
+    執行時間最久，完整度最高，最不彈性。每次要上同一個角色的CHS時必須重新訓練一次模型。
+2. Flexible 彈性流程
+    執行時間中等，完整度中等，較為彈性。選用此流程前必須事前已有訓練完的「專屬辨識模型」，可依照該模型判斷CHS的角色，不須再重新訓練過模型。
+3. Fast 快速流程
+    執行時間最短，完整度最低，最為彈性。可隨易更換CHD與CHS，不須使用「專屬角色辨識」模型。
 
 ![Flows](READMEimages/Flows.png)
 <p align="center">使用者模組流程圖</p>
@@ -140,6 +155,7 @@
 6. 前端：前端通過API呼叫與後端通訊，使用 PUG 模板配合 CSS 和JavaScript呈現使用者介面。 
 7. 後端：使用Express.js和Python管理API端點、認證和資料庫訊。 
 8. AI功能：託管的AI模型處理影像，再使用PyTorch和OpenCV等函式庫執行上色和顏色擷取，並將結果回傳給後端。
+
 ![SstemFlow](READMEimages/SystemFrame.png)
 <p align="center">系統架構圖</p>
 
