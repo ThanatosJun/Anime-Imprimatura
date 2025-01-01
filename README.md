@@ -6,7 +6,7 @@
 - [系統建置](#系統建置過程)
 - [開發可延伸研究](#開發可延伸研究)
 ## 專案介紹
-- **功能說明**  
+- ### 功能說明 
     Anime Imprimatura，漫塗是一個幫助2D動畫繪師上人物底色的系統。
     - CHD 角色設計圖
     - CHS 角色線稿圖
@@ -32,33 +32,33 @@
       <!-- CHS 區塊 -->
       <td colspan="3" align="center" style="text-align: center; vertical-align: top;">
         <img src="TESTimages/Anime003/Anime003_CHS_01.png" alt="CHS_01" width="200" />
-        <p>CHS01</p>
+        <p>CHS_01</p>
         <img src="TESTimages/Anime003/Anime003_CHS_02.png" alt="CHS_02" width="200" />
-        <p>CHS02</p>
+        <p>CHS_02</p>
         <img src="TESTimages/Anime003/Anime003_CHS_03.png" alt="CHS_03" width="200" />
-        <p>CHS03</p>
+        <p>CHS_03</p>
       </td>
       <!-- CHSF 區塊 -->
       <td colspan="3" align="center" style="text-align: center; vertical-align: top;">
         <img src="TESTimages/Anime003/colored/CHSF_01_01.png" alt="CHSF_01" width="200" />
-        <p>CHSF01</p>
+        <p>CHSF_01</p>
         <img src="TESTimages/Anime003/colored/CHSF_01_02.png" alt="CHSF_02" width="200" />
-        <p>CHSF02</p>
+        <p>CHSF_02</p>
         <img src="TESTimages/Anime003/colored/CHSF_01_03.png" alt="CHSF_03" width="200" />
-        <p>CHSF03</p>
+        <p>CHSF_03</p>
       </td>
     </tr>
   </tbody>
 </table>
 
-- **開發動機**
+- ### 開發動機
 
     對2D動畫而言，一秒通常需要24幀圖來達到動態效果，由此就算我們不是專業的繪師，我們都可以推知鋪色所需消耗的人力成本與時間皆不算小。此外，我們亦與擔任動畫繪師的相關人士交流，驗證了我們的觀點。
     1. 繪師：可不可以減少一下我的工作量？
     2. 獨立繪師：一個人上底色就要好久，誰來幫幫我？
     3. 觀眾：新的一季動畫可不可以快一點出啊！
         
-- **核心理念**
+- ### 核心理念
 
     漫塗的核心理念有三：
     1. AI協作
@@ -70,7 +70,7 @@
     3. 達成共贏局面
 
         透過動畫製作效率與品質的雙重提升，令觀眾能看到更多更優質的動畫，產業也能流入更多的資助，使 2D 動畫產業蓬勃發展。最終觀眾、動畫公司、繪師皆得到各自所需，形成共贏局面。 
-- **使用者歷程**
+- ### 使用者歷程
 
     在使用途中使用者可能會有三個疑問：
     1. 輸入CHD多角度資料不夠怎麼辦？
@@ -81,7 +81,7 @@
         我們透過自動化訓練流程，使每一位使用者只要上傳CHD便可以訓練出一個專屬的角色辨識模型，並運用此專屬模型辨識使用者所上傳CHS中那些是真正要上色的角色。
     3. 怎麼確保根據CHD為CHS 正確上色？
 
-        我們透過Robotflow訓練一個分割辨識模型，以達到角色基礎部件的辨識與分割，再透過遮罩部分達到CHD的取色與CHS的上色。
+        我們透過Roboflow訓練一個分割辨識模型，以達到角色基礎部件的辨識與分割，再透過遮罩部分達到CHD的取色與CHS的上色。
 ![Flows](READMEimages/Flows.png)
 <p align="center">使用者模組流程圖</p>
 
@@ -94,20 +94,20 @@
 <p align="center">AI功能模組化流程圖</p>
 
 ## 系統架構
-- **前端**
+- ### 前端
     前端作為系統的使用者介面層，旨在提供直覺且具視覺吸引力的互動介面。 
     - 工具與技術：
         - 設計框架：Figma，用於線框圖繪製和使用者介面原型設計。
         - 模板引擎：PUG，簡化動態網頁的 HTML 生成。
         - 樣式設計： CSS，用於創建視覺吸引且具回應性的設計。
         - 功能實現： JavaScript，實現互動性和動態內容渲染。
-- **後端**
+- ### 後端
     後端作為系統核心，管理資料流、業務邏輯，並實現前端和 AI 功能之間的無縫整合。
     - 工具與技術：
         - 框架：Express.js 輕量且快速，用於建立可擴展的 RESTful API。
         - 環境管理：dotenv安全管理環境變數。
         - 程式語言：Node.js提供非同步、事件驅動功能以處理高併發。
-- **AI功能**
+- ### AI功能
     AI 容器處理計算密集型任務，包括模型訓練、預測和影像處理。 
     - 框架與函式庫：
     - Ultralytics YOLOv8：用於物件檢測和分割。
@@ -116,19 +116,17 @@
     - HuggingFace Transformers：用於整合其他預訓練模型。
     - Stability AI：用於生成高品質視覺效果和影像相關任務。
     - 框架： Python、Flask：用於建立AI微服務。
-- **系統架構說明**
-    1. 雲端基礎設施： 系統運行於台灣杉高速計算服務（TWCC） 
-    2. 作業系統: 系統運託管於 Linux 環境（Ubuntu）。 
-    3. 容器化： Docker 通過將前端、後端和 AI 組件隔離到獨立容器來確保模組化。 
-    4. 資料收集與訓練：使用 Midjourney 和 Roboflow 準備影像和資料集進行模型訓
-    練。 
-    5. 資料處理： MongoDB Atlas 安全儲存所有持久性資料。 
-    6. 前端：前端通過 API 呼叫與後端通訊，使用 PUG 模板配合 CSS 和 JavaScript 
-    呈現使用者介面。 
-    7. 後端：使用 Express.js 和 Python 管理 API 端點、認證和資料庫通訊。 
-    8. AI 功能：託管的 AI 模型處理影像，使用 PyTorch 和 OpenCV 等函式庫執行上
-    色和特徵檢測任務並將結果回傳給後端。
-![SystemFlow](READMEimages/SystemFrame.png)
+- ### 系統架構說明
+
+1. 雲端基礎設施：系統運行於台灣杉高速計算服務 (TWCC) 。
+2. 作業系統:系統運託管於Linux環境 (Ubuntu)。 
+3. 容器化：Docker通過將前端、後端和AI組件隔離到獨立容器來確模組化。 
+4. 資料收集與訓練：使用Midjourney和Roboflow準備影像和資料進行模型訓練。 
+5. 資料處理：MongoDB Atlas安全儲存所有持久性資料。 
+6. 前端：前端通過API呼叫與後端通訊，使用 PUG 模板配合 CSS 和JavaScript呈現使用者介面。 
+7. 後端：使用Express.js和Python管理API端點、認證和資料庫訊。 
+8. AI功能：託管的AI模型處理影像，使用PyTorch和OpenCV等式庫執行上色和特徵檢測任務並將結果回傳給後端。
+![SstemFlow](READMEimages/SystemFrame.png)
 <p align="center">系統架構圖</p>
 
 ## 系統建置過程
