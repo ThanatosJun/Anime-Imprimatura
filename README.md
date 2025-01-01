@@ -12,8 +12,8 @@
     - CHS 角色線稿圖
     - CHSF 角色鋪色圖
     (以上三者為此專案為方便溝通所設立之名詞。)
-    ![UserIO](READMEimages/UserIO.png)
-    UserIO
+![UserIO](READMEimages/UserIO.png)
+<p align="center">UserIO</p>
 <table>
   <thead>
     <tr>
