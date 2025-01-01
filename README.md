@@ -7,13 +7,13 @@
 - [開發可延伸研究](#開發可延伸研究)
 ## 專案介紹
 - ### 功能說明 
-    Anime Imprimatura，漫塗是一個幫助2D動畫繪師上人物底色的系統。
-    - CHD 角色設計圖
-    - CHS 角色線稿圖
-    - CHSF 角色鋪色圖
+    Anime Imprimatura，漫塗協助 2D動畫繪師進行人物鋪色。只需上傳少量角色設計圖 (CHD) 和所需的角色線稿圖 (CHS)，便可得到根據CHD上色的角色鋪色圖 (CHSF)，大量提升人物鋪色的效率。
+    - CHD Character Design 角色設計圖
+    - CHS Character Sketch 角色線稿圖
+    - CHSF Character Sketch Finished 角色鋪色圖
+
     (以上三者為此專案為方便溝通所設立之名詞。)
-![UserIO](READMEimages/UserIO.png)
-<p align="center">UserIO</p>
+
 <table>
   <thead>
     <tr>
@@ -51,6 +51,9 @@
   </tbody>
 </table>
 
+![UserIO](READMEimages/UserIO.png)
+<p align="center">UserIO</p>
+
 - ### 開發動機
 
     對2D動畫而言，一秒通常需要24幀圖來達到動態效果，由此就算我們不是專業的繪師，我們都可以推知鋪色所需消耗的人力成本與時間皆不算小。此外，我們亦與擔任動畫繪師的相關人士交流，驗證了我們的觀點。
@@ -82,11 +85,22 @@
     3. 怎麼確保根據CHD為CHS 正確上色？
 
         我們透過Roboflow訓練一個分割辨識模型，以達到角色基礎部件的辨識與分割，再透過遮罩部分達到CHD的取色與CHS的上色。
+
 ![Flows](READMEimages/Flows.png)
 <p align="center">使用者模組流程圖</p>
 
 ## 系統功能劃分
-- **** 
+- ### 多視角擴增
+    增加不同的角度並同步進行資料擴增，由1張圖變成n張圖。
+- ### RPA訓練
+    再將n張圖作為放入訓練資料集，訓練出角色「專屬辨識模型」。
+- ### CHS辨識
+    透過「專屬辨識模型」識別使用者輸入的多張CHS中是否屬於該角色，並將確認正確的圖片與CHD一同輸出給下一階段。
+- ### 部件分割辨識
+    我們透過Yolov8訓練一個Segmentation Model能分割出各個部件（如：眼睛、臉、頭髮、上衣等）。
+- ### CHD取色與CHS上色
+    透過CHD分割出的部件建構類別與顏色字典 (顏色字典，Color Dictionary)，也從CHS分割出的部件取得類別與點位置字典(位置字典，Posiotion Dictionary)，以字典方式儲存「CHD取色」結果，再合併兩者達成「CHS上色」。最終得到完成鋪色的CHSF。
+
 ![SystemFlow](READMEimages/SystemFlow.png)
 <p align="center">系統運作流程圖</p>
 
@@ -125,7 +139,7 @@
 5. 資料處理：MongoDB Atlas安全儲存所有持久性資料。 
 6. 前端：前端通過API呼叫與後端通訊，使用 PUG 模板配合 CSS 和JavaScript呈現使用者介面。 
 7. 後端：使用Express.js和Python管理API端點、認證和資料庫訊。 
-8. AI功能：託管的AI模型處理影像，使用PyTorch和OpenCV等式庫執行上色和特徵檢測任務並將結果回傳給後端。
+8. AI功能：託管的AI模型處理影像，再使用PyTorch和OpenCV等函式庫執行上色和顏色擷取，並將結果回傳給後端。
 ![SstemFlow](READMEimages/SystemFrame.png)
 <p align="center">系統架構圖</p>
 
