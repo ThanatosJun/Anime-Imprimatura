@@ -12,19 +12,19 @@
   <thead>
     <tr>
       <th align="center">CHD</th>
-      <th align="center">CHS</th>
-      <th align="center">CHSF</th>
+      <th colspan="3" align="center">CHS</th>
+      <th colspan="3" align="center">CHSF</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <!-- CHD 區塊 -->
-      <td align="center" style="width: 300px; text-align: center; vertical-align: top;">
+      <td align="center" style="text-align: center; vertical-align: top;">
         <img src="TESTimages/Anime003/Anime003_CHD_01.png" alt="CHD" width="200" />
         <p>CHD</p>
       </td>
       <!-- CHS 區塊 -->
-      <td align="center" style="width: 300px; text-align: center; vertical-align: top;">
+      <td colspan="3" align="center" style="text-align: center; vertical-align: top;">
         <img src="TESTimages/Anime003/Anime003_CHS_01.png" alt="CHS01" width="200" />
         <p>CHS01</p>
         <img src="TESTimages/Anime003/Anime003_CHS_02.png" alt="CHS02" width="200" />
@@ -33,7 +33,7 @@
         <p>CHS03</p>
       </td>
       <!-- CHSF 區塊 -->
-      <td align="center" style="width: 300px; text-align: center; vertical-align: top;">
+      <td colspan="3" align="center" style="text-align: center; vertical-align: top;">
         <img src="TESTimages/Anime003/Anime003_CHSF_01.png" alt="CHSF01" width="200" />
         <p>CHSF01</p>
         <img src="TESTimages/Anime003/Anime003_CHSF_02.png" alt="CHSF02" width="200" />
