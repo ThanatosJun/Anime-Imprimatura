@@ -1,4 +1,4 @@
-# Anime-Imprimatura *漫塗* ![漫塗LOGO](READMEimages/LOGO.png)
+# Anime-Imprimatura *漫塗* <img src="READMEimages/LOGO.png" alt="漫塗LOGO" style="height: 1em; vertical-align: middle;">
 ## 目錄
 - [專案介紹](#專案介紹)
 - [系統架構](#系統架構)
@@ -11,12 +11,16 @@
   <table>
   <tr>
     <td>
-      <img src="READMEimages/image1.png" alt="圖片1" width="300" />
+      <img src="TESTimages/Anime003/Anime003_CHD_01.png" alt="圖片1" width="300" />
       <p align="center">CHD</p>
     </td>
     <td>
-      <img src="READMEimages/image2.png" alt="圖片2" width="300" />
-      <p align="center">CHS</p>
+      <img src="TESTimages/Anime003/Anime003_CHS_01.png" alt="圖片2" width="300" />
+      <p align="center">CHS01</p>
+      <img src="TESTimages/Anime003/Anime003_CHS_02.png" alt="圖片2" width="300" />
+      <p align="center">CHS02</p>
+      <img src="TESTimages/Anime003/Anime003_CHS_03.png" alt="圖片2" width="300" />
+      <p align="center">CHS03</p>
     </td>
   </tr>
 </table>
