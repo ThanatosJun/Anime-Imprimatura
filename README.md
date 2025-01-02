@@ -207,15 +207,20 @@ python AI_Function/test.py
 3. 取色、上色流程的替換
     目前透過遮罩取色構成class dictionary[class, color]與posion dictionary[class, position]，再藉由floodfill的方式上色。雖然此法只要遮罩的位置正確便可取到顏色相對應的平均顏色，但無法擷取漸層色，因此只可作為平鋪使用。上色部分則需要線段密閉，如若線段不密閉，則容易造成溢色。
 ## 分支說明
-- ### main
-集合全部features以利整合與說明
-- ### release
-整理完成的本機系統
-- ### feature/sketch-and-rpa-training
-轉線稿與自動化訓練
-- ### feature/segmentation
-部件分割與辨識
-- ### feature/colors
-部件取色與上色
-- ### feature/web
-網站前端建置
+- ### [main](https://github.com/ThanatosJun/Anime-Imprimatura/tree/main)
+  集合全部 features 以利整合與說明。
+
+- ### [release](https://github.com/ThanatosJun/Anime-Imprimatura/tree/release)
+  整理完成的本機系統。
+
+- ### [feature/sketch-and-rpa-training](https://github.com/ThanatosJun/Anime-Imprimatura/tree/feature/sketch-and-rpa-training)
+  轉線稿與自動化訓練。
+
+- ### [feature/segmentation](https://github.com/ThanatosJun/Anime-Imprimatura/tree/feature/segmentation)
+  部件分割與辨識。
+
+- ### [feature/colors](https://github.com/ThanatosJun/Anime-Imprimatura/tree/feature/colors)
+  部件取色與上色。
+
+- ### [feature/web](https://github.com/ThanatosJun/Anime-Imprimatura/tree/feature/web)
+  網站前端建置。
