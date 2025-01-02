@@ -199,12 +199,15 @@ python AI_Function/test.py
 6. ### 開啟網頁與使用系統
 
 ## 開發可延伸研究
-1. 多視角擴增
+1. ### 多視角擴增
+
     此專案使用的模型zero123對於2D動畫角色的角度生成並不佳，因此會極大影響訓練出的專屬辨識模型的效能。或許Adobe的Project Turntable便可大大提升多視角的不足，藉此滿足訓練資料的缺失。
-2. 部件分割辨識模型替換
+2. ### 部件分割辨識模型替換
+
     原有嘗試運用Meta的SAM模型，雖說其能辨識出許多細微的封閉區塊，但難以分別不同的遮罩屬於哪個部位，另外運行此模型需要的算力也較本專案使用Roboflow訓練而出的模型大，故最後使用自行訓練的分割辨識模型。但是此專案無法分割出特殊的部件與細緻的封閉區塊，對畫風不同的圖像也難以分割、辨識，僅能判斷最基礎的15個部件。
-    部件類別：Arm, Ear, Eye, Eyebrow, Face, Foot, Hair, Hand, Leg, Lower_clothes, Neck, Open_mouth, Shoe, Stock, Upper_clothes	
-3. 取色、上色流程的替換
+    部件類別：Arm, Ear, Eye, Eyebrow, Face, Foot, Hair, Hand, Leg, Lower_clothes, Neck, Open_mouth, Shoe, Stock, Upper_clothes.
+3. ### 取色、上色流程的替換
+
     目前透過遮罩取色構成class dictionary[class, color]與posion dictionary[class, position]，再藉由floodfill的方式上色。雖然此法只要遮罩的位置正確便可取到顏色相對應的平均顏色，但無法擷取漸層色，因此只可作為平鋪使用。上色部分則需要線段密閉，如若線段不密閉，則容易造成溢色。
 ## 分支說明
 - ### [main](https://github.com/ThanatosJun/Anime-Imprimatura/tree/main)
