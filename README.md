@@ -157,7 +157,7 @@
 7. 後端：使用Express.js和Python管理API端點、認證和資料庫訊。 
 8. AI功能：託管的AI模型處理影像，再使用PyTorch和OpenCV等函式庫執行上色和顏色擷取，並將結果回傳給後端。
 
-![SstemFlow](READMEimages/SystemFrame.png)
+![SystemFlow](READMEimages/SystemFrame.png)
 <p align="center">系統架構圖</p>
 
 ## 系統建置過程
@@ -177,8 +177,13 @@
 3. ### 環境變數更改
     開啟.env檔案
     - #### 變更MongoDB Atlas資料庫連結
-        - 建立帳號
-        - 依據資料庫格式建立資料庫
+        - 建立 MongoDB 帳號(https://cloud.mongodb.com/)
+        - 建立 Atlas 專案
+        ![alt text](READMEimages/MongoDB_NewProject.png)
+        - 建立 Cluster
+        ![alt text](READMEimages/MongoDB_NewCluster.png)
+        - 設置 Database Access 與 Network Access
+        ![alt text](READMEimages/MongoDB_Access.png)
         - 更換資料庫連接
             ```
             MONGO_URI=
@@ -199,6 +204,7 @@ node app.js
 python AI_Function/test.py
 ```
 6. ### 開啟網頁與使用系統
+於瀏覽器開啟 http://localhost:3000/
 
 ## 開發可延伸研究
 1. ### 多視角擴增
