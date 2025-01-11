@@ -1,4 +1,5 @@
 # Anime-Imprimatura *漫塗* <img src="READMEimages/LOGO.png" alt="漫塗LOGO" style="height: 1em; vertical-align: middle;">
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 ### Demo網站(http://202.5.253.153/)
 ### 影片宣傳(https://youtu.be/OfGPD1aC1yY)
@@ -12,6 +13,7 @@
 - [系統建置](#系統建置過程)
 - [開發可延伸研究](#開發可延伸研究)
 - [分支說明](#分支說明)
+- [貢獻](#貢獻)
 ## 專案介紹
 - ### 功能說明 
     Anime Imprimatura，漫塗協助 2D動畫繪師進行人物鋪色。只需上傳少量角色設計圖 (CHD) 和所需的角色線稿圖 (CHS)，便可得到根據CHD上色的角色鋪色圖 (CHSF)，大量提升人物鋪色的效率。
@@ -224,3 +226,14 @@ python AI_Function/test.py
 
 - ### [release](https://github.com/ThanatosJun/Anime-Imprimatura/tree/release)
   整理完成的本機系統。
+
+## 貢獻
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
+  ### Mentioned
+    - ThanatosJun(https://github.com/ThanatosJun)
+    - TiasheKnight(https://github.com/TiasheKnight)
+    - pizzaInmystomach(https://github.com/pizzaInmystomach)
+    - ying0607(https://github.com/ying0607)
+    - lemonade33456(https://github.com/lemonade33456)
+    - CPW0919(https://github.com/CPW0919)
