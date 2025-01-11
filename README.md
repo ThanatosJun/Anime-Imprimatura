@@ -231,9 +231,9 @@ python AI_Function/test.py
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
 
   ### Mentioned
-    - ThanatosJun(https://github.com/ThanatosJun)
-    - TiasheKnight(https://github.com/TiasheKnight)
-    - pizzaInmystomach(https://github.com/pizzaInmystomach)
-    - ying0607(https://github.com/ying0607)
-    - lemonade33456(https://github.com/lemonade33456)
-    - CPW0919(https://github.com/CPW0919)
+  - ThanatosJun(https://github.com/ThanatosJun)
+  - TiasheKnight(https://github.com/TiasheKnight)
+  - pizzaInmystomach(https://github.com/pizzaInmystomach)
+  - ying0607(https://github.com/ying0607)
+  - lemonade33456(https://github.com/lemonade33456)
+  - CPW0919(https://github.com/CPW0919)
