@@ -182,11 +182,13 @@
         - 更換資料庫連接
             ```
             MONGO_URI=
+            # MONGO_URI=mongodb+srv://<USER_NAME>:<USER_PASSWORD>@<CLUSTER_SEQUENCE>.mongodb.net/?retryWrites=true&w=majority&appName=<PROJECTNAME>
             ```
     - #### 變更JWT驗證金鑰
         - 隨意設置
         ```
         JWT_SECRET=
+        # JWT_SECRET=somerandomstringthatissecureandlongenough
         ```
 4. ### 開啟 Node.js Server
 ```Javascript
