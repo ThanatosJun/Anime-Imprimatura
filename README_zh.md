@@ -156,7 +156,8 @@
     - Stability AI：用於生成高品質視覺效果和影像相關任務。
     - 框架： Python、Flask：用於建立AI微服務。
 
-- ### 系統架構說明
+- ### 系統部署
+    在台灣計算雲（TWCC）上部署，使用 Ubuntu、Docker、MongoDB Atlas 及其他工具。
 
 1. 雲端基礎設施：系統運行於台灣杉高速計算服務 (TWCC) 。
 2. 作業系統:系統運託管於Linux環境 (Ubuntu)。 
