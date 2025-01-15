@@ -1,6 +1,8 @@
 # Anime-Imprimatura *漫塗* <img src="READMEimages/LOGO.png" alt="漫塗LOGO" style="height: 1em; vertical-align: middle;">
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-
+# 漫塗專案說明
+歡迎使用本專案！其他語言的說明文件：
+- [English Documentation](README_EN.md)
 ### Demo網站(http://202.5.253.153/)
 ### 影片宣傳(https://youtu.be/OfGPD1aC1yY)
 ### 影片介紹(中文 https://youtu.be/tt2whU94dNM)
@@ -230,7 +232,7 @@ python AI_Function/test.py
 ## 貢獻
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
 
-  ### Mentioned
+  ### Contributors
   - [ThanatosJun](https://github.com/ThanatosJun)
   - [TiasheKnight](https://github.com/TiasheKnight)
   - [pizzaInmystomach](https://github.com/pizzaInmystomach)
