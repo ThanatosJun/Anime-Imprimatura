@@ -137,6 +137,15 @@ Welcome to the project! For other languages, see:
 - ### System Deployment
     Deployed on Taiwan Computing Cloud (TWCC) using Ubuntu, Docker, MongoDB Atlas, and other tools.
 
+1. Cloud Infrastructure: The system operates on Taiwan's Cypress High Performance Computing Service (TWCC).
+2. Operating System: The system is hosted in a Linux environment (Ubuntu).
+3. Containerization: Docker modularizes the system by isolating the frontend, backend, and AI components into separate containers.
+4. Data Collection and Training: Midjourney and Roboflow are used to prepare images and data for model training.
+5. Data Processing: MongoDB Atlas securely stores all persistent data.
+6. Frontend: The frontend communicates with the backend through API calls, using PUG templates with CSS and JavaScript to render the user interface.
+7. Backend: Express.js and Python are used to manage API endpoints, authentication, and database communication.
+8. AI Features: Hosted AI models process images, and libraries like PyTorch and OpenCV are used for coloring and color extraction, with the results returned to the backend.
+
 ![SystemFrame](READMEimages/SystemFrame.png)
 <p align="center">System Architecture Diagram</p>
 
