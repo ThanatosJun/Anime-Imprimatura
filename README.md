@@ -25,7 +25,7 @@ Welcome to the project! For other languages, see:
     - CHSF: Character Sketch Finished
 
     (These terms were defined specifically for this project for better communication.)
-
+<p>[Test images](TESTimages/)</p>
 <table>
   <thead>
     <tr>

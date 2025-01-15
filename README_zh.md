@@ -25,7 +25,7 @@
     - CHSF Character Sketch Finished 角色鋪色圖
 
     (以上三者為此專案為方便溝通所設立之名詞。)
-
+<p>[測試圖片](TESTimages/)</p>
 <table>
   <thead>
     <tr>
