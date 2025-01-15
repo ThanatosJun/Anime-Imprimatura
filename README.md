@@ -13,8 +13,8 @@ Welcome to the project! For other languages, see:
 - [System Architecture](#system-architecture)
 - [System Functional Divisions](#system-functional-divisions)
 - [System Deployment](#system-deployment)
-- [Future Research Extensions](#future-research-extensions)
-- [Branch Details](#branch-details)
+- [Future Research Extensions](#development-and-research-extensions)
+- [Branch Details](#branch-descriptions)
 - [Contributions](#contributions)
 
 ## Project Introduction
