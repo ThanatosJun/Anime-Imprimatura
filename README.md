@@ -3,7 +3,7 @@
 # Anime-Imprimatura
 Welcome to the project! For other languages, see:
 - [中文版說明文件](README_zh.md)
-### Demo Website (http://202.5.253.153/)
+### Demo Website (Stop)
 ### Promotional Video (https://youtu.be/OfGPD1aC1yY)
 ### Introduction Video (Chinese: https://youtu.be/tt2whU94dNM)
 ### Introduction Video (English: https://www.youtube.com/watch?v=w2TM-NOkEMM)
